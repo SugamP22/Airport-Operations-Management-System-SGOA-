@@ -1,46 +1,56 @@
 package utils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+/**
+ * helper class to get SessionFactory
+ */
 public class HibernateUtil {
-
-	private static final SessionFactory sessionFactory;
-
+	private static SessionFactory session;
 	static {
-		try {
-			// 1. Load DB credentials from properties file
-			Properties dbProps = new Properties();
-			dbProps.load(HibernateUtil.class.getClassLoader().getResourceAsStream("db.properties"));
-
-			// 2. Build the Service Registry
-			// This combines XML settings with the dynamic properties
+		Properties dbProps = new Properties();// open a container to load data from properties file
+		try (InputStream input = HibernateUtil.class.getClassLoader().getResourceAsStream("db.properties")) {
+			if (input == null) {
+				throw new RuntimeException(LanguageUtil.get("msg.error.dbProperties"));
+			}
+			dbProps.load(input);// gets data from
+								// properties file
+			// configures xml file and insert value into it
 			StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml")
-					.applySetting("hibernate.connection.url", dbProps.getProperty("db.url"))
-					.applySetting("hibernate.connection.username", dbProps.getProperty("db.username"))
-					.applySetting("hibernate.connection.password", dbProps.getProperty("db.password")).build();
-
-			// 3. Build the SessionFactory from the registry
-			sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-
-		} catch (Exception e) {
-			// Log the error so we can see WHY it failed (DB down, wrong pass, etc.)
+					.applySetting("connection.url", dbProps.getProperty("db.url"))
+					.applySetting("connection.username", dbProps.getProperty("db.username"))
+					.applySetting("connection.password", dbProps.getProperty("db.password")).build();
+			session = new MetadataSources(registry).buildMetadata().buildSessionFactory();// inciates session
+		} catch (IOException e) {
 			e.printStackTrace();
-			throw new ExceptionInInitializerError("Initial SessionFactory creation failed: " + e);
+			throw new ExceptionInInitializerError(LanguageUtil.get("msg.error.ErronInitiatingSession") + e);
+
 		}
 	}
 
-	public static SessionFactory getSessionFactory() {
-		return sessionFactory;
+	/**
+	 * using this method to call for session factory
+	 * 
+	 * @return
+	 */
+	public static SessionFactory getSession() {
+		return session;
 	}
 
-	// Recommended: Add a way to close the connection when the app stops
+	/**
+	 * using this method to close the session if its still running in the background
+	 */
 	public static void shutdown() {
-		if (sessionFactory != null) {
-			sessionFactory.close();
+		if (session != null) {
+			session.close();
 		}
 	}
+
 }
