@@ -21,9 +21,6 @@ public class LoginController {
 				MenuUtils.signInTitle();
 				System.out.flush();
 				String username = ValidationUtils.readString(LanguageUtils.get("ui.username"));
-				System.out.println();
-				BoxedMessageUtils.horizontalRow("-");
-				System.out.println();
 				System.out.flush();
 				String password = ValidationUtils.readString(LanguageUtils.get("ui.password"));
 				System.out.println();
