@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+ "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+ "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory>
+    <!-- Database connection settings -->
+    <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+    <property name="connection.url">${db.url}</property>
+    <property name="connection.username">${db.username}</property>
+    <property name="connection.password">${db.password}</property>
+    <property name="show_sql">false</property>
+
+    <mapping class="entities.AeroLinea"/>
+    <mapping class="entities.Aeropuertos"/>
+    <mapping class="entities.Avion"/>
+    <mapping class="entities.DetallePasajero"/>
+    <mapping class="entities.Empleado"/>
+    <mapping class="entities.HorarioVuelo"/>
+    <mapping class="entities.Pasajero"/>
+    <mapping class="entities.Reserva"/>
+    <mapping class="entities.TipoAvion"/>
+    <mapping class="entities.Vuelo" />
+ </session-factory>
+</hibernate-configuration>
