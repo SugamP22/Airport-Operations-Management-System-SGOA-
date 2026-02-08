@@ -1,26 +1,26 @@
 package controllers;
 
-import java.util.Scanner;
-
-import utils.BoxedMessageUtil;
-import utils.LanguageUtil;
+import utils.LanguageUtils;
+import utils.MenuUtils;
+import utils.ValidationUtils;
 
 public class LanguageController {
 	public void updateLanguage() {
-		Scanner sc = new Scanner(System.in);
-		BoxedMessageUtil.boxWithOutEvenSpacing(LanguageUtil.get("ui.lang.menu.title"), "=");
-		System.out.println(LanguageUtil.get("ui.lang.option.en"));
-		System.out.println(LanguageUtil.get("ui.lang.option.es"));
-		BoxedMessageUtil.horizontalRow("-");
-		System.out.print(LanguageUtil.get("input.user"));
-		int numero = sc.nextInt();
-		if (numero == 1) {
-			LanguageUtil.setLanguage("en");
-		} else {
-			LanguageUtil.setLanguage("es");
+		MenuUtils.languageMenu();
+		while (true) {
+			System.out.flush();
+			int numero = ValidationUtils.readInt(LanguageUtils.get("input.user"));
+			if (numero == 1) {
+				LanguageUtils.setLanguage("en");
+				return;
+			} else if (numero == 2) {
+				LanguageUtils.setLanguage("es");
+				return;
+			} else {
+				System.err.println(LanguageUtils.get("error.invalidOption"));
+			}
 
 		}
-		sc.close();
 
 	}
 }

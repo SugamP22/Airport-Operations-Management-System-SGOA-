@@ -3,7 +3,7 @@ package utils;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class LanguageUtil {
+public class LanguageUtils {
 	// this holds the current bundle (The loaded .properties file)
 	private static ResourceBundle bundle;
 

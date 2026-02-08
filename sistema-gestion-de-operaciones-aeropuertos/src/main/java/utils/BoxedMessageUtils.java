@@ -1,6 +1,6 @@
 package utils;
 
-public class BoxedMessageUtil {
+public class BoxedMessageUtils {
 	public static void boxWithEvenSpacing(String message, String design) {
 		int width = 50;
 		String line = design.repeat(width);

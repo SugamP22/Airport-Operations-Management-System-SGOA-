@@ -12,13 +12,13 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 /**
  * helper class to get SessionFactory
  */
-public class HibernateUtil {
+public class HibernateUtils {
 	private static SessionFactory session;
 	static {
 		Properties dbProps = new Properties();// open a container to load data from properties file
-		try (InputStream input = HibernateUtil.class.getClassLoader().getResourceAsStream("db.properties")) {
+		try (InputStream input = HibernateUtils.class.getClassLoader().getResourceAsStream("db.properties")) {
 			if (input == null) {
-				throw new RuntimeException(LanguageUtil.get("msg.error.dbProperties"));
+				throw new RuntimeException(LanguageUtils.get("msg.error.dbProperties"));
 			}
 			dbProps.load(input);// gets data from
 								// properties file
@@ -30,7 +30,7 @@ public class HibernateUtil {
 			session = new MetadataSources(registry).buildMetadata().buildSessionFactory();// inciates session
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new ExceptionInInitializerError(LanguageUtil.get("msg.error.ErronInitiatingSession") + e);
+			throw new ExceptionInInitializerError(LanguageUtils.get("msg.error.ErronInitiatingSession") + e);
 
 		}
 	}
