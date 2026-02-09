@@ -12,7 +12,6 @@ public class EmpleadoController {
 		do {
 			System.out.println();
 			MenuUtils.menuEmpleado();
-			System.out.flush();
 			option = ValidationUtils.readInt(LanguageUtils.get("input.user"));
 			switchEmpleado(option);
 
@@ -25,7 +24,7 @@ public class EmpleadoController {
 		case 2 -> System.out.println("OPTION 2");
 		case 3 -> System.out.println("OPTION 3");
 		case 0 -> System.out.println("OPTION 4");
-		default -> System.err.println(LanguageUtils.get("error.numberFormat"));
+		default -> System.out.println(LanguageUtils.get("error.numberFormat"));
 
 		}
 	}

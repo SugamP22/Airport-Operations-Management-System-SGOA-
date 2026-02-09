@@ -12,7 +12,6 @@ public class AdminController {
 		do {
 			System.out.println();
 			MenuUtils.menuAdmin();
-			System.out.flush();
 			option = ValidationUtils.readInt(LanguageUtils.get("input.user"));
 			switchEmpleado(option);
 
@@ -28,7 +27,7 @@ public class AdminController {
 		case 5 -> System.out.println("OPTION 3");
 		case 6 -> System.out.println("OPTION 3");
 		case 0 -> System.out.println("OPTION 0");
-		default -> System.err.println(LanguageUtils.get("error.numberFormat"));
+		default -> System.out.println(LanguageUtils.get("error.numberFormat"));
 
 		}
 	}

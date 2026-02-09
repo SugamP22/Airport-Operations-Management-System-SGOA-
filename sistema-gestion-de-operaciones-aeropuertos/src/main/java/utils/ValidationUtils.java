@@ -10,14 +10,13 @@ public class ValidationUtils {
 	public static String readString(String prompt) {
 		while (true) {
 			try {
-				System.out.flush();
 				System.out.print(prompt);
 				String aux = reader.readLine().trim();
 				if (!aux.isEmpty())
 					return aux;
-				System.err.println(LanguageUtils.get("error.empty"));
+				System.out.println(LanguageUtils.get("error.empty"));
 			} catch (IOException e) {
-				System.err.println("Error: " + e.getMessage());
+				System.out.println("Error: " + e.getMessage());
 			}
 		}
 
@@ -26,18 +25,17 @@ public class ValidationUtils {
 	public static int readInt(String prompt) {
 		while (true) {
 			try {
-				System.out.flush();
 				System.out.print(prompt);
 				String aux = reader.readLine().trim();
 				if (!aux.isEmpty()) {
 					int res = Integer.parseInt(aux);
 					return res;
 				}
-				System.err.println(LanguageUtils.get("error.empty"));
+				System.out.println(LanguageUtils.get("error.empty"));
 			} catch (IOException e) {
-				System.err.println("Error: " + e.getMessage());
+				System.out.println("Error: " + e.getMessage());
 			} catch (NumberFormatException e) {
-				System.err.println(LanguageUtils.get("error.numberFormat"));
+				System.out.println(LanguageUtils.get("error.numberFormat"));
 			}
 		}
 

@@ -19,9 +19,7 @@ public class LoginController {
 			if (loginOption == 1) {
 				System.out.println();
 				MenuUtils.signInTitle();
-				System.out.flush();
 				String username = ValidationUtils.readString(LanguageUtils.get("ui.username"));
-				System.out.flush();
 				String password = ValidationUtils.readString(LanguageUtils.get("ui.password"));
 				System.out.println();
 				BoxedMessageUtils.horizontalRow("*");
@@ -31,7 +29,7 @@ public class LoginController {
 				} else if (num == 2) {
 					EMPLEADO_CONTROLLER.openDashboard(username);
 				} else {
-					System.err.println(LanguageUtils.get("error.userNotFound"));
+					System.out.println(LanguageUtils.get("error.userNotFound"));
 					continue;
 				}
 
@@ -43,7 +41,7 @@ public class LoginController {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				System.err.println(LanguageUtils.get("system.closed"));
+				System.out.println(LanguageUtils.get("system.closed"));
 				break;
 			}
 		}
@@ -59,7 +57,7 @@ public class LoginController {
 			}
 
 		} catch (IllegalArgumentException e) {
-			System.err.println(e);
+			System.out.println(e);
 		}
 		return 3;
 
@@ -72,7 +70,7 @@ public class LoginController {
 			if (numero == 1 || numero == 2) {
 				return numero;
 			} else {
-				System.err.println(LanguageUtils.get("error.invalidOption"));
+				System.out.println(LanguageUtils.get("error.invalidOption"));
 			}
 
 		}
