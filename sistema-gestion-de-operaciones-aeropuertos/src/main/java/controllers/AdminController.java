@@ -56,8 +56,8 @@ public class AdminController {
 	private void switchFlights(int option) {
 		switch (option) {
 		case 1 -> FLIGHTS_CONTROLLER.createFlights();
-		case 2 -> FLIGHTS_CONTROLLER.searchFlights();
-		case 3 -> FLIGHTS_CONTROLLER.modifyFlights();
+		case 2 -> FLIGHTS_CONTROLLER.modifyFlights();
+		case 3 -> FLIGHTS_CONTROLLER.searchFlights();
 		case 4 -> FLIGHTS_CONTROLLER.removeFlights();
 		case 0 -> {
 			System.out.println();

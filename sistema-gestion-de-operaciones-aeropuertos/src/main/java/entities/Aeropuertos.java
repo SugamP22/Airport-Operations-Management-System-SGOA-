@@ -172,4 +172,10 @@ public class Aeropuertos {
 		this.listaAerolinea = listaAerolinea;
 	}
 
+	@Override
+	public String toString() {
+		return "Aeropuertos [aeropuertoId=" + aeropuertoId + ", iata=" + iata + ", icao=" + icao + ", nombre=" + nombre
+				+ ", ciudad=" + ciudad + ", pais=" + pais + ", latitud=" + latitud + ", longitud=" + longitud + "]";
+	}
+
 }

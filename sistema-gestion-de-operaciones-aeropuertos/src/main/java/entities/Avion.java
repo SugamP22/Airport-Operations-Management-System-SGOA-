@@ -95,4 +95,10 @@ public class Avion {
 		super();
 	}
 
+	@Override
+	public String toString() {
+		return "Avion [avionId=" + avionId + ", capacidad=" + capacidad + ", tipoAvion=" + tipoAvion + ", aerolinea="
+				+ aerolinea + ", listaVuelo=" + listaVuelo + "]";
+	}
+
 }

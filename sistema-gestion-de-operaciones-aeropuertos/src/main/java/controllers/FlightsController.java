@@ -108,15 +108,16 @@ public class FlightsController {
 		readALLFlights();
 		if (!empty) {
 			String id = ValidationUtils.readString(LanguageUtils.get("flight.input.numero"));
+			BoxedMessageUtils.horizontalRow("-");
+			System.out.println();
 			if (!id.isEmpty()) {
-				HorarioVuelo h = VueloDAO.getFlightSchedules(id);
-				if (h != null) {
-					BoxedMessageUtils.horizontalRow("-");
-					System.out.println();
+				try {
+					HorarioVuelo h = VueloDAO.getFlightSchedules(id);
+					System.out.println(LanguageUtils.get("flight.found") + "\n");
 					System.out.println(h.toString());
-					return;
+				} catch (IllegalArgumentException e) {
+					System.out.println(e.getMessage());
 				}
-				System.out.println(LanguageUtils.get("error.flight.existence"));
 
 			}
 		}

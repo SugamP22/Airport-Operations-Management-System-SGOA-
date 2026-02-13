@@ -187,9 +187,10 @@ public class Vuelo {
 
 	@Override
 	public String toString() {
-		return "Vuelo [numeroVuelo=" + numeroVuelo + ", origen=" + origen + ", destino=" + destino + ", avion=" + avion
-				+ ", lunes=" + lunes + ", martes=" + martes + ", miercoles=" + miercoles + ", jueves=" + jueves
-				+ ", viernes=" + viernes + ", sabado=" + sabado + ", domingo=" + domingo + "]";
+		return "Vuelo [numeroVuelo=" + numeroVuelo + ", origen=" + origen.getNombre() + ", destino="
+				+ destino.getNombre() + ", avion=" + avion.getAvionId() + ", lunes=" + lunes + ", martes=" + martes
+				+ ", miercoles=" + miercoles + ", jueves=" + jueves + ", viernes=" + viernes + ", sabado=" + sabado
+				+ ", domingo=" + domingo + "]";
 	}
 
 }

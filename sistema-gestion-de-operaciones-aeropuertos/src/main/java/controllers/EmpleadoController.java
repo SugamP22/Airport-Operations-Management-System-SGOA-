@@ -50,7 +50,7 @@ public class EmpleadoController {
 
 	private void switchFlights(int option) {
 		switch (option) {
-		case 1 -> FLIGHTS_CONTROLLER.readALLFlights();
+		case 1 -> FLIGHTS_CONTROLLER.searchFlights();
 		case 2 -> FLIGHTS_CONTROLLER.showSchedules();
 		case 0 -> {
 			System.out.println();

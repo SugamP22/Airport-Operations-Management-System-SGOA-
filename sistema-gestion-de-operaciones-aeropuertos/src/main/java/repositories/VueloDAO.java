@@ -2,7 +2,6 @@ package repositories;
 
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -58,6 +57,9 @@ public class VueloDAO {
 		Session session = HibernateUtils.getSession().openSession();
 		try {
 			Vuelo v = session.get(Vuelo.class, numeroVuelo);
+			if (v == null) {
+				throw new IllegalArgumentException(LanguageUtils.get("error.flight.existence"));
+			}
 			HorarioVuelo horario = v.getHorarioVuelo();
 			return horario;
 		} finally {
