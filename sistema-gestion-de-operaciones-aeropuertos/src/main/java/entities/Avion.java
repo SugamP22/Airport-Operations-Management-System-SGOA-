@@ -33,4 +33,66 @@ public class Avion {
 
 	@OneToMany(mappedBy = "avion")
 	private List<Vuelo> listaVuelo;
+
+	public Integer getAvionId() {
+		return avionId;
+	}
+
+	public void setAvionId(Integer avionId) {
+		this.avionId = avionId;
+	}
+
+	public int getCapacidad() {
+		return capacidad;
+	}
+
+	public void setCapacidad(int capacidad) {
+		this.capacidad = capacidad;
+	}
+
+	public TipoAvion getTipoAvion() {
+		return tipoAvion;
+	}
+
+	public void setTipoAvion(TipoAvion tipoAvion) {
+		this.tipoAvion = tipoAvion;
+	}
+
+	public Aerolinea getAerolinea() {
+		return aerolinea;
+	}
+
+	public void setAerolinea(Aerolinea aerolinea) {
+		this.aerolinea = aerolinea;
+	}
+
+	public List<Vuelo> getListaVuelo() {
+		return listaVuelo;
+	}
+
+	public void setListaVuelo(List<Vuelo> listaVuelo) {
+		this.listaVuelo = listaVuelo;
+	}
+
+	public Avion(Integer avionId, int capacidad, TipoAvion tipoAvion, Aerolinea aerolinea, List<Vuelo> listaVuelo) {
+		super();
+		this.avionId = avionId;
+		this.capacidad = capacidad;
+		this.tipoAvion = tipoAvion;
+		this.aerolinea = aerolinea;
+		this.listaVuelo = listaVuelo;
+	}
+
+	public Avion(int capacidad, TipoAvion tipoAvion, Aerolinea aerolinea, List<Vuelo> listaVuelo) {
+		super();
+		this.capacidad = capacidad;
+		this.tipoAvion = tipoAvion;
+		this.aerolinea = aerolinea;
+		this.listaVuelo = listaVuelo;
+	}
+
+	public Avion() {
+		super();
+	}
+
 }

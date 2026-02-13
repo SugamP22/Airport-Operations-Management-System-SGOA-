@@ -33,4 +33,66 @@ public class Aerolinea {
 	@OneToMany(mappedBy = "aerolinea")
 	List<Avion> listaAvion;
 
+	public Integer getAerolineaId() {
+		return aerolineaId;
+	}
+
+	public void setAerolineaId(Integer aerolineaId) {
+		this.aerolineaId = aerolineaId;
+	}
+
+	public String getIatachar() {
+		return iatachar;
+	}
+
+	public void setIatachar(String iatachar) {
+		this.iatachar = iatachar;
+	}
+
+	public String getNombreAerolinea() {
+		return nombreAerolinea;
+	}
+
+	public void setNombreAerolinea(String nombreAerolinea) {
+		this.nombreAerolinea = nombreAerolinea;
+	}
+
+	public Aeropuertos getAeropuertos() {
+		return aeropuertos;
+	}
+
+	public void setAeropuertos(Aeropuertos aeropuertos) {
+		this.aeropuertos = aeropuertos;
+	}
+
+	public List<Avion> getListaAvion() {
+		return listaAvion;
+	}
+
+	public void setListaAvion(List<Avion> listaAvion) {
+		this.listaAvion = listaAvion;
+	}
+
+	public Aerolinea(Integer aerolineaId, String iatachar, String nombreAerolinea, Aeropuertos aeropuertos,
+			List<Avion> listaAvion) {
+		super();
+		this.aerolineaId = aerolineaId;
+		this.iatachar = iatachar;
+		this.nombreAerolinea = nombreAerolinea;
+		this.aeropuertos = aeropuertos;
+		this.listaAvion = listaAvion;
+	}
+
+	public Aerolinea(String iatachar, String nombreAerolinea, Aeropuertos aeropuertos, List<Avion> listaAvion) {
+		super();
+		this.iatachar = iatachar;
+		this.nombreAerolinea = nombreAerolinea;
+		this.aeropuertos = aeropuertos;
+		this.listaAvion = listaAvion;
+	}
+
+	public Aerolinea() {
+		super();
+	}
+
 }

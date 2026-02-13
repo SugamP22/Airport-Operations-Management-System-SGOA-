@@ -30,4 +30,76 @@ public class Reserva {
 	@Column(name = "precio", nullable = false)
 	private double precio;
 
+	public Integer getReservaId() {
+		return reservaId;
+	}
+
+	public void setReservaId(Integer reservaId) {
+		this.reservaId = reservaId;
+	}
+
+	public HorarioVuelo getHorarioVuelo() {
+		return horarioVuelo;
+	}
+
+	public void setHorarioVuelo(HorarioVuelo horarioVuelo) {
+		this.horarioVuelo = horarioVuelo;
+	}
+
+	public int getVueloId() {
+		return vueloId;
+	}
+
+	public void setVueloId(int vueloId) {
+		this.vueloId = vueloId;
+	}
+
+	public String getAsiento() {
+		return asiento;
+	}
+
+	public void setAsiento(String asiento) {
+		this.asiento = asiento;
+	}
+
+	public Pasajero getPasajero() {
+		return pasajero;
+	}
+
+	public void setPasajero(Pasajero pasajero) {
+		this.pasajero = pasajero;
+	}
+
+	public double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
+
+	public Reserva(Integer reservaId, HorarioVuelo horarioVuelo, int vueloId, String asiento, Pasajero pasajero,
+			double precio) {
+		super();
+		this.reservaId = reservaId;
+		this.horarioVuelo = horarioVuelo;
+		this.vueloId = vueloId;
+		this.asiento = asiento;
+		this.pasajero = pasajero;
+		this.precio = precio;
+	}
+
+	public Reserva() {
+		super();
+	}
+
+	public Reserva(HorarioVuelo horarioVuelo, int vueloId, String asiento, Pasajero pasajero, double precio) {
+		super();
+		this.horarioVuelo = horarioVuelo;
+		this.vueloId = vueloId;
+		this.asiento = asiento;
+		this.pasajero = pasajero;
+		this.precio = precio;
+	}
+
 }

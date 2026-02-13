@@ -1,5 +1,5 @@
 package entities;
 
 public enum Departamento {
-	MARKETING, CONTABILIDAD, GERENCIA, LOGISTICA, PISTA;
+	Marketing, Contabilidad, Gerencia, Logistica, Pista
 }

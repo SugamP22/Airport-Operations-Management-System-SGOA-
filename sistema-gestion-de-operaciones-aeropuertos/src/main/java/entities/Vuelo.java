@@ -16,8 +16,8 @@ public class Vuelo {
 	private String numeroVuelo;
 
 	@ManyToOne
-	@JoinColumn(name = "origin", nullable = false)
-	private Aeropuertos origin;
+	@JoinColumn(name = "origen", nullable = false)
+	private Aeropuertos origen;
 
 	@ManyToOne
 	@JoinColumn(name = "destino", nullable = false)
@@ -50,4 +50,139 @@ public class Vuelo {
 
 	@OneToOne(mappedBy = "vuelo")
 	private HorarioVuelo horarioVuelo;
+
+	public String getNumeroVuelo() {
+		return numeroVuelo;
+	}
+
+	public void setNumeroVuelo(String numeroVuelo) {
+		this.numeroVuelo = numeroVuelo;
+	}
+
+	public Aeropuertos getOrigen() {
+		return origen;
+	}
+
+	public void setOrigen(Aeropuertos origen) {
+		this.origen = origen;
+	}
+
+	public Aeropuertos getDestino() {
+		return destino;
+	}
+
+	public void setDestino(Aeropuertos destino) {
+		this.destino = destino;
+	}
+
+	public Avion getAvion() {
+		return avion;
+	}
+
+	public void setAvion(Avion avion) {
+		this.avion = avion;
+	}
+
+	public boolean isLunes() {
+		return lunes;
+	}
+
+	public void setLunes(boolean lunes) {
+		this.lunes = lunes;
+	}
+
+	public boolean isMartes() {
+		return martes;
+	}
+
+	public void setMartes(boolean martes) {
+		this.martes = martes;
+	}
+
+	public boolean isMiercoles() {
+		return miercoles;
+	}
+
+	public void setMiercoles(boolean miercoles) {
+		this.miercoles = miercoles;
+	}
+
+	public boolean isJueves() {
+		return jueves;
+	}
+
+	public void setJueves(boolean jueves) {
+		this.jueves = jueves;
+	}
+
+	public boolean isViernes() {
+		return viernes;
+	}
+
+	public void setViernes(boolean viernes) {
+		this.viernes = viernes;
+	}
+
+	public boolean isSabado() {
+		return sabado;
+	}
+
+	public void setSabado(boolean sabado) {
+		this.sabado = sabado;
+	}
+
+	public boolean isDomingo() {
+		return domingo;
+	}
+
+	public void setDomingo(boolean domingo) {
+		this.domingo = domingo;
+	}
+
+	public HorarioVuelo getHorarioVuelo() {
+		return horarioVuelo;
+	}
+
+	public void setHorarioVuelo(HorarioVuelo horarioVuelo) {
+		this.horarioVuelo = horarioVuelo;
+	}
+
+	public Vuelo(String numeroVuelo, Aeropuertos origen, Aeropuertos destino, Avion avion, boolean lunes,
+			boolean martes, boolean miercoles, boolean jueves, boolean viernes, boolean sabado, boolean domingo,
+			HorarioVuelo horarioVuelo) {
+		super();
+		this.numeroVuelo = numeroVuelo;
+		this.origen = origen;
+		this.destino = destino;
+		this.avion = avion;
+		this.lunes = lunes;
+		this.martes = martes;
+		this.miercoles = miercoles;
+		this.jueves = jueves;
+		this.viernes = viernes;
+		this.sabado = sabado;
+		this.domingo = domingo;
+		this.horarioVuelo = horarioVuelo;
+	}
+
+	public Vuelo() {
+		super();
+	}
+
+	public Vuelo(Aeropuertos origen, Aeropuertos destino, Avion avion, boolean lunes, boolean martes, boolean miercoles,
+			boolean jueves, boolean viernes, boolean sabado, boolean domingo, HorarioVuelo horarioVuelo) {
+		super();
+		this.origen = origen;
+		this.destino = destino;
+		this.avion = avion;
+		this.lunes = lunes;
+		this.martes = martes;
+		this.miercoles = miercoles;
+		this.jueves = jueves;
+		this.viernes = viernes;
+		this.sabado = sabado;
+		this.domingo = domingo;
+		this.horarioVuelo = horarioVuelo;
+	}
+
 }

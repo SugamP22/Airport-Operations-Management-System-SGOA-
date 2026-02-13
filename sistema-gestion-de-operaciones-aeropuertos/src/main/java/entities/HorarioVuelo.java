@@ -32,4 +32,66 @@ public class HorarioVuelo {
 	@OneToMany(mappedBy = "horarioVuelo")
 	private List<Reserva> listaReserva;
 
+	public String getNumeroVuelo() {
+		return numeroVuelo;
+	}
+
+	public void setNumeroVuelo(String numeroVuelo) {
+		this.numeroVuelo = numeroVuelo;
+	}
+
+	public Vuelo getVuelo() {
+		return vuelo;
+	}
+
+	public void setVuelo(Vuelo vuelo) {
+		this.vuelo = vuelo;
+	}
+
+	public LocalTime getSalida() {
+		return salida;
+	}
+
+	public void setSalida(LocalTime salida) {
+		this.salida = salida;
+	}
+
+	public LocalTime getLlegada() {
+		return llegada;
+	}
+
+	public void setLlegada(LocalTime llegada) {
+		this.llegada = llegada;
+	}
+
+	public List<Reserva> getListaReserva() {
+		return listaReserva;
+	}
+
+	public void setListaReserva(List<Reserva> listaReserva) {
+		this.listaReserva = listaReserva;
+	}
+
+	public HorarioVuelo(String numeroVuelo, Vuelo vuelo, LocalTime salida, LocalTime llegada,
+			List<Reserva> listaReserva) {
+		super();
+		this.numeroVuelo = numeroVuelo;
+		this.vuelo = vuelo;
+		this.salida = salida;
+		this.llegada = llegada;
+		this.listaReserva = listaReserva;
+	}
+
+	public HorarioVuelo(Vuelo vuelo, LocalTime salida, LocalTime llegada, List<Reserva> listaReserva) {
+		super();
+		this.vuelo = vuelo;
+		this.salida = salida;
+		this.llegada = llegada;
+		this.listaReserva = listaReserva;
+	}
+
+	public HorarioVuelo() {
+		super();
+	}
+
 }
