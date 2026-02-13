@@ -24,9 +24,9 @@ public class HibernateUtils {
 								// properties file
 			// configures xml file and insert value into it
 			StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml")
-					.applySetting("connection.url", dbProps.getProperty("db.url"))
-					.applySetting("connection.username", dbProps.getProperty("db.username"))
-					.applySetting("connection.password", dbProps.getProperty("db.password")).build();
+					.applySetting("hibernate.connection.url", dbProps.getProperty("db.url"))
+					.applySetting("hibernate.connection.username", dbProps.getProperty("db.username"))
+					.applySetting("hibernate.connection.password", dbProps.getProperty("db.password")).build();
 			session = new MetadataSources(registry).buildMetadata().buildSessionFactory();// inciates session
 		} catch (IOException e) {
 			e.printStackTrace();

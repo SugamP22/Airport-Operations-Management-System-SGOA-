@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * This class is the data validation class used mainly to make sure that the
+ * data entered by the user is correct to avoid exception afterwards
+ */
 public class ValidationUtils {
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 

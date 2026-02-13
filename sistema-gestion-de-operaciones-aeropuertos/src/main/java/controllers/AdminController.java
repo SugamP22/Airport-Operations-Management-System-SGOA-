@@ -6,8 +6,8 @@ import utils.ValidationUtils;
 
 public class AdminController {
 
-	public void openDashboard(String username) {
-		System.out.println(username + " " + LanguageUtils.get("user.found"));
+	public void openDashboard() {
+		System.out.println(LoginController.getUser().getEmpleado().getNombre() + " " + LanguageUtils.get("user.found"));
 		int option;
 		do {
 			System.out.println();

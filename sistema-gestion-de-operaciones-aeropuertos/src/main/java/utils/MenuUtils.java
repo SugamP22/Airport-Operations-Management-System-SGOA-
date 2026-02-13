@@ -1,12 +1,17 @@
 package utils;
 
 public class MenuUtils {
-
+	/**
+	 * login title
+	 */
 	public static void signInTitle() {
 		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("ui.login"), "=");
 		System.out.println();
 	}
 
+	/**
+	 * options in loginMenu
+	 */
 	public static void loginMenu() {
 		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("ui.header"), "=");
 		System.out.println();
@@ -16,6 +21,9 @@ public class MenuUtils {
 		BoxedMessageUtils.horizontalRow("*");
 	}
 
+	/**
+	 * options in langaugeMenu
+	 */
 	public static void languageMenu() {
 		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("ui.lang.menu.title"), "=");
 		System.out.println();
@@ -26,6 +34,9 @@ public class MenuUtils {
 
 	}
 
+	/**
+	 * options in menuEmpleado
+	 */
 	public static void menuEmpleado() {
 		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("ui.title.employee"), "=");
 		System.out.println();
@@ -38,6 +49,9 @@ public class MenuUtils {
 
 	}
 
+	/**
+	 * options in menuAdmin
+	 */
 	public static void menuAdmin() {
 		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("ui.title.employee"), "=");
 		System.out.println();
@@ -50,7 +64,7 @@ public class MenuUtils {
 		System.out.println(LanguageUtils.get("option.salir"));
 		System.out.println();
 		BoxedMessageUtils.horizontalRow("*");
-		
+
 	}
 
 }
