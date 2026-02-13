@@ -24,36 +24,39 @@ public class LoginController {
 	}
 
 	public void iniciar() {
-
-		while (true) {
-			LANGAUECONTROLLER.updateLanguage();
-			System.out.println();
-			int loginOption = login();
-			if (loginOption == 1) {
+		try {
+			while (true) {
+				LANGAUECONTROLLER.updateLanguage();
 				System.out.println();
-				MenuUtils.signInTitle();
-				username = ValidationUtils.readString(LanguageUtils.get("ui.username"));
-				password = ValidationUtils.readString(LanguageUtils.get("ui.password"));
-				System.out.println();
-				BoxedMessageUtils.horizontalRow("*");
-				Empleado currentEmpleado = getEmpleado(username, password);
-				if (currentEmpleado == null) {
-					System.out.println(LanguageUtils.get("error.userNotFound"));
-					continue;
-				}
-				user = new CurrentUser(currentEmpleado);
-				openDashboard(currentEmpleado);
+				int loginOption = login();
+				if (loginOption == 1) {
+					System.out.println();
+					MenuUtils.signInTitle();
+					username = ValidationUtils.readString(LanguageUtils.get("ui.username"));
+					password = ValidationUtils.readString(LanguageUtils.get("ui.password"));
+					System.out.println();
+					BoxedMessageUtils.horizontalRow("*");
+					Empleado currentEmpleado = getEmpleado(username, password);
+					if (currentEmpleado == null) {
+						System.out.println(LanguageUtils.get("error.userNotFound"));
+						continue;
+					}
+					user = new CurrentUser(currentEmpleado);
+					openDashboard(currentEmpleado);
 
-			} else {
-				System.out.println(LanguageUtils.get("system.closing"));
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				} else {
+					System.out.println(LanguageUtils.get("system.closing"));
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					System.out.println(LanguageUtils.get("system.closed"));
+					break;
 				}
-				System.out.println(LanguageUtils.get("system.closed"));
-				break;
 			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 
 	}
