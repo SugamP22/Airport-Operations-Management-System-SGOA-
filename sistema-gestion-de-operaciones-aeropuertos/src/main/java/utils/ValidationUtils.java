@@ -39,9 +39,44 @@ public class ValidationUtils {
 			} catch (IOException e) {
 				System.out.println("Error: " + e.getMessage());
 			} catch (NumberFormatException e) {
-				System.out.println(LanguageUtils.get("error.numberFormat"));
+				System.out.println(LanguageUtils.get("error.empty"));
 			}
 		}
 
+	}
+
+	public static char readChar(String prompt) {
+		while (true) {
+			try {
+				System.out.print(prompt);
+				String aux = reader.readLine().trim();
+				if (!aux.isEmpty() && aux.length() == 1) {
+					char res = aux.charAt(0);
+					return res;
+				}
+				System.out.println(LanguageUtils.get("error.oneCharacter"));
+			} catch (IOException e) {
+				System.out.println("Error: " + e.getMessage());
+			}
+		}
+
+	}
+
+	public static Integer readInteger(String prompt) {
+		while (true) {
+			try {
+				System.out.print(prompt);
+				String aux = reader.readLine().trim();
+				if (!aux.isEmpty()) {
+					Integer res = Integer.parseInt(aux);
+					return res;
+				}
+				System.out.println(LanguageUtils.get("error.empty"));
+			} catch (IOException e) {
+				System.out.println("Error: " + e.getMessage());
+			} catch (NumberFormatException e) {
+				System.out.println(LanguageUtils.get("error.empty"));
+			}
+		}
 	}
 }

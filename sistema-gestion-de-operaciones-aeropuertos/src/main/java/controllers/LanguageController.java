@@ -5,6 +5,7 @@ import utils.MenuUtils;
 import utils.ValidationUtils;
 
 public class LanguageController {
+
 	public void updateLanguage() {
 		MenuUtils.languageMenu();
 		while (true) {

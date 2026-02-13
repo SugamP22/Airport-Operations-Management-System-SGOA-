@@ -94,4 +94,9 @@ public class HorarioVuelo {
 		super();
 	}
 
+	@Override
+	public String toString() {
+		return "HorarioVuelo [numeroVuelo=" + numeroVuelo + ", salida=" + salida + ", llegada=" + llegada + "]";
+	}
+
 }

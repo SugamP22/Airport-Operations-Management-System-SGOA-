@@ -185,4 +185,11 @@ public class Vuelo {
 		this.horarioVuelo = horarioVuelo;
 	}
 
+	@Override
+	public String toString() {
+		return "Vuelo [numeroVuelo=" + numeroVuelo + ", origen=" + origen + ", destino=" + destino + ", avion=" + avion
+				+ ", lunes=" + lunes + ", martes=" + martes + ", miercoles=" + miercoles + ", jueves=" + jueves
+				+ ", viernes=" + viernes + ", sabado=" + sabado + ", domingo=" + domingo + "]";
+	}
+
 }
