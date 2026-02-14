@@ -129,7 +129,9 @@ public class FlightsController {
 				BoxedMessageUtils.horizontalRow("-");
 
 				Avion avion = ValidationUtils.readAvion(LanguageUtils.get("flight.input.avion"));
-				vuelo.setAvion(avion);
+				if (avion != null) {
+					vuelo.setAvion(avion);
+				}
 				BoxedMessageUtils.horizontalRow("-");
 
 				DayUtils.selectDays(vuelo);
@@ -147,7 +149,7 @@ public class FlightsController {
 				BoxedMessageUtils.horizontalRow("-");
 
 				VueloDAO.updateFlight(vuelo);
-				System.out.println(LanguageUtils.get("flight.found"));
+				System.out.println(LanguageUtils.get("flight.updated"));
 				System.out.println(vuelo.toString());
 				BoxedMessageUtils.horizontalRow("-");
 				System.out.println();

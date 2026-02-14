@@ -187,10 +187,12 @@ public class Vuelo {
 
 	@Override
 	public String toString() {
-		return "Vuelo [numeroVuelo=" + numeroVuelo + ", origen=" + origen.getNombre() + ", destino="
-				+ destino.getNombre() + ", avion=" + avion.getAvionId() + ", lunes=" + lunes + ", martes=" + martes
-				+ ", miercoles=" + miercoles + ", jueves=" + jueves + ", viernes=" + viernes + ", sabado=" + sabado
-				+ ", domingo=" + domingo + "]";
+		String origenNombre = origen != null ? origen.getNombre() : "N/A";
+		String destinoNombre = destino != null ? destino.getNombre() : "N/A";
+		String avionId = avion != null ? String.valueOf(avion.getAvionId()) : "N/A";
+		return "Vuelo [numeroVuelo=" + numeroVuelo + ", origen=" + origenNombre + ", destino=" + destinoNombre
+				+ ", avion=" + avionId + ", lunes=" + lunes + ", martes=" + martes + ", miercoles=" + miercoles
+				+ ", jueves=" + jueves + ", viernes=" + viernes + ", sabado=" + sabado + ", domingo=" + domingo + "]";
 	}
 
 }
