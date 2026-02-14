@@ -30,7 +30,7 @@ public class EmpleadoDAO {
 		Session session = HibernateUtils.getSession().openSession();
 		Transaction tx = session.beginTransaction();
 		try {
-			Reserva r = session.get(Reserva.class, id);
+			Empleado r = session.get(Empleado.class, id);
 			if (r == null)
 				throw new IllegalArgumentException(LanguageUtils.get("error.empleado.notFound"));
 			session.delete(r);
@@ -60,7 +60,6 @@ public class EmpleadoDAO {
 		try {
 			String hql = "From Empleado r where r.usuario = :username";
 			Empleado r = session.createQuery(hql, Empleado.class).setParameter("username", username).uniqueResult();
-			
 			return r;
 		} finally {
 			session.close();

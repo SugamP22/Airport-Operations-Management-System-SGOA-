@@ -53,7 +53,7 @@ public class MenuUtils {
 	 * options in menuAdmin
 	 */
 	public static void menuAdmin() {
-		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("ui.title.employee"), "=");
+		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("ui.title.administrator"), "=");
 		System.out.println();
 		System.out.println("1. " + LanguageUtils.get("option.admin.vuelos"));
 		System.out.println("2. " + LanguageUtils.get("option.admin.pasajeros"));

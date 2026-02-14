@@ -92,7 +92,7 @@ public class FlightsController {
 	public void searchFlights() {
 		readALLFlights();
 		if (!empty) {
-			String id = ValidationUtils.readString(LanguageUtils.get("flight.input.numero"));
+			String id = ValidationUtils.readString(LanguageUtils.get("flight.search.numero"));
 			Vuelo vuelo = VueloDAO.getFLightByID(id);
 			BoxedMessageUtils.horizontalRow("-");
 			System.out.println();
@@ -106,11 +106,25 @@ public class FlightsController {
 			currentId = "";
 			System.out.println(LanguageUtils.get("error.flight.existence"));
 		}
-
 	}
 
 	public void modifyFlights() {
-		searchFlights();
+		readALLFlights();
+		if (!empty) {
+			String id = ValidationUtils.readString(LanguageUtils.get("flight.modify.numero"));
+			Vuelo vuelo = VueloDAO.getFLightByID(id);
+			BoxedMessageUtils.horizontalRow("-");
+			System.out.println();
+			if (vuelo != null) {
+				System.out.println(LanguageUtils.get("flight.found") + "\n");
+				currentId = vuelo.getNumeroVuelo();
+				System.out.println(vuelo.toString());
+				System.out.println();
+			} else {
+				currentId = "";
+				System.out.println(LanguageUtils.get("error.flight.existence"));
+			}
+		}
 		if (!currentId.isEmpty()) {
 			try {
 				Vuelo vuelo = VueloDAO.getFLightByID(currentId);
@@ -166,10 +180,25 @@ public class FlightsController {
 	}
 
 	public void removeFlights() {
-		searchFlights();
+		readALLFlights();
+		if (!empty) {
+			String id = ValidationUtils.readString(LanguageUtils.get("flight.delete.numero"));
+			Vuelo vuelo = VueloDAO.getFLightByID(id);
+			BoxedMessageUtils.horizontalRow("-");
+			System.out.println();
+			if (vuelo != null) {
+				System.out.println(LanguageUtils.get("flight.found") + "\n");
+				currentId = vuelo.getNumeroVuelo();
+				System.out.println(vuelo.toString());
+				System.out.println();
+			} else {
+				currentId = "";
+				System.out.println(LanguageUtils.get("error.flight.existence"));
+			}
+		}
 		if (!currentId.isEmpty()) {
 			char letra = ValidationUtils.readChar(LanguageUtils.get("flight.delete.confirm"));
-			if (Character.toUpperCase(letra) == 'Y') {
+			if (Character.toUpperCase(letra) == 'S') {
 				try {
 					VueloDAO.deleteByID(currentId);
 					System.out.println(LanguageUtils.get("flight.delete.success"));
