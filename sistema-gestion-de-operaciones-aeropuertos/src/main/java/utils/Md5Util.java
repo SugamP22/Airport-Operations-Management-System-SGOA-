@@ -16,7 +16,7 @@ public class Md5Util {
 			return sb.toString();
 
 		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("error.md5NotFound", e);
+			throw new RuntimeException(LanguageUtils.get("error.md5NotFound"), e);
 		}
 	}
 }

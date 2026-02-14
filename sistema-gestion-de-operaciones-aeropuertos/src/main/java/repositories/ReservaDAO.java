@@ -32,7 +32,7 @@ public class ReservaDAO {
 		try {
 			List<Reserva> r = session.createQuery("From Reserva", Reserva.class).list();
 			if (r.isEmpty())
-				throw new IllegalArgumentException("error.empty.reservaList");
+				throw new IllegalArgumentException(LanguageUtils.get("error.empty.reservaList"));
 			return r;
 		} finally {
 			session.close();
@@ -45,7 +45,7 @@ public class ReservaDAO {
 			String hql = "From Reserva r where r.reservaId = :id";
 			Reserva r = session.createQuery(hql, Reserva.class).setParameter("id", id).uniqueResult();
 			if (r == null)
-				throw new IllegalArgumentException("error.reserva.notFound");
+				throw new IllegalArgumentException(LanguageUtils.get("error.reserva.notFound"));
 			return r;
 		} finally {
 			session.close();

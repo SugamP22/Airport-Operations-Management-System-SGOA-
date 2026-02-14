@@ -213,4 +213,12 @@ public class Empleado {
 		this.clave = clave;
 	}
 
+	@Override
+	public String toString() {
+		return "Empleado [empleadoId=" + empleadoId + ", nombre=" + nombre + ", apellido=" + apellido
+				+ ", fecha_nacimiento=" + fecha_nacimiento + ", sexo=" + sexo + ", calle=" + calle + ", ciudad="
+				+ ciudad + ", pais=" + pais + ", email=" + email + ", telefono=" + telefono + ", salario=" + salario
+				+ ", departamento=" + departamento + ", usuario=" + usuario + ", clave=" + clave + "]";
+	}
+
 }

@@ -3,13 +3,12 @@ package utils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.regex.Pattern;
 
-import entities.Aeropuertos;
-import entities.Avion;
-import repositories.AeropuertosDAO;
-import repositories.AvionDAO;
+import entities.Departamento;
 
 /**
  * This class is the data validation class used mainly to make sure that the
@@ -20,17 +19,49 @@ public class ValidationUtils {
 
 	public static String readString(String prompt) {
 		while (true) {
+			String aux = "";
 			try {
 				System.out.print(prompt);
-				String aux = reader.readLine().trim();
+				aux = reader.readLine().trim();
 				if (!aux.isEmpty())
 					return aux;
 				System.out.println(LanguageUtils.get("error.empty"));
 			} catch (IOException e) {
-				System.out.println("Error: " + e.getMessage());
+				System.out.println(LanguageUtils.get("error.read.input"));
 			}
 		}
 
+	}
+
+	public static String readStringOpcional(String prompt) {
+		while (true) {
+			String aux = "";
+			try {
+				System.out.print(prompt);
+				aux = reader.readLine().trim();
+				return aux;
+			} catch (IOException e) {
+				System.out.println(LanguageUtils.get("error.read.input"));
+			}
+		}
+
+	}
+
+	public static Departamento readDepartmento(String prompt) {
+		while (true) {
+			try {
+				System.out.print(prompt);
+				String aux = reader.readLine().trim();
+				if (!aux.isEmpty()) {
+					String res = aux.substring(0, 1).toUpperCase() + aux.substring(1).toLowerCase();
+					Departamento d = Departamento.valueOf(res);
+					return d;
+				}
+				System.out.println(LanguageUtils.get("error.empty"));
+			} catch (Exception e) {
+				System.out.println(LanguageUtils.get("error.read.input"));
+			}
+		}
 	}
 
 	public static int readInt(String prompt) {
@@ -63,7 +94,28 @@ public class ValidationUtils {
 				}
 				System.out.println(LanguageUtils.get("error.oneCharacter"));
 			} catch (IOException e) {
-				System.out.println("Error: " + e.getMessage());
+				System.out.println(LanguageUtils.get("error.read.input"));
+			}
+		}
+
+	}
+
+	public static char readSexo(String prompt) {
+		while (true) {
+			try {
+				System.out.print(prompt);
+				String aux = reader.readLine().trim();
+				if (!aux.isEmpty() && aux.length() == 1) {
+					char res = aux.charAt(0);
+					if (res == Character.toLowerCase('M') || res == Character.toLowerCase('M')) {
+						return res;
+					}
+					System.out.println(LanguageUtils.get("error.invalid.input"));// i need to add this
+					continue;
+				}
+				System.out.println(LanguageUtils.get("error.oneCharacter"));
+			} catch (IOException e) {
+				System.out.println(LanguageUtils.get("error.read.input"));
 			}
 		}
 
@@ -76,6 +128,24 @@ public class ValidationUtils {
 				String aux = reader.readLine().trim();
 				if (!aux.isEmpty()) {
 					Integer res = Integer.parseInt(aux);
+					return res;
+				}
+				System.out.println(LanguageUtils.get("error.empty"));
+			} catch (IOException e) {
+				System.out.println(LanguageUtils.get("error.read.input"));
+			} catch (NumberFormatException e) {
+				System.out.println(LanguageUtils.get("error.empty"));
+			}
+		}
+	}
+
+	public static double readDouble(String prompt) {
+		while (true) {
+			try {
+				System.out.print(prompt);
+				String aux = reader.readLine().trim();
+				if (!aux.isEmpty()) {
+					double res = Double.parseDouble(aux);
 					return res;
 				}
 				System.out.println(LanguageUtils.get("error.empty"));
@@ -104,87 +174,57 @@ public class ValidationUtils {
 		}
 	}
 
-	public static Aeropuertos readOrigin(String prompt) {
+	public static LocalDate readLocalDate(String prompt) {
 		while (true) {
-			AeropuertosDAO.readAll();
-			System.out.print(prompt);
-
 			try {
+				System.out.print(prompt);
 				String aux = reader.readLine();
-				if (aux == null || aux.trim().isEmpty()) {
-					System.out.println(LanguageUtils.get("error.empty"));
-					continue;
+				if (aux != null && !aux.trim().isEmpty()) {
+					return LocalDate.parse(aux.trim());
 				}
-
-				Integer id = Integer.parseInt(aux.trim());
-				Aeropuertos aeropuerto = AeropuertosDAO.getById(id);
-
-				if (aeropuerto != null) {
-					return aeropuerto;
-				}
-
-				System.out.println(LanguageUtils.get("error.invalid.aeropuertoID"));
-			} catch (NumberFormatException e) {
-				System.out.println(LanguageUtils.get("error.invalid.aeropuertoID"));
+				System.out.println(LanguageUtils.get("error.empty"));
+			} catch (DateTimeParseException e) {
+				System.out.println(LanguageUtils.get("error.invalid.date"));
 			} catch (IOException e) {
 				System.out.println(LanguageUtils.get("error.read.input"));
 			}
 		}
 	}
 
-	public static Aeropuertos readDestino(String prompt, Integer aeropuertoId) {
+	public static String readEmail(String string) {
 		while (true) {
-			AeropuertosDAO.readAll();
-			System.out.print(prompt);
-			try {
-				String aux = reader.readLine();
-				if (aux == null || aux.trim().isEmpty()) {
-					System.out.println(LanguageUtils.get("error.empty"));
-					continue;
-				}
-				Integer id = Integer.parseInt(aux.trim());
-				Aeropuertos destino = AeropuertosDAO.getById(id);
-				if (destino == null) {
-					System.out.println(LanguageUtils.get("error.invalid.aeropuertoID"));
-					continue;
-				}
-				if (destino.getAeropuertoId().equals(aeropuertoId)) {
-					System.out.println(LanguageUtils.get("error.invailid.destino"));
-					continue;
-				}
-				return destino;
-			} catch (NumberFormatException e) {
-				System.out.println(LanguageUtils.get("error.invalid.aeropuertoID"));
-			} catch (IOException e) {
-				System.out.println(LanguageUtils.get("error.read.input"));
+			String res = readString(string);
+			if (Pattern.matches("^[A-Za-z0-9._%+-]+@gmail\\.com$", res)) {
+				return res;
 			}
+			System.out.println(LanguageUtils.get("error.invalid.email"));
+		}
+
+	}
+
+	public static String readTelefono(String string) {
+		while (true) {
+			String res = readStringOpcional(string);
+			if (res.isEmpty())
+				return null;
+			if (Pattern.matches("^(?:(?:\\+34|0034)\\s?)?[6789]\\d{8}$", res)) {
+				return res;
+			}
+			System.out.println(LanguageUtils.get("error.invalid.Telefono"));
 		}
 	}
 
-	public static Avion readAvion(String prompt) {
+	public static String readClave(String string) {
 		while (true) {
-			AvionDAO.readAll();
-			System.out.print(prompt);
-
-			try {
-				String aux = reader.readLine();
-				if (aux == null || aux.trim().isEmpty()) {
-					return null;
-				}
-
-				Integer id = Integer.parseInt(aux.trim());
-				Avion avion = AvionDAO.getById(id);
-
-				if (avion != null) {
-					return avion;
-				}
-
-				System.out.println(LanguageUtils.get("error.invalid.avionID"));
-			} catch (NumberFormatException e) {
-				System.out.println(LanguageUtils.get("error.invalid.avionID"));
-			} catch (IOException e) {
-				System.out.println(LanguageUtils.get("error.read.input"));
+			String aux = readString(string);
+			if (Pattern.matches(
+					"^(?=\\S{12,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).*$",
+					aux)) {
+				String res = Md5Util.hash(aux);
+				return res;
 			}
+			System.out.println(LanguageUtils.get("error.invalid.clave"));
 		}
 	}
+
 }

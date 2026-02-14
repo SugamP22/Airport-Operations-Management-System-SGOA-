@@ -9,6 +9,7 @@ public class AdminController {
 	private final WeatherController WEATHER_CONTROLLER;
 	private final ReservationController RESERVATION_CONTROLLER;
 	private final PassengersController PASSENGERS_CONTROLLER;
+	private final EmployeeCRUDController employeeCRUDController;
 
 	public AdminController(FlightsController FLIGHTS_CONTROLLER, WeatherController WEATHER_CONTROLLER,
 			ReservationController RESERVATION_CONTROLLER) {
@@ -16,6 +17,7 @@ public class AdminController {
 		this.WEATHER_CONTROLLER = WEATHER_CONTROLLER;
 		this.RESERVATION_CONTROLLER = RESERVATION_CONTROLLER;
 		PASSENGERS_CONTROLLER = new PassengersController();
+		employeeCRUDController = new EmployeeCRUDController();
 	}
 
 	public void openDashboard() {
@@ -35,13 +37,37 @@ public class AdminController {
 		case 1 -> showMenuFlights();
 		case 2 -> System.out.println("OPTION 2");
 		case 3 -> System.out.println("OPTION 3");
-		case 4 -> System.out.println("OPTION 3");
+		case 4 -> showMenuEmployee();
 		case 5 -> System.out.println("OPTION 3");
 		case 6 -> System.out.println("OPTION 3");
 		case 0 -> System.out.println("OPTION 0");
 		default -> System.out.println(LanguageUtils.get("error.numberFormat"));
 
 		}
+	}
+
+	private void showMenuEmployee() {
+		int option;
+		do {
+			MenuUtils.MenuCRUDEmployeeAdmin();
+			option = ValidationUtils.readInt(LanguageUtils.get("input.user"));
+			switchEmployeeCRUD(option);
+		} while (option != 0);
+	}
+
+	private void switchEmployeeCRUD(int option) {
+		switch (option) {
+		case 1 -> employeeCRUDController.createEmployee();
+		case 2 -> employeeCRUDController.modifyEmployee();
+		case 3 -> employeeCRUDController.searchEmployee();
+		case 4 -> employeeCRUDController.removeEmployee();
+		case 0 -> {
+			System.out.println();
+			System.out.println(LanguageUtils.get("info.adminDashBoard"));
+		}
+		default -> System.out.println(LanguageUtils.get("error.numberFormat"));
+		}
+
 	}
 
 	private void showMenuFlights() {

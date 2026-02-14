@@ -1,0 +1,90 @@
+package controllers;
+
+import java.time.LocalDate;
+import java.util.List;
+import entities.Departamento;
+import entities.Empleado;
+import repositories.EmpleadoDAO;
+import utils.BoxedMessageUtils;
+import utils.LanguageUtils;
+import utils.ValidationUtils;
+
+public class EmployeeCRUDController {
+	private boolean empty;
+
+	public void createEmployee() {
+		String nombre = ValidationUtils.readString(LanguageUtils.get("empleado.input.nombre"));
+		String apellido = ValidationUtils.readString(LanguageUtils.get("empleado.input.apellido"));
+		LocalDate dated = ValidationUtils.readLocalDate(LanguageUtils.get("empleado.input.fechaNacimiento"));
+		char sexo = ValidationUtils.readSexo(LanguageUtils.get("empleado.input.sexo"));
+		String calle = ValidationUtils.readString(LanguageUtils.get("empleado.input.calle"));
+		String ciudad = ValidationUtils.readString(LanguageUtils.get("empleado.input.ciudad"));
+		String pais = ValidationUtils.readString(LanguageUtils.get("empleado.input.pais"));
+		String email = ValidationUtils.readEmail(LanguageUtils.get("empleado.input.email"));
+		String telefono = ValidationUtils.readTelefono(LanguageUtils.get("empleado.input.telefono"));
+		double salario = ValidationUtils.readDouble(LanguageUtils.get("empleado.input.salario"));
+		Departamento departmento = ValidationUtils.readDepartmento(LanguageUtils.get("empleado.input.departamento"));
+		String usuario = ValidationUtils.readString(LanguageUtils.get("empleado.input.usuario"));
+		String clave = ValidationUtils.readClave(LanguageUtils.get("empleado.input.clave"));
+		Empleado empledo = new Empleado(nombre, apellido, dated, sexo, calle, ciudad, pais, email, telefono, salario,
+				departmento, usuario, clave);
+		try {
+			EmpleadoDAO.createEmpleado(empledo);
+			System.out.println(LanguageUtils.get("empleado.create.success"));
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			System.out.println(LanguageUtils.get("empleado.create.error"));
+
+		}
+	}
+
+	public void readAll() {
+		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("empleado.all.title"), "=");
+		BoxedMessageUtils.horizontalRow("-");
+		System.out.println();
+		try {
+			List<Empleado> list = EmpleadoDAO.getAllEmpleado();
+			empty = false;
+			for (Empleado empleado : list) {
+				System.out.println(empleado.toString());
+				System.out.println();
+				BoxedMessageUtils.horizontalRow("-");
+			}
+		} catch (Exception e) {
+			empty = true;
+			System.out.println(e.getMessage());
+
+		}
+
+	}
+
+	public void modifyEmployee() {
+
+	}
+
+	public void searchEmployee() {
+		readAll();
+		if (!empty) {
+			String username = ValidationUtils.readString(LanguageUtils.get("empleado.input.username"));
+			BoxedMessageUtils.horizontalRow("-");
+			System.out.println();
+			try {
+				Empleado e = EmpleadoDAO.getEmpleadoByUsername(username);
+				if (e == null) {
+					System.out.println(LanguageUtils.get("error.empleado.notFound"));
+					return;
+				}
+				System.out.println(LanguageUtils.get("empleado.found"));
+				System.out.println();
+				System.out.println(e.toString());
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+
+	}
+
+	public void removeEmployee() {
+
+	}
+}

@@ -12,6 +12,7 @@ import utils.BoxedMessageUtils;
 import utils.DayUtils;
 import utils.LanguageUtils;
 import utils.ValidationUtils;
+import utils.VueloValidationUtil;
 
 public class FlightsController {
 	private boolean empty = false;
@@ -32,17 +33,17 @@ public class FlightsController {
 			vuelo.setNumeroVuelo(numeroVuelo);
 			BoxedMessageUtils.horizontalRow("-");
 
-			Aeropuertos aeropuertosOrigen = ValidationUtils.readOrigin(LanguageUtils.get("flight.input.origen"));
+			Aeropuertos aeropuertosOrigen = VueloValidationUtil.readOrigin(LanguageUtils.get("flight.input.origen"));
 			vuelo.setOrigen(aeropuertosOrigen);
 			BoxedMessageUtils.horizontalRow("-");
 
-			Aeropuertos destino = ValidationUtils.readDestino(LanguageUtils.get("flight.input.destino"),
+			Aeropuertos destino = VueloValidationUtil.readDestino(LanguageUtils.get("flight.input.destino"),
 					aeropuertosOrigen.getAeropuertoId());
 			vuelo.setDestino(destino);
 			BoxedMessageUtils.horizontalRow("-");
 
 			AvionDAO.readAll();
-			Avion avion = ValidationUtils.readAvion(LanguageUtils.get("flight.input.avion"));
+			Avion avion = VueloValidationUtil.readAvion(LanguageUtils.get("flight.input.avion"));
 			vuelo.setAvion(avion);
 			BoxedMessageUtils.horizontalRow("-");
 
@@ -119,16 +120,16 @@ public class FlightsController {
 					return;
 				}
 
-				Aeropuertos origen = ValidationUtils.readOrigin(LanguageUtils.get("flight.input.origen"));
+				Aeropuertos origen = VueloValidationUtil.readOrigin(LanguageUtils.get("flight.input.origen"));
 				vuelo.setOrigen(origen);
 				BoxedMessageUtils.horizontalRow("-");
 
-				Aeropuertos destino = ValidationUtils.readDestino(LanguageUtils.get("flight.input.destino"),
+				Aeropuertos destino = VueloValidationUtil.readDestino(LanguageUtils.get("flight.input.destino"),
 						origen.getAeropuertoId());
 				vuelo.setDestino(destino);
 				BoxedMessageUtils.horizontalRow("-");
 
-				Avion avion = ValidationUtils.readAvion(LanguageUtils.get("flight.input.avion"));
+				Avion avion = VueloValidationUtil.readAvion(LanguageUtils.get("flight.input.avion"));
 				if (avion != null) {
 					vuelo.setAvion(avion);
 				}

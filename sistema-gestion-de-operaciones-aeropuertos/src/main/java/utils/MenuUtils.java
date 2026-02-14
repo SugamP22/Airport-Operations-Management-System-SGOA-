@@ -90,4 +90,17 @@ public class MenuUtils {
 
 	}
 
+	public static void MenuCRUDEmployeeAdmin() {
+		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("ui.titlt.CRUD.employee"), "=");
+		System.out.println();
+		System.out.println("1. " + LanguageUtils.get("option.employee.create"));
+		System.out.println("2. " + LanguageUtils.get("option.employee.update"));
+		System.out.println("3. " + LanguageUtils.get("option.employee.search"));
+		System.out.println("4. " + LanguageUtils.get("option.employee.remove"));
+		System.out.println("0. " + LanguageUtils.get("option.salir"));
+		System.out.println();
+		BoxedMessageUtils.horizontalRow("*");
+
+	}
+
 }

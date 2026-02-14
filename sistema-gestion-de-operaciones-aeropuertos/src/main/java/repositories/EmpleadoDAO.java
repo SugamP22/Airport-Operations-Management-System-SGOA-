@@ -43,26 +43,40 @@ public class EmpleadoDAO {
 		}
 	}
 
-	public static List<Empleado> getAllReserva() {
+	public static List<Empleado> getAllEmpleado() {
 		Session session = HibernateUtils.getSession().openSession();
 		try {
 			List<Empleado> r = session.createQuery("From Empleado", Empleado.class).list();
 			if (r.isEmpty())
-				throw new IllegalArgumentException("error.empty.empleadoList");
+				throw new IllegalArgumentException(LanguageUtils.get("error.empty.empleadoList"));
 			return r;
 		} finally {
 			session.close();
 		}
 	}
 
-	public static Empleado getEmpleadoByid(Integer id) {
+	public static Empleado getEmpleadoByUsername(String username) {
 		Session session = HibernateUtils.getSession().openSession();
 		try {
-			String hql = "From Empleado r where r.empleadoId = :id";
-			Empleado r = session.createQuery(hql, Empleado.class).setParameter("id", id).uniqueResult();
-			if (r == null)
-				throw new IllegalArgumentException("error.empleado.notFound");
+			String hql = "From Empleado r where r.usuario = :username";
+			Empleado r = session.createQuery(hql, Empleado.class).setParameter("username", username).uniqueResult();
+			
 			return r;
+		} finally {
+			session.close();
+		}
+	}
+
+	public static Empleado createEmpleado(Empleado empleado) {
+		Session session = HibernateUtils.getSession().openSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			session.save(empleado);
+			tx.commit();
+			return empleado;
+		} catch (Exception e) {
+			tx.rollback();
+			throw e;
 		} finally {
 			session.close();
 		}
