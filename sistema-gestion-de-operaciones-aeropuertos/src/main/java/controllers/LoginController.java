@@ -29,14 +29,6 @@ public class LoginController {
 
 	private String username;
 	private String password;
-	private static CurrentUser user;
-
-	/**
-	 * Returns the active user session.
-	 */
-	public static CurrentUser getUser() {
-		return user;
-	}
 
 	/**
 	 * Runs the main login loop and session management.
@@ -63,7 +55,7 @@ public class LoginController {
 					continue;
 				}
 
-				user = new CurrentUser(currentEmpleado);
+				CurrentUser.empleado = currentEmpleado;
 				openDashboard(currentEmpleado);
 
 			} else {

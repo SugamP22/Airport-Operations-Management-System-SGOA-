@@ -2,6 +2,8 @@ package controllers;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import authService.CurrentUser;
 import entities.Departamento;
 import entities.Empleado;
 import repositories.EmpleadoDAO;
@@ -61,6 +63,41 @@ public class EmployeeCRUDController {
 	}
 
 	public void modifyEmployee() {
+		readAll();
+		employeeID = null;
+		if (!empty) {
+			String username = ValidationUtils.readString(LanguageUtils.get("empleado.modify.username"));
+			BoxedMessageUtils.horizontalRow("-");
+			System.out.println();
+			try {
+				Empleado e = EmpleadoDAO.getEmpleadoByUsername(username);
+				if (e == null) {
+					System.out.println(LanguageUtils.get("error.empleado.notFound"));
+					return;
+				}
+				System.out.println(LanguageUtils.get("empleado.found"));
+				BoxedMessageUtils.horizontalRow("*");
+				System.out.println();
+				employeeID = e.getEmpleadoId();
+
+				String email = ValidationUtils.readEmail(LanguageUtils.get("empleado.modify.email"));
+				e.setEmail(email);
+				String telefono = ValidationUtils.readTelefono(LanguageUtils.get("empleado.modify.telefono"));
+				e.setTelefono(telefono);
+				double salario = ValidationUtils.readDouble(LanguageUtils.get("empleado.modify.salario"));
+				e.setSalario(salario);
+				if (!employeeID.equals(CurrentUser.empleado.getEmpleadoId())) {
+					Departamento departmento = ValidationUtils
+							.readDepartmento(LanguageUtils.get("empleado.modify.departamento"));
+					e.setDepartamento(departmento);
+				}
+				EmpleadoDAO.updateEmpleado(e);
+				System.out.println(LanguageUtils.get("empleado.modify.success"));
+
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
 
 	}
 
@@ -89,27 +126,7 @@ public class EmployeeCRUDController {
 	}
 
 	public void removeEmployee() {
-		readAll();
-		employeeID = null;
-		if (!empty) {
-			String username = ValidationUtils.readString(LanguageUtils.get("empleado.delete.username"));
-			BoxedMessageUtils.horizontalRow("-");
-			System.out.println();
-			try {
-				Empleado e = EmpleadoDAO.getEmpleadoByUsername(username);
-				if (e == null) {
-					System.out.println(LanguageUtils.get("error.empleado.notFound"));
-					return;
-				}
-				System.out.println(LanguageUtils.get("empleado.found"));
-				System.out.println();
-				System.out.println(e.toString());
-				employeeID = e.getEmpleadoId();
-				BoxedMessageUtils.horizontalRow("*");
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		}
+		searchEmployee();
 		System.out.println();
 		if (employeeID != null) {
 			char letra = ValidationUtils.readChar(LanguageUtils.get("empleado.delete.confirm"));

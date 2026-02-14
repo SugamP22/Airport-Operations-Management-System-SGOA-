@@ -1,5 +1,6 @@
 package controllers;
 
+import authService.CurrentUser;
 import utils.LanguageUtils;
 import utils.MenuUtils;
 import utils.ValidationUtils;
@@ -21,7 +22,7 @@ public class AdminController {
 	}
 
 	public void openDashboard() {
-		System.out.println(LoginController.getUser().getEmpleado().getNombre() + " " + LanguageUtils.get("user.found"));
+		System.out.println(CurrentUser.empleado.getNombre() + " " + LanguageUtils.get("user.found"));
 		int option;
 		do {
 			System.out.println();
