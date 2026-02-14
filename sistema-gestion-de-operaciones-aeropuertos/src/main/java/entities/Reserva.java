@@ -105,5 +105,6 @@ public class Reserva {
 		this.pasajero = pasajero;
 		this.precio = precio;
 	}
+	
 
 }

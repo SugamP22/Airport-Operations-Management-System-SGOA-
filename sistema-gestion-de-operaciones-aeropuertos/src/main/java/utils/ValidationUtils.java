@@ -44,7 +44,7 @@ public class ValidationUtils {
 				}
 				System.out.println(LanguageUtils.get("error.empty"));
 			} catch (IOException e) {
-				System.out.println("Error: " + e.getMessage());
+				System.out.println(LanguageUtils.get("error.read.input"));
 			} catch (NumberFormatException e) {
 				System.out.println(LanguageUtils.get("error.empty"));
 			}
@@ -80,7 +80,7 @@ public class ValidationUtils {
 				}
 				System.out.println(LanguageUtils.get("error.empty"));
 			} catch (IOException e) {
-				System.out.println("Error: " + e.getMessage());
+				System.out.println(LanguageUtils.get("error.read.input"));
 			} catch (NumberFormatException e) {
 				System.out.println(LanguageUtils.get("error.empty"));
 			}
@@ -127,7 +127,7 @@ public class ValidationUtils {
 			} catch (NumberFormatException e) {
 				System.out.println(LanguageUtils.get("error.invalid.aeropuertoID"));
 			} catch (IOException e) {
-				System.out.println(LanguageUtils.get("error.read.input")); // if you have this key
+				System.out.println(LanguageUtils.get("error.read.input"));
 			}
 		}
 	}
@@ -183,7 +183,7 @@ public class ValidationUtils {
 			} catch (NumberFormatException e) {
 				System.out.println(LanguageUtils.get("error.invalid.avionID"));
 			} catch (IOException e) {
-				System.out.println(LanguageUtils.get("error.read.input")); // if you have this key
+				System.out.println(LanguageUtils.get("error.read.input"));
 			}
 		}
 	}
