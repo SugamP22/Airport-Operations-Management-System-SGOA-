@@ -34,6 +34,61 @@ public class VueloDAO {
 		}
 	}
 
+	public static void createFlight(Vuelo vuelo) {
+		Session session = HibernateUtils.getSession().openSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			Vuelo existing = session.get(Vuelo.class, vuelo.getNumeroVuelo());
+			if (existing != null) {
+				throw new IllegalArgumentException(LanguageUtils.get("error.flight.existence"));
+			}
+			session.save(vuelo);
+			HorarioVuelo horario = vuelo.getHorarioVuelo();
+			if (horario != null) {
+				horario.setVuelo(vuelo);
+				horario.setNumeroVuelo(vuelo.getNumeroVuelo());
+				session.save(horario);
+			}
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+
+	public static void updateFlight(Vuelo vuelo) {
+		Session session = HibernateUtils.getSession().openSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			Vuelo existing = session.get(Vuelo.class, vuelo.getNumeroVuelo());
+			if (existing == null) {
+				throw new IllegalArgumentException(LanguageUtils.get("error.flight.existence"));
+			}
+			session.merge(vuelo);
+			HorarioVuelo horario = vuelo.getHorarioVuelo();
+			if (horario != null) {
+				HorarioVuelo horarioExistente = session.get(HorarioVuelo.class, vuelo.getNumeroVuelo());
+				if (horarioExistente == null) {
+					horario.setVuelo(vuelo);
+					horario.setNumeroVuelo(vuelo.getNumeroVuelo());
+					session.save(horario);
+				} else {
+					horarioExistente.setSalida(horario.getSalida());
+					horarioExistente.setLlegada(horario.getLlegada());
+					session.merge(horarioExistente);
+				}
+			}
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+
 	public static void deleteByID(String currentId) {
 		Session session = HibernateUtils.getSession().openSession();
 		Transaction tx = session.beginTransaction();

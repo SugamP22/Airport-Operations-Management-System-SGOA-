@@ -2,10 +2,14 @@ package controllers;
 
 import java.util.List;
 
+import entities.Aeropuertos;
+import entities.Avion;
 import entities.HorarioVuelo;
 import entities.Vuelo;
+import repositories.AvionDAO;
 import repositories.VueloDAO;
 import utils.BoxedMessageUtils;
+import utils.DayUtils;
 import utils.LanguageUtils;
 import utils.ValidationUtils;
 
@@ -14,25 +18,62 @@ public class FlightsController {
 	private String currentId = "";
 
 	public void createFlights() {
-		System.out.println();
-		BoxedMessageUtils.boxWithOutEvenSpacing(LanguageUtils.get("flight.input.title"), "=");
-		String numeroVuelo = ValidationUtils.readString(LanguageUtils.get("flight.input.numero"));
-		BoxedMessageUtils.horizontalRow("-");
-		int origen = ValidationUtils.readInt(LanguageUtils.get("flight.input.origen"));
-		BoxedMessageUtils.horizontalRow("-");
-		int destino = ValidationUtils.readInt(LanguageUtils.get("flight.input.destino"));
-		BoxedMessageUtils.horizontalRow("-");
-		int avion = ValidationUtils.readInt(LanguageUtils.get("flight.input.avion"));
-		BoxedMessageUtils.horizontalRow("-");
-		char letra = ValidationUtils.readChar(LanguageUtils.get("flight.input.dias"));
-		BoxedMessageUtils.horizontalRow("-");
-		System.out.println();
+		try {
+			Vuelo vuelo = new Vuelo();
+			System.out.println();
+			BoxedMessageUtils.boxWithOutEvenSpacing(LanguageUtils.get("flight.input.title"), "=");
+			System.out.println();
+
+			String numeroVuelo = ValidationUtils.readString(LanguageUtils.get("flight.input.numero"));
+			Vuelo existing = VueloDAO.getFLightByID(numeroVuelo);
+			if (existing != null) {
+				throw new IllegalArgumentException(LanguageUtils.get("error.flight.existence"));
+			}
+			vuelo.setNumeroVuelo(numeroVuelo);
+			BoxedMessageUtils.horizontalRow("-");
+
+			Aeropuertos aeropuertosOrigen = ValidationUtils.readOrigin(LanguageUtils.get("flight.input.origen"));
+			vuelo.setOrigen(aeropuertosOrigen);
+			BoxedMessageUtils.horizontalRow("-");
+
+			Aeropuertos destino = ValidationUtils.readDestino(LanguageUtils.get("flight.input.destino"),
+					aeropuertosOrigen.getAeropuertoId());
+			vuelo.setDestino(destino);
+			BoxedMessageUtils.horizontalRow("-");
+
+			AvionDAO.readAll();
+			Avion avion = ValidationUtils.readAvion(LanguageUtils.get("flight.input.avion"));
+			vuelo.setAvion(avion);
+			BoxedMessageUtils.horizontalRow("-");
+
+			DayUtils.selectDays(vuelo);
+			BoxedMessageUtils.horizontalRow("-");
+
+			HorarioVuelo horarioVuelo = new HorarioVuelo();
+			horarioVuelo.setSalida(ValidationUtils.readLocalTime(LanguageUtils.get("flight.input.salida")));
+			horarioVuelo.setLlegada(ValidationUtils.readLocalTime(LanguageUtils.get("flight.input.llegada")));
+			horarioVuelo.setVuelo(vuelo);
+			horarioVuelo.setNumeroVuelo(vuelo.getNumeroVuelo());
+			vuelo.setHorarioVuelo(horarioVuelo);
+			BoxedMessageUtils.horizontalRow("-");
+
+			VueloDAO.createFlight(vuelo);
+			System.out.println(LanguageUtils.get("flight.found"));
+			System.out.println(vuelo.toString());
+			System.out.println();
+
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 
 	}
 
 	public void readALLFlights() {
 		System.out.println();
 		BoxedMessageUtils.boxWithOutEvenSpacing(LanguageUtils.get("flight.all.title"), "=");
+		System.out.println();
 		List<Vuelo> listaVuelos = VueloDAO.getAllFlights();
 		if (listaVuelos.isEmpty()) {
 			empty = true;
@@ -70,15 +111,53 @@ public class FlightsController {
 	public void modifyFlights() {
 		searchFlights();
 		if (!currentId.isEmpty()) {
-			int origen = ValidationUtils.readInt(LanguageUtils.get("flight.input.origen"));
-			BoxedMessageUtils.horizontalRow("-");
-			int destino = ValidationUtils.readInt(LanguageUtils.get("flight.input.destino"));
-			BoxedMessageUtils.horizontalRow("-");
-			int avion = ValidationUtils.readInt(LanguageUtils.get("flight.input.avion"));
-			BoxedMessageUtils.horizontalRow("-");
-			char letra = ValidationUtils.readChar(LanguageUtils.get("flight.input.dias"));
-			BoxedMessageUtils.horizontalRow("-");
-			System.out.println();
+			try {
+				Vuelo vuelo = VueloDAO.getFLightByID(currentId);
+				if (vuelo == null) {
+					System.out.println(LanguageUtils.get("error.flight.existence"));
+					currentId = "";
+					return;
+				}
+
+				Aeropuertos origen = ValidationUtils.readOrigin(LanguageUtils.get("flight.input.origen"));
+				vuelo.setOrigen(origen);
+				BoxedMessageUtils.horizontalRow("-");
+
+				Aeropuertos destino = ValidationUtils.readDestino(LanguageUtils.get("flight.input.destino"),
+						origen.getAeropuertoId());
+				vuelo.setDestino(destino);
+				BoxedMessageUtils.horizontalRow("-");
+
+				Avion avion = ValidationUtils.readAvion(LanguageUtils.get("flight.input.avion"));
+				vuelo.setAvion(avion);
+				BoxedMessageUtils.horizontalRow("-");
+
+				DayUtils.selectDays(vuelo);
+				BoxedMessageUtils.horizontalRow("-");
+
+				HorarioVuelo horarioVuelo = vuelo.getHorarioVuelo();
+				if (horarioVuelo == null) {
+					horarioVuelo = new HorarioVuelo();
+				}
+				horarioVuelo.setSalida(ValidationUtils.readLocalTime(LanguageUtils.get("flight.input.salida")));
+				horarioVuelo.setLlegada(ValidationUtils.readLocalTime(LanguageUtils.get("flight.input.llegada")));
+				horarioVuelo.setVuelo(vuelo);
+				horarioVuelo.setNumeroVuelo(vuelo.getNumeroVuelo());
+				vuelo.setHorarioVuelo(horarioVuelo);
+				BoxedMessageUtils.horizontalRow("-");
+
+				VueloDAO.updateFlight(vuelo);
+				System.out.println(LanguageUtils.get("flight.found"));
+				System.out.println(vuelo.toString());
+				BoxedMessageUtils.horizontalRow("-");
+				System.out.println();
+			} catch (IllegalArgumentException e) {
+				System.out.println(e.getMessage());
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			} finally {
+				currentId = "";
+			}
 		}
 
 	}
@@ -107,12 +186,16 @@ public class FlightsController {
 	public void showSchedules() {
 		readALLFlights();
 		if (!empty) {
-			String id = ValidationUtils.readString(LanguageUtils.get("flight.input.numero"));
+			String id = ValidationUtils.readString(LanguageUtils.get("flight.input.schedules"));
 			BoxedMessageUtils.horizontalRow("-");
 			System.out.println();
 			if (!id.isEmpty()) {
 				try {
 					HorarioVuelo h = VueloDAO.getFlightSchedules(id);
+					if (h == null) {
+						System.out.println(LanguageUtils.get("error.noSchedules"));
+						return;
+					}
 					System.out.println(LanguageUtils.get("flight.found") + "\n");
 					System.out.println(h.toString());
 				} catch (IllegalArgumentException e) {
