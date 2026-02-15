@@ -12,9 +12,10 @@ public class Main {
 			HibernateUtils.getSession();// in this line the code in the static block runs.
 			System.out.flush();
 			new LoginController().iniciar();
-			HibernateUtils.shutdown();// To make sure sessionFactory is closed
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+		} finally {
+			HibernateUtils.shutdown();// To make sure sessionFactory is closed
 		}
 	}
 
