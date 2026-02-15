@@ -9,12 +9,14 @@ public class EmpleadoController {
 	private final FlightsController FLIGHTS_CONTROLLER;
 	private final WeatherController WEATHER_CONTROLLER;
 	private final ReservationController RESERVATION_CONTROLLER;
+	private final PassengersController PASSENGERS_CONTROLLER;
 
 	public EmpleadoController(FlightsController FLIGHTS_CONTROLLER, WeatherController WEATHER_CONTROLLER,
-			ReservationController RESERVATION_CONTROLLER) {
+			ReservationController RESERVATION_CONTROLLER, PassengersController PASSENGERS_CONTROLLER) {
 		this.FLIGHTS_CONTROLLER = FLIGHTS_CONTROLLER;
 		this.WEATHER_CONTROLLER = WEATHER_CONTROLLER;
 		this.RESERVATION_CONTROLLER = RESERVATION_CONTROLLER;
+		this.PASSENGERS_CONTROLLER = PASSENGERS_CONTROLLER;
 	}
 
 	public void openDashboard() {
@@ -32,12 +34,59 @@ public class EmpleadoController {
 	private void switchEmpleado(int option) {
 		switch (option) {
 		case 1 -> showMenuFlights();
-		case 2 -> System.out.println("OPTION 2");
-		case 3 -> System.out.println("OPTION 3");
-		case 0 -> System.out.println("OPTION 4");
+		case 2 -> showMenuReserva();
+		case 3 -> showMenuPasajero();
+		case 4 -> System.out.println(LanguageUtils.get("info.module.weather.pending"));
+		case 5 -> System.out.println(LanguageUtils.get("info.module.security.dsa.pending"));
+		case 0 -> System.out.println(LanguageUtils.get("system.closing"));
 		default -> System.out.println(LanguageUtils.get("error.numberFormat"));
 
 		}
+	}
+
+	private void showMenuPasajero() {
+		int option;
+		do {
+			MenuUtils.menuPasajeroEmpleado();
+			option = ValidationUtils.readInt(LanguageUtils.get("input.user"));
+			switchPasajero(option);
+		} while (option != 0);
+
+	}
+
+	private void switchPasajero(int option) {
+		switch (option) {
+		case 1 -> PASSENGERS_CONTROLLER.showall();
+		case 2 -> PASSENGERS_CONTROLLER.searchPassenger();
+		case 0 -> {
+			System.out.println();
+			System.out.println(LanguageUtils.get("info.employeeDashBoard"));
+		}
+		default -> System.out.println(LanguageUtils.get("error.numberFormat"));
+		}
+
+	}
+
+	private void showMenuReserva() {
+		int option;
+		do {
+			MenuUtils.menuReservaEmpleado();
+			option = ValidationUtils.readInt(LanguageUtils.get("input.user"));
+			switchReserva(option);
+		} while (option != 0);
+	}
+
+	private void switchReserva(int option) {
+		switch (option) {
+		case 1 -> RESERVATION_CONTROLLER.searchReservation();
+		case 2 -> RESERVATION_CONTROLLER.showAll();
+		case 0 -> {
+			System.out.println();
+			System.out.println(LanguageUtils.get("info.employeeDashBoard"));
+		}
+		default -> System.out.println(LanguageUtils.get("error.numberFormat"));
+		}
+
 	}
 
 	private void showMenuFlights() {

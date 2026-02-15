@@ -11,6 +11,7 @@ import repositories.VueloDAO;
 import utils.BoxedMessageUtils;
 import utils.DayUtils;
 import utils.LanguageUtils;
+import utils.MenuUtils;
 import utils.ValidationUtils;
 import utils.VueloValidationUtil;
 
@@ -90,6 +91,39 @@ public class FlightsController {
 	}
 
 	public void searchFlights() {
+		int option;
+		do {
+			MenuUtils.menuFlightFilters();
+			option = ValidationUtils.readInt(LanguageUtils.get("input.user"));
+			switch (option) {
+			case 1:
+				searchByFlightNumber();
+				break;
+			case 2:
+				listByAirline();
+				break;
+			case 3:
+				listByOperatingDay();
+				break;
+			case 4:
+				listByDestination();
+				break;
+			case 5:
+				listByDayAndDestination();
+				break;
+			case 6:
+				showSchedules();
+				break;
+			case 0:
+				break;
+			default:
+				System.out.println(LanguageUtils.get("error.invalidOption"));
+				break;
+			}
+		} while (option != 0);
+	}
+
+	private void searchByFlightNumber() {
 		readALLFlights();
 		if (!empty) {
 			String id = ValidationUtils.readString(LanguageUtils.get("flight.search.numero"));
@@ -98,13 +132,65 @@ public class FlightsController {
 			System.out.println();
 			if (vuelo != null) {
 				System.out.println(LanguageUtils.get("flight.found") + "\n");
-				currentId = vuelo.getNumeroVuelo();
 				System.out.println(vuelo.toString());
 				System.out.println();
 				return;
 			}
-			currentId = "";
 			System.out.println(LanguageUtils.get("error.flight.existence"));
+		}
+	}
+
+	private void listByAirline() {
+		String airline = ValidationUtils.readStringOpcional(LanguageUtils.get("flight.search.airline"));
+		List<Vuelo> vuelos;
+		if (airline == null || airline.trim().isEmpty()) {
+			vuelos = VueloDAO.getFlightsWithoutAirplane();
+		} else {
+			vuelos = VueloDAO.getFlightsByAirline(airline);
+		}
+		printFlights(vuelos);
+	}
+
+	private void listByOperatingDay() {
+		String day = ValidationUtils.readString(LanguageUtils.get("flight.search.day"));
+		try {
+			List<Vuelo> vuelos = VueloDAO.getFlightsByOperatingDay(day);
+			printFlights(vuelos);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	private void listByDestination() {
+		String destination = ValidationUtils.readString(LanguageUtils.get("flight.search.destination"));
+		List<Vuelo> vuelos = VueloDAO.getFlightsByDestination(destination);
+		printFlights(vuelos);
+	}
+
+	private void listByDayAndDestination() {
+		String day = ValidationUtils.readString(LanguageUtils.get("flight.search.day"));
+		String destination = ValidationUtils.readString(LanguageUtils.get("flight.search.destination"));
+		try {
+			List<Vuelo> vuelos = VueloDAO.getFlightsByDayAndDestination(day, destination);
+			printFlights(vuelos);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	private void printFlights(List<Vuelo> vuelos) {
+		BoxedMessageUtils.horizontalRow("-");
+		System.out.println();
+		if (vuelos == null || vuelos.isEmpty()) {
+			System.out.println(LanguageUtils.get("error.noFilteredFlights"));
+			return;
+		}
+		System.out.println(LanguageUtils.get("flight.filtered.title"));
+		System.out.println();
+		for (Vuelo vuelo : vuelos) {
+			System.out.println(vuelo.toString());
+			System.out.println();
+			BoxedMessageUtils.horizontalRow("-");
 		}
 	}
 

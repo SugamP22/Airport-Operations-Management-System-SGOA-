@@ -20,12 +20,13 @@ public class LoginController {
 	private static final ReservationController RESERVATION_CONTROLLER = new ReservationController();
 	private static final FlightsController FLIGHTS_CONTROLLER = new FlightsController();
 	private static final LanguageController LANGAUECONTROLLER = new LanguageController();
+	private static final PassengersController PASSENGERS_CONTROLLER = new PassengersController();
 
 	// Role-based dashboard controllers
 	private static final EmpleadoController EMPLEADO_CONTROLLER = new EmpleadoController(FLIGHTS_CONTROLLER,
-			WEATHER_CONTROLLER, RESERVATION_CONTROLLER);
+			WEATHER_CONTROLLER, RESERVATION_CONTROLLER, PASSENGERS_CONTROLLER);
 	private static final AdminController ADMIN_CONTROLLER = new AdminController(FLIGHTS_CONTROLLER, WEATHER_CONTROLLER,
-			RESERVATION_CONTROLLER);
+			RESERVATION_CONTROLLER, PASSENGERS_CONTROLLER);
 
 	private String username;
 	private String password;

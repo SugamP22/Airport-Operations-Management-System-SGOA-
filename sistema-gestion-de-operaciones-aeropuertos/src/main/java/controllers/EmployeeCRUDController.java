@@ -105,7 +105,34 @@ public class EmployeeCRUDController {
 		readAll();
 		employeeID = null;
 		if (!empty) {
-			String username = ValidationUtils.readString(LanguageUtils.get("empleado.search.username"));
+			Departamento departamento = ValidationUtils
+					.readDepartmento(LanguageUtils.get("empleado.search.departamento"));
+			BoxedMessageUtils.horizontalRow("-");
+			System.out.println();
+			try {
+				List<Empleado> list = EmpleadoDAO.getEmpleadoByDepartamento(departamento);
+				if (list.isEmpty()) {
+					System.out.println(LanguageUtils.get("error.empleado.notFound"));
+					return;
+				}
+				System.out.println(LanguageUtils.get("empleado.found"));
+				System.out.println();
+				for (Empleado empleado : list) {
+					System.out.println(empleado.toString());
+					System.out.println();
+					BoxedMessageUtils.horizontalRow("*");
+				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+
+	public void removeEmployee() {
+		readAll();
+		employeeID = null;
+		if (!empty) {
+			String username = ValidationUtils.readString(LanguageUtils.get("empleado.delete.username"));
 			BoxedMessageUtils.horizontalRow("-");
 			System.out.println();
 			try {
@@ -122,32 +149,26 @@ public class EmployeeCRUDController {
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-		}
-	}
-
-	public void removeEmployee() {
-		searchEmployee();
-		System.out.println();
-		if (employeeID != null) {
-			char letra = ValidationUtils.readChar(LanguageUtils.get("empleado.delete.confirm"));
-			BoxedMessageUtils.horizontalRow("-");
 			System.out.println();
-			if (Character.toUpperCase(letra) == 'S') {
-				try {
-					EmpleadoDAO.removeEmpleado(employeeID);
-					System.out.println(LanguageUtils.get("empleado.delete.success"));
-					return;
-				} catch (IllegalArgumentException e) {
-					System.out.println(e.getMessage());
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-					System.out.println(LanguageUtils.get("empleado.delete.error"));
+			if (employeeID != null) {
+				char letra = ValidationUtils.readChar(LanguageUtils.get("empleado.delete.confirm"));
+				BoxedMessageUtils.horizontalRow("-");
+				System.out.println();
+				if (Character.toUpperCase(letra) == 'S') {
+					try {
+						EmpleadoDAO.removeEmpleado(employeeID);
+						System.out.println(LanguageUtils.get("empleado.delete.success"));
+						return;
+					} catch (IllegalArgumentException e) {
+						System.out.println(e.getMessage());
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+						System.out.println(LanguageUtils.get("empleado.delete.error"));
 
+					}
 				}
+				System.out.println(LanguageUtils.get("empleado.delete.cancel"));
 			}
-			System.out.println(LanguageUtils.get("empleado.delete.cancel"));
-
 		}
-
 	}
 }

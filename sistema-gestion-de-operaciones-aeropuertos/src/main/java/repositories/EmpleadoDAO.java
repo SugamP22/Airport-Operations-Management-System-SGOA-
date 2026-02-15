@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import entities.Departamento;
 import entities.Empleado;
 import utils.HibernateUtils;
 import utils.LanguageUtils;
@@ -65,6 +66,18 @@ public class EmpleadoDAO {
 		}
 	}
 
+	public static List<Empleado> getEmpleadoByDepartamento(Departamento departamento) {
+		Session session = HibernateUtils.getSession().openSession();
+		try {
+			String hql = "From Empleado e where e.departamento = :departamento";
+			List<Empleado> list = session.createQuery(hql, Empleado.class).setParameter("departamento", departamento)
+					.list();
+			return list;
+		} finally {
+			session.close();
+		}
+	}
+
 	public static Empleado createEmpleado(Empleado empleado) {
 		Session session = HibernateUtils.getSession().openSession();
 		Transaction tx = session.beginTransaction();
@@ -87,7 +100,7 @@ public class EmpleadoDAO {
 			Empleado r = session.get(Empleado.class, empleado.getEmpleadoId());
 			if (r == null)
 				throw new IllegalArgumentException(LanguageUtils.get("error.empleado.notFound"));
-			session.merge(r);
+			session.merge(empleado);
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
