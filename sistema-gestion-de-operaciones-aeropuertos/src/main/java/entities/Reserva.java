@@ -105,6 +105,11 @@ public class Reserva {
 		this.pasajero = pasajero;
 		this.precio = precio;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Reserva [reservaId=" + reservaId + ", horarioVuelo=" + horarioVuelo + ", vueloId=" + vueloId
+				+ ", asiento=" + asiento + ", pasajero=" + pasajero.getNombre() + ", precio=" + precio + "]";
+	}
 
 }
