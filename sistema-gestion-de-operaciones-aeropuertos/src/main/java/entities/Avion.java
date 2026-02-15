@@ -2,6 +2,7 @@ package entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ public class Avion {
 	@JoinColumn(name = "aerolinea_id", nullable = false)
 	private Aerolinea aerolinea;
 
-	@OneToMany(mappedBy = "avion")
+	@OneToMany(mappedBy = "avion", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<Vuelo> listaVuelo;
 
 	public Integer getAvionId() {

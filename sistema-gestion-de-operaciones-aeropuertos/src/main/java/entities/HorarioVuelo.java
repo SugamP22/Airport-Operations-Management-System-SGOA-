@@ -3,6 +3,7 @@ package entities;
 import java.time.LocalTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -29,7 +30,7 @@ public class HorarioVuelo {
 	@Column(name = "llegada", nullable = false)
 	private LocalTime llegada;
 
-	@OneToMany(mappedBy = "horarioVuelo")
+	@OneToMany(mappedBy = "horarioVuelo", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<Reserva> listaReserva;
 
 	public String getNumeroVuelo() {

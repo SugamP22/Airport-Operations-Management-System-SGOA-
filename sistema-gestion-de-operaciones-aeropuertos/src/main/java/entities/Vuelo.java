@@ -1,5 +1,6 @@
 package entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -48,7 +49,8 @@ public class Vuelo {
 	@Column(name = "domingo", nullable = false)
 	private boolean domingo;
 
-	@OneToOne(mappedBy = "vuelo")
+	@OneToOne(mappedBy = "vuelo", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REMOVE }, orphanRemoval = true)
 	private HorarioVuelo horarioVuelo;
 
 	public String getNumeroVuelo() {

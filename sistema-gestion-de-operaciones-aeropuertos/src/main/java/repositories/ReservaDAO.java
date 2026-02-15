@@ -59,10 +59,24 @@ public class ReservaDAO {
 			Reserva r = session.get(Reserva.class, reserva.getReservaId());
 			if (r == null)
 				throw new IllegalArgumentException(LanguageUtils.get("error.reserva.notFound"));
-			session.merge(r);
+			session.merge(reserva);
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+
+	public static void createReserva(Reserva reserva) {
+		Session session = HibernateUtils.getSession().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.save(reserva);
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
 			throw e;
 		} finally {
 			session.close();

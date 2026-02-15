@@ -2,6 +2,7 @@ package entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,10 +29,11 @@ public class Pasajero {
 	@Column(name = "apellido", nullable = false)
 	private String apellido;
 
-	@OneToMany(mappedBy = "pasajero")
+	@OneToMany(mappedBy = "pasajero", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<Reserva> listReserva;
 
-	@OneToOne(mappedBy = "pasajero")
+	@OneToOne(mappedBy = "pasajero", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REMOVE }, orphanRemoval = true)
 	private DetallePasajero detallesPasajeros;
 
 	public Integer getPasajeroId() {

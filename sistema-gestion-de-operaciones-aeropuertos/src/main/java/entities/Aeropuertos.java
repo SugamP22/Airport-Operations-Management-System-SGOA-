@@ -2,6 +2,7 @@ package entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,13 +40,13 @@ public class Aeropuertos {
 	@Column(name = "longitud", nullable = false)
 	private double longitud;
 
-	@OneToMany(mappedBy = "origen")
+	@OneToMany(mappedBy = "origen", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	List<Vuelo> ListaOrigenes;
 
-	@OneToMany(mappedBy = "destino")
+	@OneToMany(mappedBy = "destino", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	List<Vuelo> ListaDestino;
 
-	@OneToMany(mappedBy = "aeropuertos")
+	@OneToMany(mappedBy = "aeropuertos", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	List<Aerolinea> listaAerolinea;
 
 	public Integer getAeropuertoId() {

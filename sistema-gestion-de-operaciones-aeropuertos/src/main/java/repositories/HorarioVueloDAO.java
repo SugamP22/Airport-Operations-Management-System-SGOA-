@@ -11,9 +11,7 @@ public class HorarioVueloDAO {
 	public static HorarioVuelo getSchedulesbyFlight(String numeroVuelo) {
 		Session session = HibernateUtils.getSession().openSession();
 		try {
-			String hql = "From HorarioVuelo h where h.numeroVuelo = :numero";
-			HorarioVuelo horario = session.createQuery(hql, HorarioVuelo.class).setParameter("numero", numeroVuelo)
-					.uniqueResult();
+			HorarioVuelo horario = session.get(HorarioVuelo.class, numeroVuelo);
 			return horario;
 		} finally {
 			session.close();

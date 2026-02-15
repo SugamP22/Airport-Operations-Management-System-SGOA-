@@ -43,12 +43,6 @@ public class VueloDAO {
 				throw new IllegalArgumentException(LanguageUtils.get("error.flight.existence"));
 			}
 			session.save(vuelo);
-			HorarioVuelo horario = vuelo.getHorarioVuelo();
-			if (horario != null) {
-				horario.setVuelo(vuelo);
-				horario.setNumeroVuelo(vuelo.getNumeroVuelo());
-				session.save(horario);
-			}
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
