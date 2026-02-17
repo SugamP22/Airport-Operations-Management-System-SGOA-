@@ -43,6 +43,7 @@ public class VueloDAO {
 				throw new IllegalArgumentException(LanguageUtils.get("error.flight.existence"));
 			}
 			session.save(vuelo);
+			
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
@@ -144,6 +145,17 @@ public class VueloDAO {
 			String hql = "From Vuelo v where lower(v.destino.nombre) = :destination "
 					+ "or lower(v.destino.iata) = :destination or lower(v.destino.icao) = :destination";
 			return session.createQuery(hql, Vuelo.class).setParameter("destination", destination.toLowerCase()).list();
+		} finally {
+			session.close();
+		}
+	}
+
+	public static List<Vuelo> getFlightsByOrigin(String origin) {
+		Session session = HibernateUtils.getSession().openSession();
+		try {
+			String hql = "From Vuelo v where lower(v.origen.nombre) = :origin "
+					+ "or lower(v.origen.iata) = :origin or lower(v.origen.icao) = :origin";
+			return session.createQuery(hql, Vuelo.class).setParameter("origin", origin.toLowerCase()).list();
 		} finally {
 			session.close();
 		}

@@ -109,10 +109,10 @@ public class FlightsController {
 				listByDestination();
 				break;
 			case 5:
-				listByDayAndDestination();
+				listByOrigin();
 				break;
 			case 6:
-				showSchedules();
+				listByDayAndDestination();
 				break;
 			case 0:
 				break;
@@ -162,12 +162,27 @@ public class FlightsController {
 	}
 
 	private void listByDestination() {
+		if (!printFlightOriginDestinationSummary()) {
+			return;
+		}
 		String destination = ValidationUtils.readString(LanguageUtils.get("flight.search.destination"));
 		List<Vuelo> vuelos = VueloDAO.getFlightsByDestination(destination);
 		printFlights(vuelos);
 	}
 
+	private void listByOrigin() {
+		if (!printFlightOriginDestinationSummary()) {
+			return;
+		}
+		String origin = ValidationUtils.readString(LanguageUtils.get("flight.search.origin"));
+		List<Vuelo> vuelos = VueloDAO.getFlightsByOrigin(origin);
+		printFlights(vuelos);
+	}
+
 	private void listByDayAndDestination() {
+		if (!printFlightOriginDestinationSummary()) {
+			return;
+		}
 		String day = ValidationUtils.readString(LanguageUtils.get("flight.search.day"));
 		String destination = ValidationUtils.readString(LanguageUtils.get("flight.search.destination"));
 		try {
@@ -192,6 +207,33 @@ public class FlightsController {
 			System.out.println();
 			BoxedMessageUtils.horizontalRow("-");
 		}
+	}
+
+	private boolean printFlightOriginDestinationSummary() {
+		List<Vuelo> vuelos = VueloDAO.getAllFlights();
+		if (vuelos == null || vuelos.isEmpty()) {
+			System.out.println(LanguageUtils.get("error.noFlights"));
+			return false;
+		}
+		BoxedMessageUtils.horizontalRow("-");
+		System.out.println();
+		for (Vuelo v : vuelos) {
+			String numero = v.getNumeroVuelo();
+			String origenNombre = v.getOrigen() != null ? v.getOrigen().getNombre() : "N/A";
+			String origenIata = v.getOrigen() != null ? v.getOrigen().getIata() : "N/A";
+			String origenIcao = v.getOrigen() != null ? v.getOrigen().getIcao() : "N/A";
+
+			String destinoNombre = v.getDestino() != null ? v.getDestino().getNombre() : "N/A";
+			String destinoIata = v.getDestino() != null ? v.getDestino().getIata() : "N/A";
+			String destinoIcao = v.getDestino() != null ? v.getDestino().getIcao() : "N/A";
+
+			System.out.println("Flight: " + numero + " | Origin: " + origenNombre + " (" + origenIata + "/"
+					+ origenIcao + ")" + " | Destination: " + destinoNombre + " (" + destinoIata + "/" + destinoIcao
+					+ ")");
+			BoxedMessageUtils.horizontalRow("-");
+		}
+		System.out.println();
+		return true;
 	}
 
 	public void modifyFlights() {
@@ -230,9 +272,8 @@ public class FlightsController {
 				BoxedMessageUtils.horizontalRow("-");
 
 				Avion avion = VueloValidationUtil.readAvion(LanguageUtils.get("flight.input.avion"));
-				if (avion != null) {
-					vuelo.setAvion(avion);
-				}
+				// On update: empty input will clear the assigned plane (set to null)
+				vuelo.setAvion(avion);
 				BoxedMessageUtils.horizontalRow("-");
 
 				DayUtils.selectDays(vuelo);
@@ -284,7 +325,9 @@ public class FlightsController {
 		}
 		if (!currentId.isEmpty()) {
 			char letra = ValidationUtils.readChar(LanguageUtils.get("flight.delete.confirm"));
-			if (Character.toUpperCase(letra) == 'S') {
+			char upper = Character.toUpperCase(letra);
+			// Accept 'S' (Si) and 'Y' (Yes) as confirmation
+			if (upper == 'S' || upper == 'Y') {
 				try {
 					VueloDAO.deleteByID(currentId);
 					System.out.println(LanguageUtils.get("flight.delete.success"));

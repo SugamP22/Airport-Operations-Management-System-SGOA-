@@ -38,7 +38,9 @@ public class EmpleadoController {
 		case 3 -> showMenuPasajero();
 		case 4 -> System.out.println(LanguageUtils.get("info.module.weather.pending"));
 		case 5 -> System.out.println(LanguageUtils.get("info.module.security.dsa.pending"));
-		case 0 -> System.out.println(LanguageUtils.get("system.closing"));
+		case 0 -> {
+			// normal exit from employee dashboard, no shutting down text
+		}
 		default -> System.out.println(LanguageUtils.get("error.numberFormat"));
 
 		}

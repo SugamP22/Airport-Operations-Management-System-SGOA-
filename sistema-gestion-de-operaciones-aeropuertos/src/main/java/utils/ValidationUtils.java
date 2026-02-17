@@ -106,11 +106,11 @@ public class ValidationUtils {
 				System.out.print(prompt);
 				String aux = reader.readLine().trim();
 				if (!aux.isEmpty() && aux.length() == 1) {
-					char res = aux.charAt(0);
-					if (res == Character.toLowerCase('M') || res == Character.toLowerCase('M')) {
+					char res = Character.toUpperCase(aux.charAt(0));
+					if (res == 'M' || res == 'F') {
 						return res;
 					}
-					System.out.println(LanguageUtils.get("error.invalid.input"));// i need to add this
+					System.out.println(LanguageUtils.get("error.invalid.input"));
 					continue;
 				}
 				System.out.println(LanguageUtils.get("error.oneCharacter"));
@@ -224,6 +224,7 @@ public class ValidationUtils {
 				return res;
 			}
 			System.out.println(LanguageUtils.get("error.invalid.clave"));
+			System.out.println(LanguageUtils.get("error.invalid.clave.hint"));
 		}
 	}
 

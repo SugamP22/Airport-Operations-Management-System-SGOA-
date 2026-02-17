@@ -21,14 +21,14 @@ public class InstallApp {
 	private static final Path DSA_PUBLIC_FILE = KEYS_DIR.resolve("dsa_public.key");
 
 	public static void main(String[] args) {
-		try {
-			createFolders();
-			createDesKeyIfMissing();
-			createDsaKeysIfMissing();
-			System.out.println("InstallApp completed successfully.");
-		} catch (Exception e) {
-			System.out.println("InstallApp failed: " + e.getMessage());
-		}
+//		try {
+//			createFolders();
+//			createDesKeyIfMissing();
+//			createDsaKeysIfMissing();
+//			System.out.println("InstallApp completed successfully.");
+//		} catch (Exception e) {
+//			System.out.println("InstallApp failed: " + e.getMessage());
+//		}
 	}
 
 	private static void createFolders() throws Exception {

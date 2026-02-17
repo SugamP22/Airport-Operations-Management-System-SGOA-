@@ -62,8 +62,7 @@ public class MenuUtils {
 		System.out.println("3. " + LanguageUtils.get("option.admin.pasajeros"));
 		System.out.println("4. " + LanguageUtils.get("option.admin.empelados"));
 		System.out.println("5. " + LanguageUtils.get("option.admin.meterologicos"));
-		System.out.println("6. " + LanguageUtils.get("option.admin.descifrar"));
-		System.out.println("7. " + LanguageUtils.get("option.admin.verificar"));
+		System.out.println("6. " + LanguageUtils.get("option.admin.verificar"));
 		System.out.println("0. " + LanguageUtils.get("option.salir"));
 		System.out.println();
 		BoxedMessageUtils.horizontalRow("*");
@@ -100,8 +99,8 @@ public class MenuUtils {
 		System.out.println("2. " + LanguageUtils.get("option.flight.filterByAirline"));
 		System.out.println("3. " + LanguageUtils.get("option.flight.filterByDay"));
 		System.out.println("4. " + LanguageUtils.get("option.flight.filterByDestination"));
-		System.out.println("5. " + LanguageUtils.get("option.flight.filterByDayDestination"));
-		System.out.println("6. " + LanguageUtils.get("option.flight.viewSchedules"));
+		System.out.println("5. " + LanguageUtils.get("option.flight.filterByOrigin"));
+		System.out.println("6. " + LanguageUtils.get("option.flight.filterByDayDestination"));
 		System.out.println("0. " + LanguageUtils.get("option.back.flights"));
 		System.out.println();
 		BoxedMessageUtils.horizontalRow("*");

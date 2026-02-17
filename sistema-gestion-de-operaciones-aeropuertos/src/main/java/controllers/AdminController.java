@@ -40,9 +40,10 @@ public class AdminController {
 		case 3 -> showMenuPasajero();
 		case 4 -> showMenuEmployee();
 		case 5 -> System.out.println(LanguageUtils.get("info.module.weather.pending"));
-		case 6 -> System.out.println(LanguageUtils.get("info.module.security.des.pending"));
-		case 7 -> System.out.println(LanguageUtils.get("info.module.security.dsa.pending"));
-		case 0 -> System.out.println(LanguageUtils.get("system.closing"));
+		case 6 -> System.out.println(LanguageUtils.get("info.module.security.dsa.pending"));
+		case 0 -> {
+			// normal exit from admin dashboard, no error/shutdown text
+		}
 		default -> System.out.println(LanguageUtils.get("error.numberFormat"));
 
 		}

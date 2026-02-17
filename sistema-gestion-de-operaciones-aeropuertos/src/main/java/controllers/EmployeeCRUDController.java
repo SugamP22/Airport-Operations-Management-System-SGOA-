@@ -154,7 +154,9 @@ public class EmployeeCRUDController {
 				char letra = ValidationUtils.readChar(LanguageUtils.get("empleado.delete.confirm"));
 				BoxedMessageUtils.horizontalRow("-");
 				System.out.println();
-				if (Character.toUpperCase(letra) == 'S') {
+				char upper = Character.toUpperCase(letra);
+				// Accept 'S' (Si) and 'Y' (Yes) as confirmation
+				if (upper == 'S' || upper == 'Y') {
 					try {
 						EmpleadoDAO.removeEmpleado(employeeID);
 						System.out.println(LanguageUtils.get("empleado.delete.success"));
