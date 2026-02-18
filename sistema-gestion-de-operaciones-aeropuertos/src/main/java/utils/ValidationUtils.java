@@ -135,7 +135,8 @@ public class ValidationUtils {
 			} catch (IOException e) {
 				System.out.println(LanguageUtils.get("error.read.input"));
 			} catch (NumberFormatException e) {
-				System.out.println(LanguageUtils.get("error.empty"));
+				// Here I want to be explicit that the format is wrong, not just "empty"
+				System.out.println(LanguageUtils.get("error.numberFormat"));
 			}
 		}
 	}
@@ -153,7 +154,8 @@ public class ValidationUtils {
 			} catch (IOException e) {
 				System.out.println(LanguageUtils.get("error.read.input"));
 			} catch (NumberFormatException e) {
-				System.out.println(LanguageUtils.get("error.empty"));
+				// Same idea as readInteger: wrong format, show a specific message
+				System.out.println(LanguageUtils.get("error.numberFormat"));
 			}
 		}
 	}

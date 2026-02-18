@@ -15,6 +15,7 @@ import entities.Reserva;
 import repositories.PasajeroDAO;
 import utils.LanguageUtils;
 import utils.PasajeroValidationUtil;
+import utils.TablePrinter;
 import utils.ValidationUtils;
 
 public class PassengersController {
@@ -56,17 +57,25 @@ public class PassengersController {
 	}
 
 	public void showAllPassengers() {
-		// Simple helper I use to print all passengers using toString(), without decrypting anything
+		// Simple helper I use to print all passengers as a small table, without decrypting anything
 		try {
 			List<Pasajero> pasajeros = PasajeroDAO.getAllPasajeros();
 			if (pasajeros == null || pasajeros.isEmpty()) {
 				System.out.println(LanguageUtils.get("error.reserva.emptyPassengers"));
 				return;
 			}
+			TablePrinter tp = new TablePrinter().headers("ID", "Name", "Surname", "Passport");
 			for (Pasajero p : pasajeros) {
-				System.out.println(p.toString());
-				System.out.println();
+				String fullName = p.getNombre() != null ? p.getNombre() : "";
+				String surname = p.getApellido() != null ? p.getApellido() : "";
+				String passport = p.getPassport() != null ? p.getPassport() : "";
+				tp.row(
+						p.getPasajeroId() != null ? p.getPasajeroId().toString() : "",
+						fullName,
+						surname,
+						passport);
 			}
+			tp.print();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

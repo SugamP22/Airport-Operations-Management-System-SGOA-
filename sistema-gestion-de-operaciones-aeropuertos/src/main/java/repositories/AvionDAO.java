@@ -5,9 +5,9 @@ import java.util.List;
 import org.hibernate.Session;
 
 import entities.Avion;
-import utils.BoxedMessageUtils;
 import config.HibernateUtils;
 import utils.LanguageUtils;
+import utils.TablePrinter;
 
 public class AvionDAO {
 
@@ -20,11 +20,17 @@ public class AvionDAO {
 				System.out.println(LanguageUtils.get("error.empty.aeropuerto"));
 				return;
 			}
+			TablePrinter tp = new TablePrinter().headers("ID", "Capacity", "Type", "Airline");
 			for (Avion avion : list) {
-				System.out.println(avion.toString());
-				BoxedMessageUtils.horizontalRow("-");
-				System.out.println();
+				String tipo = avion.getTipoAvion() != null ? avion.getTipoAvion().getIdentificador() : "";
+				String airline = avion.getAerolinea() != null ? avion.getAerolinea().getNombreAerolinea() : "";
+				tp.row(
+						avion.getAvionId() != null ? avion.getAvionId().toString() : "",
+						String.valueOf(avion.getCapacidad()),
+						tipo,
+						airline);
 			}
+			tp.print();
 
 		} finally {
 			session.close();

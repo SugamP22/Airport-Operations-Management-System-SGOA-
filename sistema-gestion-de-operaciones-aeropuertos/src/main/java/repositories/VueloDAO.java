@@ -119,6 +119,13 @@ public class VueloDAO {
 
 	}
 
+	/**
+	 * Returns the schedule associated with a specific flight id.
+	 * 
+	 * I load the Vuelo first to reuse the existing mapping instead of querying
+	 * HorarioVuelo directly, and I reuse the generic "flight not found" message when
+	 * the id does not exist.
+	 */
 	public static HorarioVuelo getFlightSchedules(String numeroVuelo) {
 		Session session = HibernateUtils.getSession().openSession();
 		try {
@@ -134,17 +141,25 @@ public class VueloDAO {
 
 	}
 
+	/**
+	 * Lists flights filtered by airline name.
+	 * 
+	 * I only compare against the airline name (case-insensitive) because in the UI
+	 * I ask the user for the airline name, not the IATA code.
+	 */
 	public static List<Vuelo> getFlightsByAirline(String airline) {
 		Session session = HibernateUtils.getSession().openSession();
 		try {
-			String hql = "From Vuelo v where lower(v.avion.aerolinea.nombreAerolinea) = :airline "
-					+ "or lower(v.avion.aerolinea.iatachar) = :airline";
+			String hql = "From Vuelo v where lower(v.avion.aerolinea.nombreAerolinea) = :airline";
 			return session.createQuery(hql, Vuelo.class).setParameter("airline", airline.toLowerCase()).list();
 		} finally {
 			session.close();
 		}
 	}
 
+	/**
+	 * Lists all flights that still do not have an airplane assigned.
+	 */
 	public static List<Vuelo> getFlightsWithoutAirplane() {
 		Session session = HibernateUtils.getSession().openSession();
 		try {
@@ -155,6 +170,12 @@ public class VueloDAO {
 		}
 	}
 
+	/**
+	 * Lists flights by destination, allowing search by name, IATA or ICAO.
+	 * 
+	 * I normalize the user input to lowercase so I can compare against the three
+	 * destination fields without worrying about case.
+	 */
 	public static List<Vuelo> getFlightsByDestination(String destination) {
 		Session session = HibernateUtils.getSession().openSession();
 		try {
@@ -166,6 +187,9 @@ public class VueloDAO {
 		}
 	}
 
+	/**
+	 * Lists flights by origin airport (name, IATA or ICAO).
+	 */
 	public static List<Vuelo> getFlightsByOrigin(String origin) {
 		Session session = HibernateUtils.getSession().openSession();
 		try {
@@ -177,6 +201,12 @@ public class VueloDAO {
 		}
 	}
 
+	/**
+	 * Lists flights by operating day.
+	 * 
+	 * I accept both Spanish and English day names (e.g. lunes/monday) and map them
+	 * to the corresponding boolean flags on the Vuelo entity.
+	 */
 	public static List<Vuelo> getFlightsByOperatingDay(String day) {
 		Session session = HibernateUtils.getSession().openSession();
 		try {
@@ -184,26 +214,33 @@ public class VueloDAO {
 			String hql;
 			switch (normalized) {
 			case "lunes":
+			case "monday":
 				hql = "From Vuelo v where v.lunes = true";
 				break;
 			case "martes":
+			case "tuesday":
 				hql = "From Vuelo v where v.martes = true";
 				break;
 			case "miercoles":
 			case "miércoles":
+			case "wednesday":
 				hql = "From Vuelo v where v.miercoles = true";
 				break;
 			case "jueves":
+			case "thursday":
 				hql = "From Vuelo v where v.jueves = true";
 				break;
 			case "viernes":
+			case "friday":
 				hql = "From Vuelo v where v.viernes = true";
 				break;
 			case "sabado":
 			case "sábado":
+			case "saturday":
 				hql = "From Vuelo v where v.sabado = true";
 				break;
 			case "domingo":
+			case "sunday":
 				hql = "From Vuelo v where v.domingo = true";
 				break;
 			default:
@@ -215,6 +252,13 @@ public class VueloDAO {
 		}
 	}
 
+	/**
+	 * Lists flights by operating day and destination together.
+	 * 
+	 * I build the day condition first using the same mapping as
+	 * getFlightsByOperatingDay and then combine it with the destination filters
+	 * (name, IATA or ICAO).
+	 */
 	public static List<Vuelo> getFlightsByDayAndDestination(String day, String destination) {
 		Session session = HibernateUtils.getSession().openSession();
 		try {
@@ -222,26 +266,33 @@ public class VueloDAO {
 			String dayCondition;
 			switch (normalized) {
 			case "lunes":
+			case "monday":
 				dayCondition = "v.lunes = true";
 				break;
 			case "martes":
+			case "tuesday":
 				dayCondition = "v.martes = true";
 				break;
 			case "miercoles":
 			case "miércoles":
+			case "wednesday":
 				dayCondition = "v.miercoles = true";
 				break;
 			case "jueves":
+			case "thursday":
 				dayCondition = "v.jueves = true";
 				break;
 			case "viernes":
+			case "friday":
 				dayCondition = "v.viernes = true";
 				break;
 			case "sabado":
 			case "sábado":
+			case "saturday":
 				dayCondition = "v.sabado = true";
 				break;
 			case "domingo":
+			case "sunday":
 				dayCondition = "v.domingo = true";
 				break;
 			default:

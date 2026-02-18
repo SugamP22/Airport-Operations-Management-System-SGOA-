@@ -5,7 +5,6 @@ package utils;
  * before creating a reservation (choosing schedule, passenger and data).
  */
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -22,21 +21,24 @@ public class ReservaValidationUtil {
 			System.out.println(LanguageUtils.get("error.reserva.emptySchedules"));
 			return null;
 		}
+		TablePrinter tp = new TablePrinter().headers("FlightID", "Departure", "Arrival");
 		for (HorarioVuelo horarioVuelo : listaHorario) {
-			System.out.println(horarioVuelo.toString());
-			BoxedMessageUtils.horizontalRow("-");
-			System.out.println();
+			String numero = horarioVuelo.getNumeroVuelo();
+			String salida = horarioVuelo.getSalida() != null ? horarioVuelo.getSalida().toString() : "N/A";
+			String llegada = horarioVuelo.getLlegada() != null ? horarioVuelo.getLlegada().toString() : "N/A";
+			tp.row(numero, salida, llegada);
 		}
-		while (true) {
-			BoxedMessageUtils.horizontalRow("*");
-			String idHorario = ValidationUtils.readString(LanguageUtils.get("reservation.select.schedule"));
-			System.out.println();
-			HorarioVuelo h = HorarioVueloDAO.getSchedulesbyFlight(idHorario);
-			if (h != null) {
-				return h;
-			}
-			System.out.println(LanguageUtils.get("error.reserva.invalidSchedule"));
+		tp.print();
+
+		BoxedMessageUtils.horizontalRow("*");
+		String idHorario = ValidationUtils.readString(LanguageUtils.get("reservation.select.schedule"));
+		System.out.println();
+		HorarioVuelo h = HorarioVueloDAO.getSchedulesbyFlight(idHorario);
+		if (h != null) {
+			return h;
 		}
+		System.out.println(LanguageUtils.get("error.reserva.invalidSchedule"));
+		return h;
 	}
 
 	public static Pasajero readPasajero() {
@@ -45,6 +47,7 @@ public class ReservaValidationUtil {
 			System.out.println(LanguageUtils.get("error.reserva.emptyPassengers"));
 			return null;
 		}
+		TablePrinter tp = new TablePrinter().headers("ID", "Name", "Surname", "Passport");
 		for (Pasajero pasajero : listaPasajero) {
 			String decryptedPassport;
 			try {
@@ -54,21 +57,21 @@ public class ReservaValidationUtil {
 				// fall back to the stored value so the list still works.
 				decryptedPassport = pasajero.getPassport();
 			}
-			System.out.println(String.format(LanguageUtils.get("reservation.passenger.preview"),
-					pasajero.getPasajeroId(), pasajero.getNombre(), pasajero.getApellido(), decryptedPassport));
-			BoxedMessageUtils.horizontalRow("-");
-			System.out.println();
+			String idStr = pasajero.getPasajeroId() != null ? pasajero.getPasajeroId().toString() : "";
+			tp.row(idStr, pasajero.getNombre(), pasajero.getApellido(), decryptedPassport);
 		}
-		while (true) {
-			BoxedMessageUtils.horizontalRow("*");
-			Integer idPasajero = ValidationUtils.readInteger(LanguageUtils.get("reservation.select.passenger"));
-			System.out.println();
-			Pasajero p = PasajeroDAO.getPasajeroById(idPasajero);
-			if (p != null) {
-				return p;
-			}
-			System.out.println(LanguageUtils.get("error.reserva.invalidPassenger"));
+		tp.print();
+
+		BoxedMessageUtils.horizontalRow("*");
+		Integer idPasajero = ValidationUtils.readInteger(LanguageUtils.get("reservation.select.passenger"));
+		System.out.println();
+		Pasajero p = PasajeroDAO.getPasajeroById(idPasajero);
+		if (p != null) {
+			return p;
 		}
+		System.out.println(LanguageUtils.get("error.reserva.invalidPassenger"));
+		return p;
+
 	}
 
 	public static Reserva readData(HorarioVuelo h, Pasajero p) {

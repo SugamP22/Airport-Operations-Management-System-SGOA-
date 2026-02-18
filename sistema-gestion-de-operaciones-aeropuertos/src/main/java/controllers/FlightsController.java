@@ -17,6 +17,7 @@ import utils.BoxedMessageUtils;
 import utils.DayUtils;
 import utils.LanguageUtils;
 import utils.MenuUtils;
+import utils.TablePrinter;
 import utils.ValidationUtils;
 import utils.VueloValidationUtil;
 
@@ -31,16 +32,8 @@ public class FlightsController {
 			BoxedMessageUtils.boxWithOutEvenSpacing(LanguageUtils.get("flight.input.title"), "=");
 			System.out.println();
 
-			// Here I validate that the flight number is between 3 and 4 digits (only
-			// numbers)
-			String numeroVuelo;
-			while (true) {
-				numeroVuelo = ValidationUtils.readString(LanguageUtils.get("flight.input.numero"));
-				if (numeroVuelo.matches("^[0-9]{3,4}$")) {
-					break;
-				}
-				System.out.println(LanguageUtils.get("error.invalid.flightNumber"));
-			}
+			// I just read the flight number and check uniqueness; format is validated by the user
+			String numeroVuelo = ValidationUtils.readString(LanguageUtils.get("flight.input.numero"));
 			Vuelo existing = VueloDAO.getFLightByID(numeroVuelo);
 			if (existing != null) {
 				throw new IllegalArgumentException(LanguageUtils.get("error.flight.existence"));
@@ -57,7 +50,6 @@ public class FlightsController {
 			vuelo.setDestino(destino);
 			BoxedMessageUtils.horizontalRow("-");
 
-			AvionDAO.readAll();
 			Avion avion = VueloValidationUtil.readAvion(LanguageUtils.get("flight.input.avion"));
 			vuelo.setAvion(avion);
 			BoxedMessageUtils.horizontalRow("-");
@@ -98,11 +90,16 @@ public class FlightsController {
 			return;
 		}
 		empty = false;
-		for (Vuelo vuelo : listaVuelos) {
-			System.out.println(vuelo.toString());
-			System.out.println();
-			BoxedMessageUtils.horizontalRow("-");
+		// Use TablePrinter to show a compact table of flights
+		TablePrinter tp = new TablePrinter().headers("FlightID", "Origin", "Destination", "Plane");
+		for (Vuelo v : listaVuelos) {
+			String origenNombre = v.getOrigen() != null ? v.getOrigen().getNombre() : "N/A";
+			String destinoNombre = v.getDestino() != null ? v.getDestino().getNombre() : "N/A";
+			String avionId = v.getAvion() != null ? String.valueOf(v.getAvion().getAvionId()) : "N/A";
+
+			tp.row(v.getNumeroVuelo(), origenNombre, destinoNombre, avionId);
 		}
+		tp.print();
 	}
 
 	public void searchFlights() {
@@ -156,6 +153,8 @@ public class FlightsController {
 	}
 
 	private void listByAirline() {
+		// First I show the available planes/airlines so the user has some options to look at
+		AvionDAO.readAll();
 		String airline = ValidationUtils.readStringOpcional(LanguageUtils.get("flight.search.airline"));
 		List<Vuelo> vuelos;
 		if (airline == null || airline.trim().isEmpty()) {
@@ -209,19 +208,24 @@ public class FlightsController {
 	}
 
 	private void printFlights(List<Vuelo> vuelos) {
-		BoxedMessageUtils.horizontalRow("-");
-		System.out.println();
 		if (vuelos == null || vuelos.isEmpty()) {
 			System.out.println(LanguageUtils.get("error.noFilteredFlights"));
 			return;
 		}
 		System.out.println(LanguageUtils.get("flight.filtered.title"));
 		System.out.println();
-		for (Vuelo vuelo : vuelos) {
-			System.out.println(vuelo.toString());
-			System.out.println();
-			BoxedMessageUtils.horizontalRow("-");
+		TablePrinter tp = new TablePrinter().headers("FlightID", "Origin", "Destination", "Plane");
+		for (Vuelo v : vuelos) {
+			String origenNombre = v.getOrigen() != null ? v.getOrigen().getNombre() : "N/A";
+			String destinoNombre = v.getDestino() != null ? v.getDestino().getNombre() : "N/A";
+			String avionId = v.getAvion() != null ? String.valueOf(v.getAvion().getAvionId()) : "N/A";
+			tp.row(
+					v.getNumeroVuelo(),
+					origenNombre,
+					destinoNombre,
+					avionId);
 		}
+		tp.print();
 	}
 
 	private boolean printFlightOriginDestinationSummary() {
@@ -230,8 +234,8 @@ public class FlightsController {
 			System.out.println(LanguageUtils.get("error.noFlights"));
 			return false;
 		}
-		BoxedMessageUtils.horizontalRow("-");
 		System.out.println();
+		TablePrinter tp = new TablePrinter().headers("FlightID", "Origin", "Destination");
 		for (Vuelo v : vuelos) {
 			String numero = v.getNumeroVuelo();
 			String origenNombre = v.getOrigen() != null ? v.getOrigen().getNombre() : "N/A";
@@ -242,11 +246,12 @@ public class FlightsController {
 			String destinoIata = v.getDestino() != null ? v.getDestino().getIata() : "N/A";
 			String destinoIcao = v.getDestino() != null ? v.getDestino().getIcao() : "N/A";
 
-			System.out.println("Flight: " + numero + " | Origin: " + origenNombre + " (" + origenIata + "/" + origenIcao
-					+ ")" + " | Destination: " + destinoNombre + " (" + destinoIata + "/" + destinoIcao + ")");
-			BoxedMessageUtils.horizontalRow("-");
+			String origenStr = origenNombre + " (" + origenIata + "/" + origenIcao + ")";
+			String destinoStr = destinoNombre + " (" + destinoIata + "/" + destinoIcao + ")";
+
+			tp.row(numero, origenStr, destinoStr);
 		}
-		System.out.println();
+		tp.print();
 		return true;
 	}
 

@@ -9,6 +9,7 @@ import entities.Empleado;
 import repositories.EmpleadoDAO;
 import utils.BoxedMessageUtils;
 import utils.LanguageUtils;
+import utils.TablePrinter;
 import utils.ValidationUtils;
 
 public class EmployeeCRUDController {
@@ -51,11 +52,19 @@ public class EmployeeCRUDController {
 		System.out.println();
 		try {
 			List<Empleado> list = EmpleadoDAO.getAllEmpleado();
+			TablePrinter tp = new TablePrinter().headers("ID", "Name", "Surname", "Dept", "User", "Salary");
 			for (Empleado empleado : list) {
-				System.out.println(empleado.toString());
-				System.out.println();
-				BoxedMessageUtils.horizontalRow("-");
+				String dept = empleado.getDepartamento() != null ? empleado.getDepartamento().name() : "";
+				String salary = String.format("%.2f", empleado.getSalario());
+				tp.row(
+						empleado.getEmpleadoId() != null ? empleado.getEmpleadoId().toString() : "",
+						empleado.getNombre() != null ? empleado.getNombre() : "",
+						empleado.getApellido() != null ? empleado.getApellido() : "",
+						dept,
+						empleado.getUsuario() != null ? empleado.getUsuario() : "",
+						salary);
 			}
+			tp.print();
 		} catch (Exception e) {
 			empty = true;
 			System.out.println(e.getMessage());
@@ -119,11 +128,19 @@ public class EmployeeCRUDController {
 				}
 				System.out.println(LanguageUtils.get("empleado.found"));
 				System.out.println();
+				TablePrinter tp = new TablePrinter().headers("ID", "Name", "Surname", "Dept", "User", "Salary");
 				for (Empleado empleado : list) {
-					System.out.println(empleado.toString());
-					System.out.println();
-					BoxedMessageUtils.horizontalRow("*");
+					String dept = empleado.getDepartamento() != null ? empleado.getDepartamento().name() : "";
+					String salary = String.format("%.2f", empleado.getSalario());
+					tp.row(
+							empleado.getEmpleadoId() != null ? empleado.getEmpleadoId().toString() : "",
+							empleado.getNombre() != null ? empleado.getNombre() : "",
+							empleado.getApellido() != null ? empleado.getApellido() : "",
+							dept,
+							empleado.getUsuario() != null ? empleado.getUsuario() : "",
+							salary);
 				}
+				tp.print();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}

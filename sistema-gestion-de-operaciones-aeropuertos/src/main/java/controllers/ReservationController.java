@@ -15,6 +15,7 @@ import utils.BoxedMessageUtils;
 import utils.LanguageUtils;
 import utils.ReservaValidationUtil;
 import utils.SignatureUtil;
+import utils.TablePrinter;
 import utils.ValidationUtils;
 
 public class ReservationController {
@@ -27,12 +28,22 @@ public class ReservationController {
 		System.out.println();
 		try {
 			List<Reserva> list = ReservaDAO.getAllReserva();
+			TablePrinter tp = new TablePrinter().headers("ID", "FlightNo", "Seat", "Passenger", "Price");
 			for (Reserva reserva : list) {
 				empty = false;
-				System.out.println(reserva.toString());
-				BoxedMessageUtils.horizontalRow("-");
-				System.out.println();
+				String flightNo = reserva.getHorarioVuelo() != null ? reserva.getHorarioVuelo().getNumeroVuelo()
+						: String.valueOf(reserva.getVueloId());
+				String seat = reserva.getAsiento() != null ? reserva.getAsiento() : "";
+				String passengerName = reserva.getPasajero() != null ? reserva.getPasajero().getNombre() : "";
+				String price = String.format("%.2f", reserva.getPrecio());
+				tp.row(
+						reserva.getReservaId() != null ? reserva.getReservaId().toString() : "",
+						flightNo,
+						seat,
+						passengerName,
+						price);
 			}
+			tp.print();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
