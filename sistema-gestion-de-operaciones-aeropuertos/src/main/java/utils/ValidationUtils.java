@@ -194,7 +194,8 @@ public class ValidationUtils {
 	public static String readEmail(String string) {
 		while (true) {
 			String res = readString(string);
-			if (Pattern.matches("^[A-Za-z0-9._%+-]+@gmail\\.com$", res)) {
+			// require at least 3 characters before '@' to avoid cases like .@gmail.com
+			if (Pattern.matches("^[A-Za-z0-9._%+-]{3,}@gmail\\.com$", res)) {
 				return res;
 			}
 			System.out.println(LanguageUtils.get("error.invalid.email"));
