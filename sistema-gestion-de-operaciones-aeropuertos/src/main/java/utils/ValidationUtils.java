@@ -214,17 +214,38 @@ public class ValidationUtils {
 		}
 	}
 
+	private static final String PASSWORD_REGEX = "^(?=\\S{12,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).*$";
+
 	public static String readClave(String string) {
 		while (true) {
 			String aux = readString(string);
-			if (Pattern.matches(
-					"^(?=\\S{12,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).*$",
-					aux)) {
-				String res = Md5Util.hash(aux);
-				return res;
+			if (Pattern.matches(PASSWORD_REGEX, aux)) {
+				return Md5Util.hash(aux);
 			}
 			System.out.println(LanguageUtils.get("error.invalid.clave"));
 			System.out.println(LanguageUtils.get("error.invalid.clave.hint"));
+		}
+	}
+
+	/**
+	 * Reads password with requirements hint and confirm step. Returns MD5 hash only
+	 * when both entries match and satisfy security rules.
+	 */
+	public static String readClaveWithConfirm(String prompt, String confirmPrompt) {
+		System.out.println(LanguageUtils.get("security.password.requirements"));
+		while (true) {
+			String first = readString(prompt);
+			if (!Pattern.matches(PASSWORD_REGEX, first)) {
+				System.out.println(LanguageUtils.get("error.invalid.clave"));
+				System.out.println(LanguageUtils.get("error.invalid.clave.hint"));
+				continue;
+			}
+			String second = readString(confirmPrompt);
+			if (!first.equals(second)) {
+				System.out.println(LanguageUtils.get("error.clave.mismatch"));
+				continue;
+			}
+			return Md5Util.hash(first);
 		}
 	}
 

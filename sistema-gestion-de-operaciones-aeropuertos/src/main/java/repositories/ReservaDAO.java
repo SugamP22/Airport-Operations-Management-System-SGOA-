@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import entities.Reserva;
-import utils.HibernateUtils;
+import config.HibernateUtils;
 import utils.LanguageUtils;
 
 public class ReservaDAO {

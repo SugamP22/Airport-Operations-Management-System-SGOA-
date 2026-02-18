@@ -6,7 +6,7 @@ import org.hibernate.Session;
 
 import entities.Aeropuertos;
 import utils.BoxedMessageUtils;
-import utils.HibernateUtils;
+import config.HibernateUtils;
 import utils.LanguageUtils;
 
 public class AeropuertosDAO {

@@ -109,9 +109,7 @@ public class AdminController {
 
 	private void switchPasajero(int option) {
 		switch (option) {
-		case 3 -> PASSENGERS_CONTROLLER.createPassenger();
-		case 2 -> PASSENGERS_CONTROLLER.searchPassenger();
-		case 1 -> PASSENGERS_CONTROLLER.showall();
+		case 1 -> PASSENGERS_CONTROLLER.createPassenger();
 		case 0 -> {
 			System.out.println();
 			System.out.println(LanguageUtils.get("info.adminDashBoard"));

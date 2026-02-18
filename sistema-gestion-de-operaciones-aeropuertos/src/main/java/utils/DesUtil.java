@@ -1,9 +1,9 @@
 package utils;
 
-import java.io.InputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.Properties;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -12,56 +12,62 @@ import javax.crypto.spec.DESKeySpec;
 
 public class DesUtil {
 
-    private static final String TRANSFORMATION = "DES/ECB/PKCS5Padding";
-    private static final String ALGORITHM = "DES";
-    private static final String KEY_PROPERTY = "security.des.key";
-    private static String desKey;
+	private static final String ALGORITHM = "DES";
+	private static final File KEY_FILE = new File("setup/keys/des.key");
+	private static final int DES_KEY_SIZE = 8;
 
-    static {
-        try (InputStream in = DesUtil.class.getClassLoader().getResourceAsStream("db.properties")) {
-            if (in == null) {
-                throw new RuntimeException("db.properties not found");
-            }
-            Properties props = new Properties();
-            props.load(in);
+	/** Loaded key is kept here after loadKey(). */
+	private static SecretKey key;
 
-            desKey = props.getProperty(KEY_PROPERTY);
-            if (desKey == null || desKey.length() != 8) {
-                throw new RuntimeException("DES key must exist and be exactly 8 characters");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Could not load DES key", e);
-        }
-    }
+	public static void loadKey() {
+		if (key != null) {
+			return;
+		}
+		if (!KEY_FILE.exists()) {
+			throw new RuntimeException("Encryption not available: key file not found. Run InstallApp first.");
+		}
+		try (FileInputStream fis = new FileInputStream(KEY_FILE)) {
+			byte[] keyBytes = new byte[DES_KEY_SIZE];
+			int n = fis.read(keyBytes);
+			if (n != DES_KEY_SIZE) {
+				throw new RuntimeException("DES key file must be exactly " + DES_KEY_SIZE + " bytes");
+			}
+			DESKeySpec spec = new DESKeySpec(keyBytes);
+			SecretKeyFactory factory = SecretKeyFactory.getInstance(ALGORITHM);
+			key = factory.generateSecret(spec);
+		} catch (Exception e) {
+			throw new RuntimeException("Could not load DES key: " + e.getMessage(), e);
+		}
+	}
 
-    private static SecretKey buildKey() throws Exception {
-        DESKeySpec keySpec = new DESKeySpec(desKey.getBytes(StandardCharsets.UTF_8));
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
-        return keyFactory.generateSecret(keySpec);
-    }
+	public static String encrypt(String plainText) {
+		if (plainText == null) {
+			return null;
+		}
+		loadKey();
+		try {
+			Cipher cipher = Cipher.getInstance(ALGORITHM);
+			cipher.init(Cipher.ENCRYPT_MODE, key);
+			byte[] encrypted = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
+			return Base64.getEncoder().encodeToString(encrypted);
+		} catch (Exception e) {
+			throw new RuntimeException("DES encrypt failed: " + e.getMessage(), e);
+		}
+	}
 
-    public static String encrypt(String plainText) {
-        if (plainText == null) return null;
-        try {
-            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-            cipher.init(Cipher.ENCRYPT_MODE, buildKey());
-            byte[] encrypted = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
-            return Base64.getEncoder().encodeToString(encrypted);
-        } catch (Exception e) {
-            throw new RuntimeException("DES encryption failed", e);
-        }
-    }
-
-    public static String decrypt(String encryptedText) {
-        if (encryptedText == null) return null;
-        try {
-            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-            cipher.init(Cipher.DECRYPT_MODE, buildKey());
-            byte[] decoded = Base64.getDecoder().decode(encryptedText);
-            byte[] decrypted = cipher.doFinal(decoded);
-            return new String(decrypted, StandardCharsets.UTF_8);
-        } catch (Exception e) {
-            throw new RuntimeException("DES decryption failed", e);
-        }
-    }
+	public static String decrypt(String base64Cipher) {
+		if (base64Cipher == null || base64Cipher.isEmpty()) {
+			return null;
+		}
+		loadKey();
+		try {
+			byte[] encrypted = Base64.getDecoder().decode(base64Cipher);
+			Cipher cipher = Cipher.getInstance(ALGORITHM);
+			cipher.init(Cipher.DECRYPT_MODE, key);
+			byte[] decrypted = cipher.doFinal(encrypted);
+			return new String(decrypted, StandardCharsets.UTF_8);
+		} catch (Exception e) {
+			throw new RuntimeException("DES decrypt failed: " + e.getMessage(), e);
+		}
+	}
 }

@@ -40,11 +40,11 @@ public class MenuUtils {
 	public static void menuEmpleado() {
 		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("ui.title.employee"), "=");
 		System.out.println();
-		System.out.println("1. " + LanguageUtils.get("option.empleado.consultarVuelos"));
-		System.out.println("2. " + LanguageUtils.get("option.empleado.reserva"));
-		System.out.println("3. " + LanguageUtils.get("option.empleado.pasajero"));
-		System.out.println("4. " + LanguageUtils.get("option.empleado.consultarClima"));
-		System.out.println("5. " + LanguageUtils.get("option.empleado.verificarDSA"));
+		System.out.println("1. " + LanguageUtils.get("option.admin.vuelos"));
+		System.out.println("2. " + LanguageUtils.get("option.admin.reservas"));
+		System.out.println("3. " + LanguageUtils.get("option.admin.pasajeros"));
+		System.out.println("4. " + LanguageUtils.get("option.admin.meterologicos"));
+		System.out.println("5. " + LanguageUtils.get("option.admin.verificar"));
 		System.out.println("0. " + LanguageUtils.get("option.salir"));
 		System.out.println();
 		BoxedMessageUtils.horizontalRow("*");
@@ -156,9 +156,7 @@ public class MenuUtils {
 	public static void menuPasajeroAdmin() {
 		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("ui.title.passengers"), "=");
 		System.out.println();
-		System.out.println("1. " + LanguageUtils.get("option.passenger.showAll"));
-		System.out.println("2. " + LanguageUtils.get("option.passenger.search"));
-		System.out.println("3. " + LanguageUtils.get("option.passenger.create"));
+		System.out.println("1. " + LanguageUtils.get("option.passenger.create"));
 		System.out.println("0. " + LanguageUtils.get("option.back.admin"));
 		System.out.println();
 		BoxedMessageUtils.horizontalRow("*");

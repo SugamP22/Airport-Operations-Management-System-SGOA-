@@ -29,7 +29,9 @@ public class EmployeeCRUDController {
 		double salario = ValidationUtils.readDouble(LanguageUtils.get("empleado.input.salario"));
 		Departamento departmento = ValidationUtils.readDepartmento(LanguageUtils.get("empleado.input.departamento"));
 		String usuario = ValidationUtils.readString(LanguageUtils.get("empleado.input.usuario"));
-		String clave = ValidationUtils.readClave(LanguageUtils.get("empleado.input.clave"));
+		String clave = ValidationUtils.readClaveWithConfirm(
+				LanguageUtils.get("empleado.input.clave"),
+				LanguageUtils.get("empleado.input.clave.confirm"));
 		Empleado empledo = new Empleado(nombre, apellido, dated, sexo, calle, ciudad, pais, email, telefono, salario,
 				departmento, usuario, clave);
 		try {

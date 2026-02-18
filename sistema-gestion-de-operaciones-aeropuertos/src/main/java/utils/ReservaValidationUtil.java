@@ -1,5 +1,6 @@
 package utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entities.HorarioVuelo;
@@ -39,8 +40,8 @@ public class ReservaValidationUtil {
 			return null;
 		}
 		for (Pasajero pasajero : listaPasajero) {
-			System.out.println(String.format(LanguageUtils.get("reservation.passenger.preview"), pasajero.getPasajeroId(),
-					pasajero.getNombre(), pasajero.getApellido(), pasajero.getPassport()));
+			System.out.println(String.format(LanguageUtils.get("reservation.passenger.preview"),
+					pasajero.getPasajeroId(), pasajero.getNombre(), pasajero.getApellido(), pasajero.getPassport()));
 			BoxedMessageUtils.horizontalRow("-");
 			System.out.println();
 		}
@@ -77,6 +78,14 @@ public class ReservaValidationUtil {
 		Reserva reserva = new Reserva();
 		reserva.setHorarioVuelo(h);
 		reserva.setPasajero(p);
+		// to keep bidirectional association in memory
+		if (p.getListReserva() != null) {
+			p.getListReserva().add(reserva);
+		} else {
+			List<Reserva> reservas = new ArrayList<>();
+			reservas.add(reserva);
+			p.setListReserva(reservas);
+		}
 		reserva.setVueloId(idVuelo);
 		reserva.setAsiento(asiento);
 		reserva.setPrecio(precio);

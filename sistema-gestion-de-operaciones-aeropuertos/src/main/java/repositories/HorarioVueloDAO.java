@@ -5,7 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 
 import entities.HorarioVuelo;
-import utils.HibernateUtils;
+import config.HibernateUtils;
 
 public class HorarioVueloDAO {
 	public static HorarioVuelo getSchedulesbyFlight(String numeroVuelo) {

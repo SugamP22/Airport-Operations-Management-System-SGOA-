@@ -3,9 +3,10 @@ package repositories;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import entities.Pasajero;
-import utils.HibernateUtils;
+import config.HibernateUtils;
 
 public class PasajeroDAO {
 
@@ -24,6 +25,21 @@ public class PasajeroDAO {
 		try {
 			Pasajero p = session.get(Pasajero.class, idPasajero);
 			return p;
+		} finally {
+			session.close();
+		}
+
+	}
+
+	public static void createPasajero(Pasajero p) {
+		Session session = HibernateUtils.getSession().openSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			session.save(p);
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			throw e;
 		} finally {
 			session.close();
 		}

@@ -7,7 +7,7 @@ import org.hibernate.Transaction;
 
 import entities.Departamento;
 import entities.Empleado;
-import utils.HibernateUtils;
+import config.HibernateUtils;
 import utils.LanguageUtils;
 
 public class EmpleadoDAO {

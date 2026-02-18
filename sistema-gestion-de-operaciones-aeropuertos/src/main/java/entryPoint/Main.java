@@ -1,7 +1,7 @@
 package entryPoint;
 
 import controllers.LoginController;
-import utils.HibernateUtils;
+import config.HibernateUtils;
 
 /**
  * This class is the entry point of the application

@@ -7,7 +7,7 @@ import org.hibernate.Transaction;
 
 import entities.HorarioVuelo;
 import entities.Vuelo;
-import utils.HibernateUtils;
+import config.HibernateUtils;
 import utils.LanguageUtils;
 
 public class VueloDAO {

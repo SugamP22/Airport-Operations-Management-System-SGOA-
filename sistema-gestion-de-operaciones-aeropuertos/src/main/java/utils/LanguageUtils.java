@@ -16,7 +16,7 @@ public class LanguageUtils {
 		Locale locale = Locale.forLanguageTag(languageCode);
 		// message referes to the base name of the properties file i.e
 		// message_languageCode
-		bundle = ResourceBundle.getBundle("message", locale);
+		bundle = ResourceBundle.getBundle("language.message", locale);
 	}
 
 	/**

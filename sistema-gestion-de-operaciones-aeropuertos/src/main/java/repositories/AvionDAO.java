@@ -6,7 +6,7 @@ import org.hibernate.Session;
 
 import entities.Avion;
 import utils.BoxedMessageUtils;
-import utils.HibernateUtils;
+import config.HibernateUtils;
 import utils.LanguageUtils;
 
 public class AvionDAO {

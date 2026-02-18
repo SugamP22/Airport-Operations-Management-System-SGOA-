@@ -1,76 +1,113 @@
 package entryPoint;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.SecureRandom;
-import java.util.Base64;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.DSAPrivateKeySpec;
+import java.security.spec.DSAPublicKeySpec;
+
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
 
 public class InstallApp {
 
-	private static final Path SETUP_DIR = Paths.get("setup");
-	private static final Path KEYS_DIR = SETUP_DIR.resolve("keys");
-	private static final Path FIRMAS_DIR = SETUP_DIR.resolve("firmas");
+	private static final File SETUP_DIR = new File("setup");
+	private static final File KEYS_DIR = new File(SETUP_DIR, "keys");
+	private static final File FIRMAS_DIR = new File(SETUP_DIR, "firmas");
 
-	private static final Path DES_KEY_FILE = KEYS_DIR.resolve("des.key");
-	private static final Path DSA_PRIVATE_FILE = KEYS_DIR.resolve("dsa_private.key");
-	private static final Path DSA_PUBLIC_FILE = KEYS_DIR.resolve("dsa_public.key");
+	private static final File DES_KEY_FILE = new File(KEYS_DIR, "des.key");
+	private static final File DSA_PRIVATE_FILE = new File(KEYS_DIR, "dsa_private.key");
+	private static final File DSA_PUBLIC_FILE = new File(KEYS_DIR, "dsa_public.key");
 
 	public static void main(String[] args) {
-//		try {
-//			createFolders();
-//			createDesKeyIfMissing();
-//			createDsaKeysIfMissing();
-//			System.out.println("InstallApp completed successfully.");
-//		} catch (Exception e) {
-//			System.out.println("InstallApp failed: " + e.getMessage());
-//		}
+		try {
+			createFolders();
+			createDesKeyIfMissing();
+			createDsaKeyIfMissing();
+			System.out.println("InstallApp completed successfully.");
+		} catch (Exception e) {
+			System.out.println("InstallApp failed: " + e.getMessage());
+		}
 	}
 
-	private static void createFolders() throws Exception {
-		Files.createDirectories(KEYS_DIR);
-		Files.createDirectories(FIRMAS_DIR);
-		System.out.println("Folders ready: " + KEYS_DIR + " and " + FIRMAS_DIR);
-	}
-
-	private static void createDesKeyIfMissing() throws Exception {
-		if (Files.exists(DES_KEY_FILE)) {
-			System.out.println("DES key already exists.");
+	private static void createDesKeyIfMissing() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
+		if (DES_KEY_FILE.exists()) {
+			System.out.println("Key already in existence");
 			return;
 		}
-
 		KeyGenerator kg = KeyGenerator.getInstance("DES");
-		kg.init(56, new SecureRandom()); // DES key size
 		SecretKey key = kg.generateKey();
 
-		String encoded = Base64.getEncoder().encodeToString(key.getEncoded());
-		Files.writeString(DES_KEY_FILE, encoded);
+		SecretKeyFactory factory = SecretKeyFactory.getInstance("DES");
+		DESKeySpec keySpec = (DESKeySpec) factory.getKeySpec(key, DESKeySpec.class);
 
-		System.out.println("DES key generated: " + DES_KEY_FILE);
+		FileOutputStream fos = new FileOutputStream(DES_KEY_FILE);
+		fos.write(keySpec.getKey());
+		fos.close();
+		System.out.println("DES key generated and saved to " + DES_KEY_FILE.getPath());
 	}
 
-	private static void createDsaKeysIfMissing() throws Exception {
-		if (Files.exists(DSA_PRIVATE_FILE) && Files.exists(DSA_PUBLIC_FILE)) {
-			System.out.println("DSA keys already exist.");
+	private static void createDsaKeyIfMissing() throws Exception {
+		if (DSA_PRIVATE_FILE.exists() && DSA_PUBLIC_FILE.exists()) {
+			System.out.println("DSA keys already exist");
 			return;
 		}
 
-		KeyPairGenerator kpg = KeyPairGenerator.getInstance("DSA");
-		kpg.initialize(2048, new SecureRandom());
-		KeyPair kp = kpg.generateKeyPair();
+		// Generate DSA key pair
+		KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA");
+		keyGen.initialize(1024); // Key size
+		KeyPair keyPair = keyGen.generateKeyPair();
 
-		String privateB64 = Base64.getEncoder().encodeToString(kp.getPrivate().getEncoded());
-		String publicB64 = Base64.getEncoder().encodeToString(kp.getPublic().getEncoded());
+		PrivateKey privateKey = keyPair.getPrivate();
+		PublicKey publicKey = keyPair.getPublic();
 
-		Files.writeString(DSA_PRIVATE_FILE, privateB64);
-		Files.writeString(DSA_PUBLIC_FILE, publicB64);
+		// Extract DSA parameters
+		KeyFactory keyFactory = KeyFactory.getInstance("DSA");
+		DSAPrivateKeySpec privateKeySpec = keyFactory.getKeySpec(privateKey, DSAPrivateKeySpec.class);
+		DSAPublicKeySpec publicKeySpec = keyFactory.getKeySpec(publicKey, DSAPublicKeySpec.class);
 
-		System.out.println("DSA keypair generated:");
-		System.out.println(" - " + DSA_PRIVATE_FILE);
-		System.out.println(" - " + DSA_PUBLIC_FILE);
+		// Save private key
+		try (PrintWriter pw = new PrintWriter(new FileOutputStream(DSA_PRIVATE_FILE))) {
+			pw.println(privateKeySpec.getG());
+			pw.println(privateKeySpec.getP());
+			pw.println(privateKeySpec.getQ());
+			pw.println(privateKeySpec.getX());
+		}
+
+		// Save public key
+		try (PrintWriter pw = new PrintWriter(new FileOutputStream(DSA_PUBLIC_FILE))) {
+			pw.println(publicKeySpec.getY());
+			pw.println(publicKeySpec.getP());
+			pw.println(publicKeySpec.getQ());
+			pw.println(publicKeySpec.getG());
+		}
+
+		System.out.println("DSA keys generated and saved to " + KEYS_DIR.getPath());
 	}
+
+	private static void createFolders() {
+		if (!SETUP_DIR.exists()) {
+			KEYS_DIR.mkdirs();
+			FIRMAS_DIR.mkdirs();
+			return;
+		}
+		if (!KEYS_DIR.exists()) {
+			KEYS_DIR.mkdirs();
+		}
+		if (!FIRMAS_DIR.exists()) {
+			FIRMAS_DIR.mkdirs();
+		}
+
+	}
+
 }
