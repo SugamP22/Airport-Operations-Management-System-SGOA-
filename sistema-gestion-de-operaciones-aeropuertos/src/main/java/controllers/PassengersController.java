@@ -41,10 +41,27 @@ public class PassengersController {
 			String telefono = PasajeroValidationUtil.readTelefono(LanguageUtils.get("passenger.input.telefono"));
 			d.setTelefono(telefono);
 			d.setPasajero(p);
+			p.setDetallesPasajeros(d);
 			PasajeroDAO.createPasajero(p);
 			System.out.println(LanguageUtils.get("passenger.create.success"));
 		} catch (Exception e) {
 			System.out.println(LanguageUtils.get("passenger.create.error"));
+		}
+	}
+
+	public void showAllPassengers() {
+		try {
+			List<Pasajero> pasajeros = PasajeroDAO.getAllPasajeros();
+			if (pasajeros == null || pasajeros.isEmpty()) {
+				System.out.println(LanguageUtils.get("error.reserva.emptyPassengers"));
+				return;
+			}
+			for (Pasajero p : pasajeros) {
+				System.out.println(p.toString());
+				System.out.println();
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 	}
 

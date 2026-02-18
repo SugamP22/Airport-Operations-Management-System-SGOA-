@@ -40,7 +40,10 @@ public class AdminController {
 		case 3 -> showMenuPasajero();
 		case 4 -> showMenuEmployee();
 		case 5 -> System.out.println(LanguageUtils.get("info.module.weather.pending"));
-		case 6 -> System.out.println(LanguageUtils.get("info.module.security.dsa.pending"));
+		case 6 -> {
+			// Verify reservation signatures (DSA)
+			new ReservationController().verifyReservation();
+		}
 		case 0 -> {
 			// normal exit from admin dashboard, no error/shutdown text
 		}
@@ -110,6 +113,7 @@ public class AdminController {
 	private void switchPasajero(int option) {
 		switch (option) {
 		case 1 -> PASSENGERS_CONTROLLER.createPassenger();
+		case 2 -> PASSENGERS_CONTROLLER.showAllPassengers();
 		case 0 -> {
 			System.out.println();
 			System.out.println(LanguageUtils.get("info.adminDashBoard"));

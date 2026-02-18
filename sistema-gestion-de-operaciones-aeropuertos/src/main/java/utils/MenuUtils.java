@@ -157,6 +157,7 @@ public class MenuUtils {
 		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("ui.title.passengers"), "=");
 		System.out.println();
 		System.out.println("1. " + LanguageUtils.get("option.passenger.create"));
+		System.out.println("2. " + LanguageUtils.get("option.passenger.showAll"));
 		System.out.println("0. " + LanguageUtils.get("option.back.admin"));
 		System.out.println();
 		BoxedMessageUtils.horizontalRow("*");

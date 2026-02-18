@@ -26,7 +26,15 @@ public class FlightsController {
 			BoxedMessageUtils.boxWithOutEvenSpacing(LanguageUtils.get("flight.input.title"), "=");
 			System.out.println();
 
-			String numeroVuelo = ValidationUtils.readString(LanguageUtils.get("flight.input.numero"));
+			// Validate flight number: 3-4 digits only
+			String numeroVuelo;
+			while (true) {
+				numeroVuelo = ValidationUtils.readString(LanguageUtils.get("flight.input.numero"));
+				if (numeroVuelo.matches("^[0-9]{3,4}$")) {
+					break;
+				}
+				System.out.println(LanguageUtils.get("error.invalid.flightNumber"));
+			}
 			Vuelo existing = VueloDAO.getFLightByID(numeroVuelo);
 			if (existing != null) {
 				throw new IllegalArgumentException(LanguageUtils.get("error.flight.existence"));
@@ -60,7 +68,7 @@ public class FlightsController {
 			BoxedMessageUtils.horizontalRow("-");
 
 			VueloDAO.createFlight(vuelo);
-			System.out.println(LanguageUtils.get("flight.found"));
+			System.out.println(LanguageUtils.get("flight.create.success"));
 			System.out.println(vuelo.toString());
 			System.out.println();
 

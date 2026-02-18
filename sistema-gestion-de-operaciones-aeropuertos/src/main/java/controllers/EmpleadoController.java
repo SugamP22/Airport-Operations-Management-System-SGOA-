@@ -37,7 +37,10 @@ public class EmpleadoController {
 		case 2 -> showMenuReserva();
 		case 3 -> showMenuPasajero();
 		case 4 -> System.out.println(LanguageUtils.get("info.module.weather.pending"));
-		case 5 -> System.out.println(LanguageUtils.get("info.module.security.dsa.pending"));
+		case 5 -> {
+			// Verify reservation signatures (DSA)
+			new ReservationController().verifyReservation();
+		}
 		case 0 -> {
 			// Volviendo de admin panel
 		}

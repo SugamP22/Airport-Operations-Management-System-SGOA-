@@ -2,6 +2,7 @@ package utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import entities.HorarioVuelo;
 import entities.Pasajero;
@@ -40,8 +41,16 @@ public class ReservaValidationUtil {
 			return null;
 		}
 		for (Pasajero pasajero : listaPasajero) {
+			String decryptedPassport;
+			try {
+				decryptedPassport = DesUtil.decrypt(pasajero.getPassport());
+			} catch (Exception e) {
+				// For passengers created before DES was applied or with invalid data,
+				// fall back to the stored value so the list still works.
+				decryptedPassport = pasajero.getPassport();
+			}
 			System.out.println(String.format(LanguageUtils.get("reservation.passenger.preview"),
-					pasajero.getPasajeroId(), pasajero.getNombre(), pasajero.getApellido(), pasajero.getPassport()));
+					pasajero.getPasajeroId(), pasajero.getNombre(), pasajero.getApellido(), decryptedPassport));
 			BoxedMessageUtils.horizontalRow("-");
 			System.out.println();
 		}
@@ -68,7 +77,15 @@ public class ReservaValidationUtil {
 		BoxedMessageUtils.horizontalRow("-");
 		System.out.println();
 
-		String asiento = ValidationUtils.readString(LanguageUtils.get("reservation.input.seat"));
+		String asiento;
+		while (true) {
+			asiento = ValidationUtils.readString(LanguageUtils.get("reservation.input.seat"));
+			// Seat: 1-4 chars, letters or digits, must contain at least one letter
+			if (Pattern.matches("^(?=.*[A-Za-z])[A-Za-z0-9]{1,4}$", asiento)) {
+				break;
+			}
+			System.out.println(LanguageUtils.get("error.reserva.invalidSeat"));
+		}
 		BoxedMessageUtils.horizontalRow("-");
 		System.out.println();
 
@@ -78,14 +95,6 @@ public class ReservaValidationUtil {
 		Reserva reserva = new Reserva();
 		reserva.setHorarioVuelo(h);
 		reserva.setPasajero(p);
-		// to keep bidirectional association in memory
-		if (p.getListReserva() != null) {
-			p.getListReserva().add(reserva);
-		} else {
-			List<Reserva> reservas = new ArrayList<>();
-			reservas.add(reserva);
-			p.setListReserva(reservas);
-		}
 		reserva.setVueloId(idVuelo);
 		reserva.setAsiento(asiento);
 		reserva.setPrecio(precio);

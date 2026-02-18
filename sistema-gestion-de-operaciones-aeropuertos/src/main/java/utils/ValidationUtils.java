@@ -77,7 +77,7 @@ public class ValidationUtils {
 			} catch (IOException e) {
 				System.out.println(LanguageUtils.get("error.read.input"));
 			} catch (NumberFormatException e) {
-				System.out.println(LanguageUtils.get("error.empty"));
+				System.out.println(LanguageUtils.get("error.numberFormat"));
 			}
 		}
 

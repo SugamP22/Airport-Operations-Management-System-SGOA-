@@ -5,8 +5,8 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import entities.Pasajero;
 import config.HibernateUtils;
+import entities.Pasajero;
 
 public class PasajeroDAO {
 
@@ -35,7 +35,15 @@ public class PasajeroDAO {
 		Session session = HibernateUtils.getSession().openSession();
 		Transaction tx = session.beginTransaction();
 		try {
+			// Save main passenger
 			session.save(p);
+
+			if (p.getDetallesPasajeros() != null) {
+				p.getDetallesPasajeros().setPasajero(p);
+				p.getDetallesPasajeros().setPasajeroId(p.getPasajeroId());
+				session.save(p.getDetallesPasajeros());
+			}
+
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
