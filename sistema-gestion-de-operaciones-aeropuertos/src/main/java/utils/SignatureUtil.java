@@ -1,5 +1,10 @@
 package utils;
 
+/**
+ * Utility I use to load DSA keys from files and sign/verify reservation data
+ * (Reserva) using SHA1withDSA, storing the signatures under setup/firmas.
+ */
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

@@ -1,5 +1,10 @@
 package utils;
 
+/**
+ * Small utility I use to encrypt and decrypt sensitive passenger fields
+ * (passport, email, phone) with DES, loading the key from setup/keys/des.key.
+ */
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;

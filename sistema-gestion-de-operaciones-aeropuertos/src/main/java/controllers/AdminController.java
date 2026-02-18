@@ -1,5 +1,10 @@
 package controllers;
 
+/**
+ * Main admin controller I use to show the admin dashboard and route options to
+ * the different modules (flights, reservations, passengers, employees, etc.).
+ */
+
 import authService.CurrentUser;
 import utils.LanguageUtils;
 import utils.MenuUtils;
@@ -22,6 +27,7 @@ public class AdminController {
 	}
 
 	public void openDashboard() {
+		// This is the main loop I use to keep showing the admin menu until the user exits
 		System.out.println(CurrentUser.empleado.getNombre() + " " + LanguageUtils.get("user.found"));
 		int option;
 		do {
@@ -77,6 +83,7 @@ public class AdminController {
 	}
 
 	private void showMenuFlights() {
+		// Here I show the admin flights submenu and delegate each option to FlightsController
 		int option;
 		do {
 			MenuUtils.MenuCRUDFlightsAdmin();
@@ -101,6 +108,7 @@ public class AdminController {
 	}
 
 	private void showMenuPasajero() {
+		// Here I show the passenger submenu for admin (create and show all passengers)
 		int option;
 		do {
 			MenuUtils.menuPasajeroAdmin();

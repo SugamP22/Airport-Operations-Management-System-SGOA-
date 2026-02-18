@@ -1,5 +1,10 @@
 package utils;
 
+/**
+ * Helper class I use to centralize all the input flow and validation needed
+ * before creating a reservation (choosing schedule, passenger and data).
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;

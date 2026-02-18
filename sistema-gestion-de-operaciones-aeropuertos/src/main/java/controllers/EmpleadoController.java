@@ -1,5 +1,10 @@
 package controllers;
 
+/**
+ * Employee controller I use to show the employee dashboard and give access to
+ * read-only operations (flights, reservations, passengers, weather, DSA verify).
+ */
+
 import authService.CurrentUser;
 import utils.LanguageUtils;
 import utils.MenuUtils;
@@ -20,6 +25,7 @@ public class EmpleadoController {
 	}
 
 	public void openDashboard() {
+		// This is the main loop I use to show the employee menu until the user exits
 		System.out.println(CurrentUser.empleado.getNombre() + " " + LanguageUtils.get("user.found"));
 		int option;
 		do {
@@ -50,6 +56,7 @@ public class EmpleadoController {
 	}
 
 	private void showMenuFlights() {
+		// Employee version of the flights menu (read-only operations)
 		int option;
 		do {
 			MenuUtils.MenuCRUDFlightsAdmin();
@@ -74,6 +81,7 @@ public class EmpleadoController {
 	}
 
 	private void showMenuPasajero() {
+		// Employee version of the passenger submenu (search / show all)
 		int option;
 		do {
 			MenuUtils.menuPasajeroAdmin();

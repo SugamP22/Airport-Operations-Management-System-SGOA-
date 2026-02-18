@@ -1,5 +1,10 @@
 package controllers;
 
+/**
+ * Controller I use to manage passenger data (create passengers and list all
+ * passengers) in the console UI.
+ */
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +20,7 @@ import utils.ValidationUtils;
 public class PassengersController {
 
 	public void createPassenger() {
+		// Here I read all the passenger data from console, encrypt sensitive fields and save passenger + details
 		try {
 			String passport = PasajeroValidationUtil.readPassport(LanguageUtils.get("passenger.input.passport"));
 			String nombre = ValidationUtils.readString(LanguageUtils.get("passenger.input.nombre"));
@@ -50,6 +56,7 @@ public class PassengersController {
 	}
 
 	public void showAllPassengers() {
+		// Simple helper I use to print all passengers using toString(), without decrypting anything
 		try {
 			List<Pasajero> pasajeros = PasajeroDAO.getAllPasajeros();
 			if (pasajeros == null || pasajeros.isEmpty()) {

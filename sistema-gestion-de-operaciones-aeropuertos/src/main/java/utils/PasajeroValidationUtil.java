@@ -1,5 +1,10 @@
 package utils;
 
+/**
+ * Helper I use to validate and encrypt passenger-specific fields (passport,
+ * email, phone) before saving them.
+ */
+
 import java.util.regex.Pattern;
 
 public class PasajeroValidationUtil {

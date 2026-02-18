@@ -12,7 +12,7 @@ import utils.LanguageUtils;
 
 public class EmpleadoDAO {
 	public Empleado findByUsuarioYClave(String Usuario, String clave) {
-
+		// I use this at login to find one employee by username and hashed password
 		Session session = HibernateUtils.getSession().openSession();
 		try {
 			String hql = "From Empleado e Where e.usuario = :usuario AND e.clave = :clave";
@@ -27,6 +27,7 @@ public class EmpleadoDAO {
 	}
 
 	public static void removeEmpleado(Integer id) {
+		// Delete employee by ID with a not-found check before removing
 		Session session = HibernateUtils.getSession().openSession();
 		Transaction tx = session.beginTransaction();
 		try {
@@ -44,6 +45,7 @@ public class EmpleadoDAO {
 	}
 
 	public static List<Empleado> getAllEmpleado() {
+		// Helper I use to list all employees; throws if there are none
 		Session session = HibernateUtils.getSession().openSession();
 		try {
 			List<Empleado> r = session.createQuery("From Empleado", Empleado.class).list();
@@ -56,6 +58,7 @@ public class EmpleadoDAO {
 	}
 
 	public static Empleado getEmpleadoByUsername(String username) {
+		// Fetch one employee by username (used in modify/search flows)
 		Session session = HibernateUtils.getSession().openSession();
 		try {
 			String hql = "From Empleado r where r.usuario = :username";
@@ -67,6 +70,7 @@ public class EmpleadoDAO {
 	}
 
 	public static List<Empleado> getEmpleadoByDepartamento(Departamento departamento) {
+		// Get all employees that belong to a given department
 		Session session = HibernateUtils.getSession().openSession();
 		try {
 			String hql = "From Empleado e where e.departamento = :departamento";
@@ -79,6 +83,7 @@ public class EmpleadoDAO {
 	}
 
 	public static Empleado createEmpleado(Empleado empleado) {
+		// Persist a new employee in a transaction and return the managed instance
 		Session session = HibernateUtils.getSession().openSession();
 		Transaction tx = session.beginTransaction();
 		try {
@@ -94,6 +99,7 @@ public class EmpleadoDAO {
 	}
 
 	public static void updateEmpleado(Empleado empleado) {
+		// Update an existing employee with a simple merge, after checking it exists
 		Session session = HibernateUtils.getSession().openSession();
 		Transaction tx = session.beginTransaction();
 		try {

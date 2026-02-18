@@ -12,6 +12,7 @@ import utils.LanguageUtils;
 public class AeropuertosDAO {
 
 	public static void readAll() {
+		// I use this to print all airports so the user can see the available IDs
 		Session session = HibernateUtils.getSession().openSession();
 		try {
 			List<Aeropuertos> list = session.createQuery("From Aeropuertos", Aeropuertos.class).list();
@@ -31,6 +32,7 @@ public class AeropuertosDAO {
 	}
 
 	public static Aeropuertos getById(Integer id) {
+		// Simple helper to fetch one airport by its primary key
 		Session session = HibernateUtils.getSession().openSession();
 		try {
 			Aeropuertos a = session.get(Aeropuertos.class, id);

@@ -1,5 +1,10 @@
 package controllers;
 
+/**
+ * Controller I use to work with reservations: create, search, list and verify
+ * DSA signatures from the console.
+ */
+
 import java.util.List;
 
 import entities.HorarioVuelo;
@@ -16,6 +21,7 @@ public class ReservationController {
 	boolean empty;
 
 	public void showAll() {
+		// I use this to list all reservations before searching or verifying signatures
 		empty = true;
 		BoxedMessageUtils.horizontalRow("-");
 		System.out.println();
@@ -50,6 +56,7 @@ public class ReservationController {
 	}
 
 	public void createReservation() {
+		// Main flow to create a reservation: choose schedule, passenger and data, then sign it
 		try {
 			BoxedMessageUtils.horizontalRow("-");
 			System.out.println();
@@ -82,6 +89,7 @@ public class ReservationController {
 	}
 
 	public void verifyReservation() {
+		// I use this method when admin/employee wants to verify the DSA signature of one reservation
 		showAll();
 		if (!empty) {
 			BoxedMessageUtils.horizontalRow("*");

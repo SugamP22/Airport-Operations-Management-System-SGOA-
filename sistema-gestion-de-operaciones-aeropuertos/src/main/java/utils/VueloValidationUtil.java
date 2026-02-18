@@ -1,5 +1,10 @@
 package utils;
 
+/**
+ * Helper I use to validate and read airport and airplane data from the console
+ * when I am creating or updating flights.
+ */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

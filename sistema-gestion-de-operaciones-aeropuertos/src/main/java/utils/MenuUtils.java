@@ -1,5 +1,10 @@
 package utils;
 
+/**
+ * Utility I use to print all the console menus (login, admin, employee, and
+ * each module submenu) with a consistent boxed style.
+ */
+
 public class MenuUtils {
 	/**
 	 * login title

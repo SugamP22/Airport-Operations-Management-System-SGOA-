@@ -11,6 +11,7 @@ import utils.LanguageUtils;
 
 public class ReservaDAO {
 	public static void removeReserva(Integer id) {
+		// I use this to delete a reservation by ID with basic not-found validation
 		Session session = HibernateUtils.getSession().openSession();
 		Transaction tx = session.beginTransaction();
 		try {
@@ -28,6 +29,7 @@ public class ReservaDAO {
 	}
 
 	public static List<Reserva> getAllReserva() {
+		// Helper I use to list all reservations; throws if there are none
 		Session session = HibernateUtils.getSession().openSession();
 		try {
 			List<Reserva> r = session.createQuery("From Reserva", Reserva.class).list();
@@ -40,6 +42,7 @@ public class ReservaDAO {
 	}
 
 	public static Reserva getReservaByID(Integer id) {
+		// I use this to fetch a single reservation by ID or throw a not-found error
 		Session session = HibernateUtils.getSession().openSession();
 		try {
 			String hql = "From Reserva r where r.reservaId = :id";
@@ -53,6 +56,7 @@ public class ReservaDAO {
 	}
 
 	public static void updateReserva(Reserva reserva) {
+		// Simple update of an existing reservation using merge, with not-found check
 		Session session = HibernateUtils.getSession().openSession();
 		Transaction tx = session.beginTransaction();
 		try {
@@ -70,6 +74,7 @@ public class ReservaDAO {
 	}
 
 	public static void createReserva(Reserva reserva) {
+		// Create and persist a new reservation, used from ReservationController
 		Session session = HibernateUtils.getSession().openSession();
 		Transaction transaction = session.beginTransaction();
 		try {

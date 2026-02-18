@@ -1,5 +1,10 @@
 package repositories;
 
+/**
+ * DAO I use to query and persist passengers (Pasajero) and their 1-1 detail
+ * records with Hibernate.
+ */
+
 import java.util.List;
 
 import org.hibernate.Session;
@@ -11,6 +16,7 @@ import entities.Pasajero;
 public class PasajeroDAO {
 
 	public static List<Pasajero> getAllPasajeros() {
+		// Helper I use whenever I need to list or select passengers
 		Session session = HibernateUtils.getSession().openSession();
 		try {
 			List<Pasajero> pasajeros = session.createQuery("From Pasajero", Pasajero.class).list();
@@ -32,6 +38,7 @@ public class PasajeroDAO {
 	}
 
 	public static void createPasajero(Pasajero p) {
+		// Create a new passenger and its DetallePasajero in one transaction
 		Session session = HibernateUtils.getSession().openSession();
 		Transaction tx = session.beginTransaction();
 		try {

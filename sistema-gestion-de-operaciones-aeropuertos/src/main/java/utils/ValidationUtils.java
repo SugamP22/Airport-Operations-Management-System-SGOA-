@@ -1,5 +1,10 @@
 package utils;
 
+/**
+ * Utility class I use to read and validate all primitive input (String, int,
+ * dates, email, phone, passwords, etc.) from the console in a single place.
+ */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,10 +15,6 @@ import java.util.regex.Pattern;
 
 import entities.Departamento;
 
-/**
- * This class is the data validation class used mainly to make sure that the
- * data entered by the user is correct to avoid exception afterwards
- */
 public class ValidationUtils {
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 

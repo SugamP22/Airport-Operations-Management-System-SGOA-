@@ -1,5 +1,10 @@
 package repositories;
 
+/**
+ * DAO I use to access and manage flights (Vuelo) and their schedules
+ * (HorarioVuelo) with Hibernate.
+ */
+
 import java.util.List;
 
 import org.hibernate.Session;
@@ -13,6 +18,7 @@ import utils.LanguageUtils;
 public class VueloDAO {
 
 	public static List<Vuelo> getAllFlights() {
+		// I use this to get a list of all flights for listing and filters
 		Session session = HibernateUtils.getSession().openSession();
 		try {
 			List<Vuelo> vuelos = session.createQuery("From Vuelo", Vuelo.class).list();
@@ -35,6 +41,7 @@ public class VueloDAO {
 	}
 
 	public static void createFlight(Vuelo vuelo) {
+		// Create a new flight and also persist its HorarioVuelo if present
 		Session session = HibernateUtils.getSession().openSession();
 		Transaction tx = session.beginTransaction();
 		try {

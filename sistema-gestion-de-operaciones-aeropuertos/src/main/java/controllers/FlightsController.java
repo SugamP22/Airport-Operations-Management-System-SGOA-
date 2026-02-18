@@ -1,5 +1,10 @@
 package controllers;
 
+/**
+ * Controller I use to manage all flight operations (create, update, search, delete and view schedules)
+ * through the console menus.
+ */
+
 import java.util.List;
 
 import entities.Aeropuertos;
@@ -26,7 +31,8 @@ public class FlightsController {
 			BoxedMessageUtils.boxWithOutEvenSpacing(LanguageUtils.get("flight.input.title"), "=");
 			System.out.println();
 
-			// Validate flight number: 3-4 digits only
+			// Here I validate that the flight number is between 3 and 4 digits (only
+			// numbers)
 			String numeroVuelo;
 			while (true) {
 				numeroVuelo = ValidationUtils.readString(LanguageUtils.get("flight.input.numero"));
@@ -81,6 +87,7 @@ public class FlightsController {
 	}
 
 	public void readALLFlights() {
+		// I use this to print all flights in a simple list for the other operations
 		System.out.println();
 		BoxedMessageUtils.boxWithOutEvenSpacing(LanguageUtils.get("flight.all.title"), "=");
 		System.out.println();
@@ -235,9 +242,8 @@ public class FlightsController {
 			String destinoIata = v.getDestino() != null ? v.getDestino().getIata() : "N/A";
 			String destinoIcao = v.getDestino() != null ? v.getDestino().getIcao() : "N/A";
 
-			System.out.println("Flight: " + numero + " | Origin: " + origenNombre + " (" + origenIata + "/"
-					+ origenIcao + ")" + " | Destination: " + destinoNombre + " (" + destinoIata + "/" + destinoIcao
-					+ ")");
+			System.out.println("Flight: " + numero + " | Origin: " + origenNombre + " (" + origenIata + "/" + origenIcao
+					+ ")" + " | Destination: " + destinoNombre + " (" + destinoIata + "/" + destinoIcao + ")");
 			BoxedMessageUtils.horizontalRow("-");
 		}
 		System.out.println();
