@@ -140,6 +140,7 @@ public class MenuUtils {
 		System.out.println();
 		System.out.println("1. " + LanguageUtils.get("option.reservation.search"));
 		System.out.println("2. " + LanguageUtils.get("option.reservation.showAll"));
+		System.out.println("3. " + LanguageUtils.get("option.reservation.calculateTotal"));
 		System.out.println("0. " + LanguageUtils.get("option.back.employee"));
 		System.out.println();
 		BoxedMessageUtils.horizontalRow("*");
@@ -152,6 +153,7 @@ public class MenuUtils {
 		System.out.println("1. " + LanguageUtils.get("option.reservation.create"));
 		System.out.println("2. " + LanguageUtils.get("option.reservation.search"));
 		System.out.println("3. " + LanguageUtils.get("option.reservation.showAll"));
+		System.out.println("4. " + LanguageUtils.get("option.reservation.calculateTotal"));
 		System.out.println("0. " + LanguageUtils.get("option.back.admin"));
 		System.out.println();
 		BoxedMessageUtils.horizontalRow("*");

@@ -41,6 +41,28 @@ public class ReservaDAO {
 		}
 	}
 
+	/** Returns all reservations (possibly empty), for total price calculation. */
+	public static List<Reserva> getAllReservasOrEmpty() {
+		Session session = HibernateUtils.getSession().openSession();
+		try {
+			return session.createQuery("From Reserva", Reserva.class).list();
+		} finally {
+			session.close();
+		}
+	}
+
+	/** Returns all reservations for a given passenger (possibly empty). */
+	public static List<Reserva> getReservasByPasajeroId(Integer pasajeroId) {
+		Session session = HibernateUtils.getSession().openSession();
+		try {
+			return session.createQuery("From Reserva r where r.pasajero.pasajeroId = :pid", Reserva.class)
+					.setParameter("pid", pasajeroId)
+					.list();
+		} finally {
+			session.close();
+		}
+	}
+
 	public static Reserva getReservaByID(Integer id) {
 		// I use this to fetch a single reservation by ID or throw a not-found error
 		Session session = HibernateUtils.getSession().openSession();

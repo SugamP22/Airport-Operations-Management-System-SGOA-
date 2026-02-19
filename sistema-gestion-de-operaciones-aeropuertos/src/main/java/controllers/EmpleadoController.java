@@ -135,9 +135,9 @@ public class EmpleadoController {
 
 	private void switchReserva(int option) {
 		switch (option) {
-		case 1 -> RESERVATION_CONTROLLER.createReservation();
-		case 2 -> RESERVATION_CONTROLLER.searchReservation();
-		case 3 -> RESERVATION_CONTROLLER.showAll();
+		case 1 -> RESERVATION_CONTROLLER.searchReservation();
+		case 2 -> RESERVATION_CONTROLLER.showAll();
+		case 3 -> RESERVATION_CONTROLLER.calcularPrecioTotalReservas();
 		case 0 -> {
 			System.out.println();
 			System.out.println(LanguageUtils.get("info.adminDashBoard"));

@@ -10,8 +10,10 @@ import java.util.List;
 import entities.HorarioVuelo;
 import entities.Pasajero;
 import entities.Reserva;
+import repositories.PasajeroDAO;
 import repositories.ReservaDAO;
 import utils.BoxedMessageUtils;
+import utils.DesUtil;
 import utils.LanguageUtils;
 import utils.ReservaValidationUtil;
 import utils.SignatureUtil;
@@ -97,6 +99,51 @@ public class ReservationController {
 			System.out.println(e.getMessage());
 		}
 
+	}
+
+	/** Cálculo del precio total por pasajero: listar pasajeros, elegir uno, mostrar total de sus reservas. */
+	public void calcularPrecioTotalReservas() {
+		try {
+			BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("reservation.total.title"), "=");
+			System.out.println();
+			List<Pasajero> pasajeros = PasajeroDAO.getAllPasajeros();
+			if (pasajeros == null || pasajeros.isEmpty()) {
+				System.out.println(LanguageUtils.get("error.reserva.emptyPassengers"));
+				return;
+			}
+			TablePrinter tp = new TablePrinter().headers("ID", "Name", "Surname", "Passport");
+			for (Pasajero p : pasajeros) {
+				String passport = p.getPassport() != null ? p.getPassport() : "";
+				try {
+					passport = DesUtil.decrypt(passport);
+				} catch (Exception e) {
+					// keep stored value if decrypt fails
+				}
+				tp.row(
+						p.getPasajeroId() != null ? p.getPasajeroId().toString() : "",
+						p.getNombre() != null ? p.getNombre() : "",
+						p.getApellido() != null ? p.getApellido() : "",
+						passport);
+			}
+			tp.print();
+			BoxedMessageUtils.horizontalRow("*");
+			Integer idPasajero = ValidationUtils.readInteger(LanguageUtils.get("reservation.select.passenger"));
+			System.out.println();
+			Pasajero pasajero = PasajeroDAO.getPasajeroById(idPasajero);
+			if (pasajero == null) {
+				System.out.println(LanguageUtils.get("error.reserva.invalidPassenger"));
+				return;
+			}
+			List<Reserva> reservas = ReservaDAO.getReservasByPasajeroId(idPasajero);
+			if (reservas.isEmpty()) {
+				System.out.println(LanguageUtils.get("reservation.total.noReservasYet"));
+				return;
+			}
+			double total = reservas.stream().mapToDouble(Reserva::getPrecio).sum();
+			System.out.println(LanguageUtils.get("reservation.total.byPassenger") + " " + String.format("%.2f", total));
+		} catch (Exception e) {
+			System.out.println(LanguageUtils.get("error.general") + " " + e.getMessage());
+		}
 	}
 
 	public void verifyReservation() {

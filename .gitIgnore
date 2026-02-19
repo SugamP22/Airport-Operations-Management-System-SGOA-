@@ -33,3 +33,6 @@ db.properties
 /.metadata/
 /.metadata/
 /.metadata/
+
+# Automatic generated keys
+setup/
