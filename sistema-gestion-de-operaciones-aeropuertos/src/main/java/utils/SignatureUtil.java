@@ -83,7 +83,7 @@ public class SignatureUtil {
 
 	public static String signReserva(Reserva r) throws Exception {
 		if (r == null || r.getReservaId() == null) {
-			throw new IllegalArgumentException("Reserva must have an ID before signing.");
+			throw new IllegalArgumentException(LanguageUtils.get("error.reserva.id.required.sign"));
 		}
 		loadPrivateKey();
 		if (!FIRMAS_DIR.exists()) {
@@ -115,7 +115,7 @@ public class SignatureUtil {
 
 	public static boolean verifyReserva(Reserva r) throws Exception {
 		if (r == null || r.getReservaId() == null) {
-			throw new IllegalArgumentException("Reserva must have an ID to verify.");
+			throw new IllegalArgumentException(LanguageUtils.get("error.reserva.id.required.verify"));
 		}
 		loadPublicKey();
 

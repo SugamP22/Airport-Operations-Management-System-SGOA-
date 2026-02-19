@@ -24,7 +24,7 @@ public class TablePrinter {
 
 	public void print() {
 		if (headers == null || headers.length == 0) {
-			throw new IllegalStateException("Headers are required");
+			throw new IllegalStateException(LanguageUtils.get("error.table.headers.required"));
 		}
 
 		int cols = headers.length;

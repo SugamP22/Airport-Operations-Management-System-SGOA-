@@ -6,6 +6,8 @@ import java.util.Properties;
 
 import org.bson.Document;
 import com.mongodb.client.MongoClient;
+
+import utils.LanguageUtils;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -28,15 +30,15 @@ public class MongoDbUtil {
 		if (client != null) return;
 		Properties props = new Properties();
 		try (InputStream input = MongoDbUtil.class.getClassLoader().getResourceAsStream("config/db.properties")) {
-			if (input == null) throw new RuntimeException("config/db.properties not found");
+			if (input == null) throw new RuntimeException(LanguageUtils.get("error.mongo.dbProperties.notfound"));
 			props.load(input);
 			String uri = props.getProperty("mongo.uri");
-			if (uri == null || uri.isBlank()) throw new RuntimeException("mongo.uri is missing in config/db.properties");
+			if (uri == null || uri.isBlank()) throw new RuntimeException(LanguageUtils.get("error.mongo.uri.missing"));
 			databaseName = props.getProperty("mongo.database", "aeropuertodb");
 			collectionClimaName = props.getProperty("mongo.collection.clima", "datos_clima");
 			client = MongoClients.create(uri);
 		} catch (IOException e) {
-			throw new ExceptionInInitializerError("Error loading MongoDB config: " + e.getMessage());
+			throw new ExceptionInInitializerError(LanguageUtils.get("error.mongo.config.load") + " " + e.getMessage());
 		}
 	}
 

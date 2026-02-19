@@ -1,10 +1,5 @@
 package utils;
 
-/**
- * Small utility I use to encrypt and decrypt sensitive passenger fields
- * (passport, email, phone) with DES, loading the key from setup/keys/des.key.
- */
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
@@ -29,19 +24,19 @@ public class DesUtil {
 			return;
 		}
 		if (!KEY_FILE.exists()) {
-			throw new RuntimeException("Encryption not available: key file not found. Run InstallApp first.");
+			throw new RuntimeException(LanguageUtils.get("error.des.keyNotFound"));
 		}
 		try (FileInputStream fis = new FileInputStream(KEY_FILE)) {
 			byte[] keyBytes = new byte[DES_KEY_SIZE];
 			int n = fis.read(keyBytes);
 			if (n != DES_KEY_SIZE) {
-				throw new RuntimeException("DES key file must be exactly " + DES_KEY_SIZE + " bytes");
+				throw new RuntimeException(LanguageUtils.get("error.des.keySize"));
 			}
 			DESKeySpec spec = new DESKeySpec(keyBytes);
 			SecretKeyFactory factory = SecretKeyFactory.getInstance(ALGORITHM);
 			key = factory.generateSecret(spec);
 		} catch (Exception e) {
-			throw new RuntimeException("Could not load DES key: " + e.getMessage(), e);
+			throw new RuntimeException(LanguageUtils.get("error.des.loadFailed") + " " + e.getMessage(), e);
 		}
 	}
 
@@ -56,7 +51,7 @@ public class DesUtil {
 			byte[] encrypted = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
 			return Base64.getEncoder().encodeToString(encrypted);
 		} catch (Exception e) {
-			throw new RuntimeException("DES encrypt failed: " + e.getMessage(), e);
+			throw new RuntimeException(LanguageUtils.get("error.des.encryptFailed") + " " + e.getMessage(), e);
 		}
 	}
 
@@ -72,7 +67,7 @@ public class DesUtil {
 			byte[] decrypted = cipher.doFinal(encrypted);
 			return new String(decrypted, StandardCharsets.UTF_8);
 		} catch (Exception e) {
-			throw new RuntimeException("DES decrypt failed: " + e.getMessage(), e);
+			throw new RuntimeException(LanguageUtils.get("error.des.decryptFailed") + " " + e.getMessage(), e);
 		}
 	}
 }

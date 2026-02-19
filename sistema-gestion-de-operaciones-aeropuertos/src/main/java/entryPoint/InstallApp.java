@@ -1,5 +1,6 @@
-
 package entryPoint;
+
+import utils.LanguageUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,15 +37,15 @@ public class InstallApp {
 			createFolders();
 			createDesKeyIfMissing();
 			createDsaKeyIfMissing();
-			System.out.println("InstallApp completed successfully.");
+			System.out.println(LanguageUtils.get("install.completed"));
 		} catch (Exception e) {
-			System.out.println("InstallApp failed: " + e.getMessage());
+			System.out.println(LanguageUtils.get("install.failed") + " " + e.getMessage());
 		}
 	}
 
 	private static void createDesKeyIfMissing() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
 		if (DES_KEY_FILE.exists()) {
-			System.out.println("Key already in existence");
+			System.out.println(LanguageUtils.get("install.key.exists"));
 			return;
 		}
 		KeyGenerator kg = KeyGenerator.getInstance("DES");
@@ -56,12 +57,12 @@ public class InstallApp {
 		FileOutputStream fos = new FileOutputStream(DES_KEY_FILE);
 		fos.write(keySpec.getKey());
 		fos.close();
-		System.out.println("DES key generated and saved to " + DES_KEY_FILE.getPath());
+		System.out.println(LanguageUtils.get("install.des.saved") + " " + DES_KEY_FILE.getPath());
 	}
 
 	private static void createDsaKeyIfMissing() throws Exception {
 		if (DSA_PRIVATE_FILE.exists() && DSA_PUBLIC_FILE.exists()) {
-			System.out.println("DSA keys already exist");
+			System.out.println(LanguageUtils.get("install.dsa.exists"));
 			return;
 		}
 
@@ -94,7 +95,7 @@ public class InstallApp {
 			pw.println(publicKeySpec.getG());
 		}
 
-		System.out.println("DSA keys generated and saved to " + KEYS_DIR.getPath());
+		System.out.println(LanguageUtils.get("install.dsa.saved") + " " + KEYS_DIR.getPath());
 	}
 
 	private static void createFolders() {

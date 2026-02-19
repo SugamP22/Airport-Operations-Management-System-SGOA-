@@ -1,19 +1,19 @@
 package entryPoint;
 
 import config.MongoDbUtil;
+import utils.LanguageUtils;
 
 /**
  * Simple main to verify MongoDB connection (db.properties → MongoDbUtil).
- * Run this class to check if the app connects to MongoDB Atlas.
  */
 public class CheckMongoConnection {
 
 	public static void main(String[] args) {
 		try {
 			MongoDbUtil.getDatabase().runCommand(org.bson.Document.parse("{ ping: 1 }"));
-			System.out.println("MongoDB connection OK.");
+			System.out.println(LanguageUtils.get("info.mongo.connection.ok"));
 		} catch (Exception e) {
-			System.err.println("MongoDB connection FAILED: " + e.getMessage());
+			System.err.println(LanguageUtils.get("error.mongo.connection.failed") + " " + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			MongoDbUtil.shutdown();
