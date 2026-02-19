@@ -3,6 +3,9 @@ package utils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * I use this class to create table to show data
+ */
 public class TablePrinter {
 
 	private final List<String[]> rows = new ArrayList<>();
@@ -13,7 +16,8 @@ public class TablePrinter {
 		return this;
 	}
 
-	public TablePrinter row(String... values) {
+	public TablePrinter row(String... values) {// Enrique porfavor que utiliza Java 25 el ... te acepta parametros
+												// variados(diffrent quantity)
 		rows.add(values);
 		return this;
 	}

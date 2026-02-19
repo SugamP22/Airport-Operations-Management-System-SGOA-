@@ -1,10 +1,6 @@
 package controllers;
 
-/**
- * Main admin controller I use to show the admin dashboard and route options to
- * the different modules (flights, reservations, passengers, employees, etc.).
- */
-
+import config.MongoDbUtil;
 import authService.CurrentUser;
 import utils.LanguageUtils;
 import utils.MenuUtils;
@@ -45,7 +41,16 @@ public class AdminController {
 		case 2 -> showMenuReserva();
 		case 3 -> showMenuPasajero();
 		case 4 -> showMenuEmployee();
-		case 5 -> System.out.println(LanguageUtils.get("info.module.weather.pending"));
+		case 5 -> {
+			MongoDbUtil.getDatabase();
+			try {
+				showMenuWeather();
+			} catch (Exception e) {
+				System.out.println(LanguageUtils.get("error.general") + e.getMessage());
+			} finally {
+				MongoDbUtil.shutdown();
+			}
+		}
 		case 6 -> {
 			// Verify reservation signatures (DSA)
 			new ReservationController().verifyReservation();
@@ -56,6 +61,22 @@ public class AdminController {
 		default -> System.out.println(LanguageUtils.get("error.numberFormat"));
 
 		}
+	}
+
+	private void showMenuWeather() {
+		int option;
+		do {
+			MenuUtils.menuWeatherAdmin();
+			option = ValidationUtils.readInt(LanguageUtils.get("input.user"));
+			switch (option) {
+			case 1 -> WEATHER_CONTROLLER.insertarNuevoClima();
+			case 2 -> WEATHER_CONTROLLER.consultarPorAeropuerto();
+			case 3 -> WEATHER_CONTROLLER.consultarPorRangoFecha();
+			case 4 -> WEATHER_CONTROLLER.consultarPorNieblaOTormenta();
+			case 0 -> { }
+			default -> System.out.println(LanguageUtils.get("error.numberFormat"));
+			}
+		} while (option != 0);
 	}
 
 	private void showMenuEmployee() {

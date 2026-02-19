@@ -1,3 +1,4 @@
+
 package entryPoint;
 
 import java.io.File;
@@ -7,12 +8,12 @@ import java.io.PrintWriter;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.DSAPrivateKeySpec;
 import java.security.spec.DSAPublicKeySpec;
+import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -24,6 +25,7 @@ public class InstallApp {
 	private static final File SETUP_DIR = new File("setup");
 	private static final File KEYS_DIR = new File(SETUP_DIR, "keys");
 	private static final File FIRMAS_DIR = new File(SETUP_DIR, "firmas");
+	private static final File SUMMERY_DIR = new File(SETUP_DIR, "summery");
 
 	private static final File DES_KEY_FILE = new File(KEYS_DIR, "des.key");
 	private static final File DSA_PRIVATE_FILE = new File(KEYS_DIR, "dsa_private.key");
@@ -99,6 +101,7 @@ public class InstallApp {
 		if (!SETUP_DIR.exists()) {
 			KEYS_DIR.mkdirs();
 			FIRMAS_DIR.mkdirs();
+			SUMMERY_DIR.mkdirs();
 			return;
 		}
 		if (!KEYS_DIR.exists()) {
@@ -107,7 +110,9 @@ public class InstallApp {
 		if (!FIRMAS_DIR.exists()) {
 			FIRMAS_DIR.mkdirs();
 		}
-
+		if (!SUMMERY_DIR.exists()) {
+			SUMMERY_DIR.mkdirs();
+		}
 	}
 
 }

@@ -1,13 +1,11 @@
 package utils;
 
-/**
- * Utility I use to load DSA keys from files and sign/verify reservation data
- * (Reserva) using SHA1withDSA, storing the signatures under setup/firmas.
- */
+
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -26,6 +24,7 @@ public class SignatureUtil {
 	private static final File PRIVATE_FILE = new File("setup/keys/dsa_private.key");
 	private static final File PUBLIC_FILE = new File("setup/keys/dsa_public.key");
 	private static final File FIRMAS_DIR = new File("setup/firmas/reservas");
+	private static final File SUMMERY_BASE = new File("setup/summery");
 
 	private static PrivateKey privateKey;
 	private static PublicKey publicKey;
@@ -66,13 +65,23 @@ public class SignatureUtil {
 		}
 	}
 
-	private static byte[] buildPayload(Reserva r) {
-		String data = r.getReservaId() + "|" + r.getHorarioVuelo().getNumeroVuelo() + "|" + r.getVueloId() + "|"
-				+ r.getAsiento() + "|" + r.getPasajero().getPasajeroId() + "|" + r.getPrecio();
-		return data.getBytes(StandardCharsets.UTF_8);
+
+	private static String buildPayloadString(Reserva r) {
+		String passenger = r.getPasajero() != null ? String.valueOf(r.getPasajero().getPasajeroId()) : "";
+		String flight = r.getHorarioVuelo() != null ? r.getHorarioVuelo().getNumeroVuelo() + "|" + r.getVueloId() : String.valueOf(r.getVueloId());
+		String price = String.valueOf(r.getPrecio());
+		String date = (r.getHorarioVuelo() != null && r.getHorarioVuelo().getSalida() != null)
+				? r.getHorarioVuelo().getSalida().toString()
+				: "";
+		return r.getReservaId() + "|" + passenger + "|" + flight + "|" + price + "|" + date;
 	}
 
-	public static void signReserva(Reserva r) throws Exception {
+	private static byte[] buildPayload(Reserva r) {
+		return buildPayloadString(r).getBytes(StandardCharsets.UTF_8);
+	}
+
+
+	public static String signReserva(Reserva r) throws Exception {
 		if (r == null || r.getReservaId() == null) {
 			throw new IllegalArgumentException("Reserva must have an ID before signing.");
 		}
@@ -83,15 +92,26 @@ public class SignatureUtil {
 
 		byte[] payload = buildPayload(r);
 
-		Signature sig = Signature.getInstance("SHA1withDSA");
+		Signature sig = Signature.getInstance("DSA");
 		sig.initSign(privateKey);
 		sig.update(payload);
 		byte[] signatureBytes = sig.sign();
 
-		File out = new File(FIRMAS_DIR, "reserva_" + r.getReservaId() + ".sig");
 		String base64 = Base64.getEncoder().encodeToString(signatureBytes);
-		Files.writeString(out.toPath(), base64, StandardCharsets.UTF_8);
+		File out = new File(FIRMAS_DIR, "reserva_" + r.getReservaId() + ".sig");
+		Files.writeString(out.toPath(), base64);
+
+	
+		File summeryFolder = new File(SUMMERY_BASE, "reserva_" + r.getReservaId());
+		summeryFolder.mkdirs();
+		Files.writeString(new File(summeryFolder, "resumen.txt").toPath(), buildPayloadString(r), StandardCharsets.UTF_8);
+		try (OutputStream fos = Files.newOutputStream(new File(summeryFolder, "firma").toPath())) {
+			fos.write(signatureBytes);
+		}
+
+		return base64;
 	}
+
 
 	public static boolean verifyReserva(Reserva r) throws Exception {
 		if (r == null || r.getReservaId() == null) {
@@ -99,17 +119,35 @@ public class SignatureUtil {
 		}
 		loadPublicKey();
 
+		byte[] signatureBytes = null;
 		File sigFile = new File(FIRMAS_DIR, "reserva_" + r.getReservaId() + ".sig");
-		if (!sigFile.exists()) {
+		if (sigFile.exists()) {
+			String base64 = Files.readString(sigFile.toPath());
+			signatureBytes = Base64.getDecoder().decode(base64);
+		}
+		if (signatureBytes == null) {
+			File summeryFirma = new File(SUMMERY_BASE, "reserva_" + r.getReservaId() + "/firma");
+			if (summeryFirma.exists()) {
+				signatureBytes = Files.readAllBytes(summeryFirma.toPath());
+			}
+		}
+		if (signatureBytes == null) {
 			System.out.println(LanguageUtils.get("info.reservation.signature.missing"));
 			return false;
 		}
 
-		String base64 = Files.readString(sigFile.toPath(), StandardCharsets.UTF_8);
-		byte[] signatureBytes = Base64.getDecoder().decode(base64);
-		byte[] payload = buildPayload(r);
+		// Build the payload to verify against.
+		// Priority: use the resumen.txt file (so if someone edits that file, the signature becomes invalid).
+		// Fallback: rebuild from the current Reserva data.
+		byte[] payload;
+		File resumenFile = new File(SUMMERY_BASE, "reserva_" + r.getReservaId() + "/resumen.txt");
+		if (resumenFile.exists()) {
+			payload = Files.readAllBytes(resumenFile.toPath());
+		} else {
+			payload = buildPayload(r);
+		}
 
-		Signature sig = Signature.getInstance("SHA1withDSA");
+		Signature sig = Signature.getInstance("DSA");
 		sig.initVerify(publicKey);
 		sig.update(payload);
 		boolean ok = sig.verify(signatureBytes);

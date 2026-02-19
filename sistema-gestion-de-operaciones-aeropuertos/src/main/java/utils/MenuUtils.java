@@ -169,4 +169,28 @@ public class MenuUtils {
 
 	}
 
+	public static void menuWeatherAdmin() {
+		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("ui.title.weather"), "=");
+		System.out.println();
+		System.out.println("1. " + LanguageUtils.get("option.weather.insert"));
+		System.out.println("2. " + LanguageUtils.get("option.weather.query.airport"));
+		System.out.println("3. " + LanguageUtils.get("option.weather.query.dateRange"));
+		System.out.println("4. " + LanguageUtils.get("option.weather.query.stormFog"));
+		System.out.println("0. " + LanguageUtils.get("option.back.admin"));
+		System.out.println();
+		BoxedMessageUtils.horizontalRow("*");
+	}
+
+	public static void menuWeatherEmpleado() {
+		BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("ui.title.weather"), "=");
+		System.out.println();
+		System.out.println("1. " + LanguageUtils.get("option.weather.insert"));
+		System.out.println("2. " + LanguageUtils.get("option.weather.query.airport"));
+		System.out.println("3. " + LanguageUtils.get("option.weather.query.dateRange"));
+		System.out.println("4. " + LanguageUtils.get("option.weather.query.stormFog"));
+		System.out.println("0. " + LanguageUtils.get("option.back.employee"));
+		System.out.println();
+		BoxedMessageUtils.horizontalRow("*");
+	}
+
 }

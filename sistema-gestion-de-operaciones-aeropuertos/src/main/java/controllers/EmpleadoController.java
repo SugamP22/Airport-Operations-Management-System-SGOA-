@@ -1,10 +1,6 @@
 package controllers;
 
-/**
- * Employee controller I use to show the employee dashboard and give access to
- * read-only operations (flights, reservations, passengers, weather, DSA verify).
- */
-
+import config.MongoDbUtil;
 import authService.CurrentUser;
 import utils.LanguageUtils;
 import utils.MenuUtils;
@@ -42,7 +38,16 @@ public class EmpleadoController {
 		case 1 -> showMenuFlights();
 		case 2 -> showMenuReserva();
 		case 3 -> showMenuPasajero();
-		case 4 -> System.out.println(LanguageUtils.get("info.module.weather.pending"));
+		case 4 -> {
+			MongoDbUtil.getDatabase();
+			try {
+				showMenuWeather();
+			} catch (Exception e) {
+				System.out.println(LanguageUtils.get("error.general") + e.getMessage());
+			} finally {
+				MongoDbUtil.shutdown();
+			}
+		}
 		case 5 -> {
 			// Verify reservation signatures (DSA)
 			new ReservationController().verifyReservation();
@@ -53,6 +58,22 @@ public class EmpleadoController {
 		default -> System.out.println(LanguageUtils.get("error.numberFormat"));
 
 		}
+	}
+
+	private void showMenuWeather() {
+		int option;
+		do {
+			MenuUtils.menuWeatherEmpleado();
+			option = ValidationUtils.readInt(LanguageUtils.get("input.user"));
+			switch (option) {
+			case 1 -> WEATHER_CONTROLLER.insertarNuevoClima();
+			case 2 -> WEATHER_CONTROLLER.consultarPorAeropuerto();
+			case 3 -> WEATHER_CONTROLLER.consultarPorRangoFecha();
+			case 4 -> WEATHER_CONTROLLER.consultarPorNieblaOTormenta();
+			case 0 -> { }
+			default -> System.out.println(LanguageUtils.get("error.numberFormat"));
+			}
+		} while (option != 0);
 	}
 
 	private void showMenuFlights() {

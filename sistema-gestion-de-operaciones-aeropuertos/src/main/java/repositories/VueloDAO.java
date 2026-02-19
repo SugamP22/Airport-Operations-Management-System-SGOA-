@@ -123,8 +123,8 @@ public class VueloDAO {
 	 * Returns the schedule associated with a specific flight id.
 	 * 
 	 * I load the Vuelo first to reuse the existing mapping instead of querying
-	 * HorarioVuelo directly, and I reuse the generic "flight not found" message when
-	 * the id does not exist.
+	 * HorarioVuelo directly, and I reuse the generic "flight not found" message
+	 * when the id does not exist.
 	 */
 	public static HorarioVuelo getFlightSchedules(String numeroVuelo) {
 		Session session = HibernateUtils.getSession().openSession();
