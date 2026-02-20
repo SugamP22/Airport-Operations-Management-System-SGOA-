@@ -5,7 +5,9 @@ import config.HibernateUtils;
 import utils.LanguageUtils;
 
 /**
- * Entry point of the application.
+ * Entry point of the application. 
+ * NOTE: ¡PORFAVOR USAR INSTALLAPP ANTES DE ESTE MAIN! 
+ * 
  */
 public class Main {
 	public static void main(String[] args) {

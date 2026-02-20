@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * I use this class to create table to show data
+ * Utility class to create table to show data in a box
  */
 public class TablePrinter {
 

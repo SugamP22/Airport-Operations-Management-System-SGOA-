@@ -2,6 +2,9 @@ package utils;
 
 import entities.Vuelo;
 
+/**
+ * Utility class to make sure the user selects a days
+ */
 public class DayUtils {
 
 	public static void selectDays(Vuelo vuelo) {
@@ -40,7 +43,8 @@ public class DayUtils {
 				break;
 			}
 
-			continueOption = Character.toUpperCase(ValidationUtils.readChar(LanguageUtils.get("flight.input.moreDays")));
+			continueOption = Character
+					.toUpperCase(ValidationUtils.readChar(LanguageUtils.get("flight.input.moreDays")));
 		} while (continueOption == 'Y' || continueOption == 'S');
 
 		if (!hasAnyDay(vuelo)) {
@@ -49,6 +53,7 @@ public class DayUtils {
 		}
 	}
 
+//helper method to make sure that atleast one day is selected
 	private static boolean hasAnyDay(Vuelo vuelo) {
 		return vuelo.isLunes() || vuelo.isMartes() || vuelo.isMiercoles() || vuelo.isJueves() || vuelo.isViernes()
 				|| vuelo.isSabado() || vuelo.isDomingo();

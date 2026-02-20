@@ -2,7 +2,9 @@ package utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
+/**
+ * Utility class to generate MD5 hashes (32-character hex strings).
+ */
 public class Md5Util {
 
 	public static String hash(String input) {

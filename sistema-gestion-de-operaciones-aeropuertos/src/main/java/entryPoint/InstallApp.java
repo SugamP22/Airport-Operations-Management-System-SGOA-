@@ -21,6 +21,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
+/**
+ * Class that is run before running main to create keys and required file for
+ * the app
+ */
 public class InstallApp {
 
 	private static final File SETUP_DIR = new File("setup");

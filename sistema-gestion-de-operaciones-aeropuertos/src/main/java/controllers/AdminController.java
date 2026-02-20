@@ -6,6 +6,9 @@ import utils.LanguageUtils;
 import utils.MenuUtils;
 import utils.ValidationUtils;
 
+/**
+ * Class that mananges task related to admin
+ */
 public class AdminController {
 	private final FlightsController FLIGHTS_CONTROLLER;
 	private final WeatherController WEATHER_CONTROLLER;
@@ -23,7 +26,8 @@ public class AdminController {
 	}
 
 	public void openDashboard() {
-		// This is the main loop I use to keep showing the admin menu until the user exits
+		// This is the main loop I use to keep showing the admin menu until the user
+		// exits
 		System.out.println(CurrentUser.empleado.getNombre() + " " + LanguageUtils.get("user.found"));
 		int option;
 		do {
@@ -73,7 +77,8 @@ public class AdminController {
 			case 2 -> WEATHER_CONTROLLER.consultarPorAeropuerto();
 			case 3 -> WEATHER_CONTROLLER.consultarPorRangoFecha();
 			case 4 -> WEATHER_CONTROLLER.consultarPorNieblaOTormenta();
-			case 0 -> { }
+			case 0 -> {
+			}
 			default -> System.out.println(LanguageUtils.get("error.numberFormat"));
 			}
 		} while (option != 0);
@@ -104,7 +109,8 @@ public class AdminController {
 	}
 
 	private void showMenuFlights() {
-		// Here I show the admin flights submenu and delegate each option to FlightsController
+		// Here I show the admin flights submenu and delegate each option to
+		// FlightsController
 		int option;
 		do {
 			MenuUtils.MenuCRUDFlightsAdmin();

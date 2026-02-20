@@ -4,6 +4,9 @@ import utils.LanguageUtils;
 import utils.MenuUtils;
 import utils.ValidationUtils;
 
+/**
+ * Class that i use to select a language(i.e English or Spanish )
+ */
 public class LanguageController {
 
 	public void updateLanguage() {

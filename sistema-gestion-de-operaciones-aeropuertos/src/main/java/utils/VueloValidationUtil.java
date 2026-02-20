@@ -1,7 +1,7 @@
 package utils;
 
 /**
- * Helper I use to validate and read airport and airplane data from the console
+ * Utility class I use to validate and read airport and airplane data from the console
  * when I am creating or updating flights.
  */
 

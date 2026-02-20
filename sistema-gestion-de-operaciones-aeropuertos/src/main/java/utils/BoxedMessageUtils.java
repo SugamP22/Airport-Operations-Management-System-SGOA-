@@ -1,7 +1,7 @@
 package utils;
 
 /**
- * class to create a box design in the console
+ * Utility class to create a box design in the console
  */
 public class BoxedMessageUtils {
 

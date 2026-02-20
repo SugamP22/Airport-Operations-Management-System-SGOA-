@@ -19,7 +19,8 @@ import utils.ValidationUtils;
 import utils.WeatherValidationUtil;
 
 /**
- * Weather (clima) module. MongoDB for datos_clima; MySQL AeropuertosDAO for airport list.
+ * Class that manages task related to Weather managemnt, also uses mysqlDB to
+ * show available airports
  */
 public class WeatherController {
 
@@ -42,31 +43,20 @@ public class WeatherController {
 			int humedad = WeatherValidationUtil.readHumedad(LanguageUtils.get("prompt.weather.humedad"));
 			double presionAire = WeatherValidationUtil.readPresionAire(LanguageUtils.get("prompt.weather.presion"));
 			int viento = WeatherValidationUtil.readViento(LanguageUtils.get("prompt.weather.viento"));
-			int direccionViento = WeatherValidationUtil.readDireccionViento(
-					LanguageUtils.get("prompt.weather.direccion.viento"));
+			int direccionViento = WeatherValidationUtil
+					.readDireccionViento(LanguageUtils.get("prompt.weather.direccion.viento"));
 			String clima = WeatherValidationUtil.readClima(LanguageUtils.get("prompt.weather.clima"));
 
-			// store airport data in Mongo (with geolocation)
-			Document aeropuerto = new Document()
-					.append("aeropuerto_id", a.getAeropuertoId())
-					.append("iata", a.getIata())
-					.append("icao", a.getIcao())
-					.append("nombre", a.getNombre())
-					.append("ciudad", a.getCiudad())
-					.append("pais", a.getPais())
-					.append("latitud", a.getLatitud())
+			// store airport data in Mongo, avoid using geolocaliazation , Porque me dijiste
+			// que geo no faltaba
+			Document aeropuerto = new Document().append("aeropuerto_id", a.getAeropuertoId())
+					.append("iata", a.getIata()).append("icao", a.getIcao()).append("nombre", a.getNombre())
+					.append("ciudad", a.getCiudad()).append("pais", a.getPais()).append("latitud", a.getLatitud())
 					.append("longitud", a.getLongitud());
 
-			Document doc = new Document()
-					.append("fecha", fecha)
-					.append("hora", hora)
-					.append("aeropuerto", aeropuerto)
-					.append("temperatura", temperatura)
-					.append("humedad", humedad)
-					.append("presion_aire", presionAire)
-					.append("viento", viento)
-					.append("clima", clima)
-					.append("direccion_viento", direccionViento);
+			Document doc = new Document().append("fecha", fecha).append("hora", hora).append("aeropuerto", aeropuerto)
+					.append("temperatura", temperatura).append("humedad", humedad).append("presion_aire", presionAire)
+					.append("viento", viento).append("clima", clima).append("direccion_viento", direccionViento);
 
 			MongoDbUtil.getClimaCollection().insertOne(doc);
 			System.out.println(LanguageUtils.get("info.weather.insert.ok"));
@@ -81,11 +71,13 @@ public class WeatherController {
 		}
 	}
 
-	// aviso in console so it never blocks (no modal dialog)
+	// aviso in console so it never blocks
 	private void showAviso(String message) {
-		System.out.println("\n" + LanguageUtils.get("aviso.weather.prefix") + " " + LanguageUtils.get("aviso.weather.title") + ": " + message);
+		System.out.println("\n" + LanguageUtils.get("aviso.weather.prefix") + " "
+				+ LanguageUtils.get("aviso.weather.title") + ": " + message);
 	}
 
+// search by a airport 
 	public void consultarPorAeropuerto() {
 		try {
 			AeropuertosDAO.readAll();
@@ -96,22 +88,21 @@ public class WeatherController {
 				return;
 			}
 			List<Document> list = MongoDbUtil.getClimaCollection()
-					.find(Filters.eq("aeropuerto.aeropuerto_id", airportId))
-					.into(new ArrayList<>());
+					.find(Filters.eq("aeropuerto.aeropuerto_id", airportId)).into(new ArrayList<>());
 			printWeatherTable(list);
 		} catch (Exception e) {
 			System.out.println(LanguageUtils.get("error.general") + e.getMessage());
 		}
 	}
 
+// Provide user to select a range of date to get clima during that specifc period
 	public void consultarPorRangoFecha() {
 		try {
-			String fechaInicio = ValidationUtils.readLocalDate(LanguageUtils.get("prompt.weather.fecha.inicio")).toString();
+			String fechaInicio = ValidationUtils.readLocalDate(LanguageUtils.get("prompt.weather.fecha.inicio"))
+					.toString();
 			String fechaFin = ValidationUtils.readLocalDate(LanguageUtils.get("prompt.weather.fecha.fin")).toString();
 			List<Document> list = MongoDbUtil.getClimaCollection()
-					.find(Filters.and(
-							Filters.gte("fecha", fechaInicio),
-							Filters.lte("fecha", fechaFin)))
+					.find(Filters.and(Filters.gte("fecha", fechaInicio), Filters.lte("fecha", fechaFin)))
 					.into(new ArrayList<>());
 			printWeatherTable(list);
 		} catch (Exception e) {
@@ -122,42 +113,31 @@ public class WeatherController {
 	public void consultarPorNieblaOTormenta() {
 		try {
 			List<Document> list = MongoDbUtil.getClimaCollection()
-					.find(Filters.in("clima", Arrays.asList("Niebla", "Tormenta")))
-					.into(new ArrayList<>());
+					.find(Filters.in("clima", Arrays.asList("Niebla", "Tormenta"))).into(new ArrayList<>());
 			printWeatherTable(list);
 		} catch (Exception e) {
 			System.out.println(LanguageUtils.get("error.general") + e.getMessage());
 		}
 	}
 
+// Aqui i am using my special class table printer to print the data in a box in the console
 	private void printWeatherTable(List<Document> list) {
 		if (list == null || list.isEmpty()) {
 			System.out.println(LanguageUtils.get("info.weather.no.results"));
 			return;
 		}
-		TablePrinter tp = new TablePrinter().headers(
-				LanguageUtils.get("table.weather.col.fecha"),
-				LanguageUtils.get("table.weather.col.hora"),
-				LanguageUtils.get("table.weather.col.iata"),
-				LanguageUtils.get("table.weather.col.aeropuerto"),
-				LanguageUtils.get("table.weather.col.ciudad"),
-				LanguageUtils.get("table.weather.col.temp"),
-				LanguageUtils.get("table.weather.col.hum"),
-				LanguageUtils.get("table.weather.col.pres"),
-				LanguageUtils.get("table.weather.col.viento"),
-				LanguageUtils.get("table.weather.col.clima"),
-				LanguageUtils.get("table.weather.col.dir"));
+		TablePrinter tp = new TablePrinter().headers(LanguageUtils.get("table.weather.col.fecha"),
+				LanguageUtils.get("table.weather.col.hora"), LanguageUtils.get("table.weather.col.iata"),
+				LanguageUtils.get("table.weather.col.aeropuerto"), LanguageUtils.get("table.weather.col.ciudad"),
+				LanguageUtils.get("table.weather.col.temp"), LanguageUtils.get("table.weather.col.hum"),
+				LanguageUtils.get("table.weather.col.pres"), LanguageUtils.get("table.weather.col.viento"),
+				LanguageUtils.get("table.weather.col.clima"), LanguageUtils.get("table.weather.col.dir"));
 		for (Document doc : list) {
 			Document aeropuerto = doc.get("aeropuerto", Document.class);
 			String iata = aeropuerto != null ? nullToEmpty(aeropuerto.getString("iata")) : "";
 			String nombre = aeropuerto != null ? nullToEmpty(aeropuerto.getString("nombre")) : "";
 			String ciudad = aeropuerto != null ? nullToEmpty(aeropuerto.getString("ciudad")) : "";
-			tp.row(
-					nullToEmpty(doc.getString("fecha")),
-					nullToEmpty(doc.getString("hora")),
-					iata,
-					nombre,
-					ciudad,
+			tp.row(nullToEmpty(doc.getString("fecha")), nullToEmpty(doc.getString("hora")), iata, nombre, ciudad,
 					doc.get("temperatura") != null ? String.valueOf(doc.get("temperatura")) : "",
 					doc.get("humedad") != null ? String.valueOf(doc.get("humedad")) : "",
 					doc.get("presion_aire") != null ? String.valueOf(doc.get("presion_aire")) : "",
@@ -168,6 +148,7 @@ public class WeatherController {
 		tp.print();
 	}
 
+//Para evitar el valor nulo
 	private static String nullToEmpty(String s) {
 		return s == null ? "" : s;
 	}

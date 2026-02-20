@@ -10,6 +10,9 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
+/**
+ * Utility Class used to load key , encrypt and decrypt.
+ */
 public class DesUtil {
 
 	private static final String ALGORITHM = "DES";
@@ -40,6 +43,7 @@ public class DesUtil {
 		}
 	}
 
+// method that takes in a string and using the key to encrypt
 	public static String encrypt(String plainText) {
 		if (plainText == null) {
 			return null;
@@ -55,6 +59,8 @@ public class DesUtil {
 		}
 	}
 
+	// method that takes in a string and using the key to decrypt a String that we
+	// get from our db
 	public static String decrypt(String base64Cipher) {
 		if (base64Cipher == null || base64Cipher.isEmpty()) {
 			return null;

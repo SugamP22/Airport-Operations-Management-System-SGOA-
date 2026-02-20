@@ -3,6 +3,9 @@ package utils;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Utility Class that i use to select language and get the required text
+ */
 public class LanguageUtils {
 	// this holds the current bundle (The loaded .properties file)
 	private static ResourceBundle bundle;

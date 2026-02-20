@@ -11,6 +11,7 @@
     <property name="connection.password">${db.password}</property>
     <property name="show_sql">false</property>
 
+    <!-- Mapping entities -->
     <mapping class="entities.Aerolinea"/>
     <mapping class="entities.Aeropuertos"/>
     <mapping class="entities.Avion"/>

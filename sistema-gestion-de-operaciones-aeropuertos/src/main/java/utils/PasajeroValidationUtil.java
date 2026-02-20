@@ -1,7 +1,7 @@
 package utils;
 
 /**
- * Helper I use to validate and encrypt passenger-specific fields (passport,
+ * Utility class I use to validate and encrypt passenger-specific fields (passport,
  * email, phone) before saving them.
  */
 

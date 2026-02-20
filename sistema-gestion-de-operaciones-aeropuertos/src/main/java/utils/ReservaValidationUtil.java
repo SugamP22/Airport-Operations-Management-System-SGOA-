@@ -1,7 +1,7 @@
 package utils;
 
 /**
- * Helper class I use to centralize all the input flow and validation needed
+ * Utility class I use to centralize all the input flow and validation needed
  * before creating a reservation (choosing schedule, passenger and data).
  */
 
@@ -53,8 +53,8 @@ public class ReservaValidationUtil {
 			try {
 				decryptedPassport = DesUtil.decrypt(pasajero.getPassport());
 			} catch (Exception e) {
-				// For passengers created before DES was applied or with invalid data,
-				// fall back to the stored value so the list still works.
+				// Me salio un fallo aqui porque tenia datos que no fueron encrptado para
+				// envitar la exception incorrecta
 				decryptedPassport = pasajero.getPassport();
 			}
 			String idStr = pasajero.getPasajeroId() != null ? pasajero.getPasajeroId().toString() : "";

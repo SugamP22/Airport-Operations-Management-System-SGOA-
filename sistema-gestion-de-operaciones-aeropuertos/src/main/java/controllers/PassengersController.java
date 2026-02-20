@@ -1,7 +1,7 @@
 package controllers;
 
 /**
- * Controller I use to manage passenger data (create passengers and list all
+ * Controller  used to manage passenger data (create passengers and list all
  * passengers) in the console UI.
  */
 
@@ -21,7 +21,8 @@ import utils.ValidationUtils;
 public class PassengersController {
 
 	public void createPassenger() {
-		// Here I read all the passenger data from console, encrypt sensitive fields and save passenger + details
+		// Here I read all the passenger data from console, encrypt sensitive fields and
+		// save passenger + details
 		try {
 			String passport = PasajeroValidationUtil.readPassport(LanguageUtils.get("passenger.input.passport"));
 			String nombre = ValidationUtils.readString(LanguageUtils.get("passenger.input.nombre"));
@@ -57,7 +58,8 @@ public class PassengersController {
 	}
 
 	public void showAllPassengers() {
-		// Simple helper I use to print all passengers as a small table, without decrypting anything
+		// Simple helper I use to print all passengers as a small table, without
+		// decrypting anything
 		try {
 			List<Pasajero> pasajeros = PasajeroDAO.getAllPasajeros();
 			if (pasajeros == null || pasajeros.isEmpty()) {
@@ -69,11 +71,7 @@ public class PassengersController {
 				String fullName = p.getNombre() != null ? p.getNombre() : "";
 				String surname = p.getApellido() != null ? p.getApellido() : "";
 				String passport = p.getPassport() != null ? p.getPassport() : "";
-				tp.row(
-						p.getPasajeroId() != null ? p.getPasajeroId().toString() : "",
-						fullName,
-						surname,
-						passport);
+				tp.row(p.getPasajeroId() != null ? p.getPasajeroId().toString() : "", fullName, surname, passport);
 			}
 			tp.print();
 		} catch (Exception e) {

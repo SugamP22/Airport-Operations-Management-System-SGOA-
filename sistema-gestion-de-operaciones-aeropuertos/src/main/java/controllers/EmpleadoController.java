@@ -5,7 +5,9 @@ import authService.CurrentUser;
 import utils.LanguageUtils;
 import utils.MenuUtils;
 import utils.ValidationUtils;
-
+/**
+ * Class that manages task related to employee
+ */
 public class EmpleadoController {
 	private final FlightsController FLIGHTS_CONTROLLER;
 	private final WeatherController WEATHER_CONTROLLER;

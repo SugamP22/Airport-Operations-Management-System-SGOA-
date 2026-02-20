@@ -1,6 +1,8 @@
 package utils;
 
-
+/**
+ * Utility class that loads both public and private key from the setup folder and then sign or verify reserva
+ */
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -65,10 +67,10 @@ public class SignatureUtil {
 		}
 	}
 
-
 	private static String buildPayloadString(Reserva r) {
 		String passenger = r.getPasajero() != null ? String.valueOf(r.getPasajero().getPasajeroId()) : "";
-		String flight = r.getHorarioVuelo() != null ? r.getHorarioVuelo().getNumeroVuelo() + "|" + r.getVueloId() : String.valueOf(r.getVueloId());
+		String flight = r.getHorarioVuelo() != null ? r.getHorarioVuelo().getNumeroVuelo() + "|" + r.getVueloId()
+				: String.valueOf(r.getVueloId());
 		String price = String.valueOf(r.getPrecio());
 		String date = (r.getHorarioVuelo() != null && r.getHorarioVuelo().getSalida() != null)
 				? r.getHorarioVuelo().getSalida().toString()
@@ -79,7 +81,6 @@ public class SignatureUtil {
 	private static byte[] buildPayload(Reserva r) {
 		return buildPayloadString(r).getBytes(StandardCharsets.UTF_8);
 	}
-
 
 	public static String signReserva(Reserva r) throws Exception {
 		if (r == null || r.getReservaId() == null) {
@@ -101,17 +102,16 @@ public class SignatureUtil {
 		File out = new File(FIRMAS_DIR, "reserva_" + r.getReservaId() + ".sig");
 		Files.writeString(out.toPath(), base64);
 
-	
 		File summeryFolder = new File(SUMMERY_BASE, "reserva_" + r.getReservaId());
 		summeryFolder.mkdirs();
-		Files.writeString(new File(summeryFolder, "resumen.txt").toPath(), buildPayloadString(r), StandardCharsets.UTF_8);
+		Files.writeString(new File(summeryFolder, "resumen.txt").toPath(), buildPayloadString(r),
+				StandardCharsets.UTF_8);
 		try (OutputStream fos = Files.newOutputStream(new File(summeryFolder, "firma").toPath())) {
 			fos.write(signatureBytes);
 		}
 
 		return base64;
 	}
-
 
 	public static boolean verifyReserva(Reserva r) throws Exception {
 		if (r == null || r.getReservaId() == null) {
@@ -137,7 +137,8 @@ public class SignatureUtil {
 		}
 
 		// Build the payload to verify against.
-		// Priority: use the resumen.txt file (so if someone edits that file, the signature becomes invalid).
+		// Priority: use the resumen.txt file (so if someone edits that file, the
+		// signature becomes invalid).
 		// Fallback: rebuild from the current Reserva data.
 		byte[] payload;
 		File resumenFile = new File(SUMMERY_BASE, "reserva_" + r.getReservaId() + "/resumen.txt");

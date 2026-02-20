@@ -3,13 +3,14 @@ package utils;
 import java.time.LocalDate;
 
 /**
- * Validation for weather input: allowed clima, wind direction, and value ranges.
+ * Utility class i use for validation for weather input: allowed clima, wind
+ * direction, and value ranges.
  */
 public class WeatherValidationUtil {
 
 	private static final String[] CLIMA_VALIDOS = { "Tormenta", "Niebla", "Despejado", "Nublado", "Lluvia", "Nieve" };
 
-	// limited ranges for realistic weather data
+	// Bueno, para evitar al usuario entrar datos randoms
 	private static final double TEMP_MIN = -50;
 	private static final double TEMP_MAX = 50;
 	private static final int HUMEDAD_MIN = 0;

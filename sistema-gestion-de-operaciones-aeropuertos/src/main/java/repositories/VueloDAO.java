@@ -144,8 +144,6 @@ public class VueloDAO {
 	/**
 	 * Lists flights filtered by airline name.
 	 * 
-	 * I only compare against the airline name (case-insensitive) because in the UI
-	 * I ask the user for the airline name, not the IATA code.
 	 */
 	public static List<Vuelo> getFlightsByAirline(String airline) {
 		Session session = HibernateUtils.getSession().openSession();
@@ -202,10 +200,8 @@ public class VueloDAO {
 	}
 
 	/**
-	 * Lists flights by operating day.
-	 * 
-	 * I accept both Spanish and English day names (e.g. lunes/monday) and map them
-	 * to the corresponding boolean flags on the Vuelo entity.
+	 * Lists flights by operating day. because I have both spanish and english
+	 * language to avoid invalid data error
 	 */
 	public static List<Vuelo> getFlightsByOperatingDay(String day) {
 		Session session = HibernateUtils.getSession().openSession();
@@ -257,7 +253,7 @@ public class VueloDAO {
 	 * 
 	 * I build the day condition first using the same mapping as
 	 * getFlightsByOperatingDay and then combine it with the destination filters
-	 * (name, IATA or ICAO).
+	 * 
 	 */
 	public static List<Vuelo> getFlightsByDayAndDestination(String day, String destination) {
 		Session session = HibernateUtils.getSession().openSession();

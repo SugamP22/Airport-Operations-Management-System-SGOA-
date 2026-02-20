@@ -38,12 +38,8 @@ public class ReservationController {
 				String seat = reserva.getAsiento() != null ? reserva.getAsiento() : "";
 				String passengerName = reserva.getPasajero() != null ? reserva.getPasajero().getNombre() : "";
 				String price = String.format("%.2f", reserva.getPrecio());
-				tp.row(
-						reserva.getReservaId() != null ? reserva.getReservaId().toString() : "",
-						flightNo,
-						seat,
-						passengerName,
-						price);
+				tp.row(reserva.getReservaId() != null ? reserva.getReservaId().toString() : "", flightNo, seat,
+						passengerName, price);
 			}
 			tp.print();
 		} catch (Exception e) {
@@ -69,7 +65,8 @@ public class ReservationController {
 	}
 
 	public void createReservation() {
-		// Main flow to create a reservation: choose schedule, passenger and data, then sign it
+		// Main flow to create a reservation: choose schedule, passenger and data, then
+		// sign it
 		try {
 			BoxedMessageUtils.horizontalRow("-");
 			System.out.println();
@@ -101,7 +98,9 @@ public class ReservationController {
 
 	}
 
-	/** Cálculo del precio total por pasajero: listar pasajeros, elegir uno, mostrar total de sus reservas. */
+	/**
+	 * I use this method to claculate total reservation price of a specific pasajero
+	 */
 	public void calcularPrecioTotalReservas() {
 		try {
 			BoxedMessageUtils.boxWithEvenSpacing(LanguageUtils.get("reservation.total.title"), "=");
@@ -119,10 +118,8 @@ public class ReservationController {
 				} catch (Exception e) {
 					// keep stored value if decrypt fails
 				}
-				tp.row(
-						p.getPasajeroId() != null ? p.getPasajeroId().toString() : "",
-						p.getNombre() != null ? p.getNombre() : "",
-						p.getApellido() != null ? p.getApellido() : "",
+				tp.row(p.getPasajeroId() != null ? p.getPasajeroId().toString() : "",
+						p.getNombre() != null ? p.getNombre() : "", p.getApellido() != null ? p.getApellido() : "",
 						passport);
 			}
 			tp.print();
@@ -147,7 +144,8 @@ public class ReservationController {
 	}
 
 	public void verifyReservation() {
-		// I use this method when admin/employee wants to verify the DSA signature of one reservation
+		// I use this method when admin/employee wants to verify the DSA signature of
+		// one reservation
 		showAll();
 		if (!empty) {
 			BoxedMessageUtils.horizontalRow("*");

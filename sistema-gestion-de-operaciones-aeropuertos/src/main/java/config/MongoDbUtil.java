@@ -13,7 +13,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 /**
- * Utilidad para conectar con MongoDB
+ * Helper class to connect and reconnect with mongoDb
  */
 public class MongoDbUtil {
 

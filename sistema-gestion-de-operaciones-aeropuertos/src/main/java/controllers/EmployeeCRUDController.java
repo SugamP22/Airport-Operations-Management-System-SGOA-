@@ -12,6 +12,9 @@ import utils.LanguageUtils;
 import utils.TablePrinter;
 import utils.ValidationUtils;
 
+/**
+ * Class used by administrators to manage Employee
+ */
 public class EmployeeCRUDController {
 	private boolean empty;
 
@@ -30,8 +33,7 @@ public class EmployeeCRUDController {
 		double salario = ValidationUtils.readDouble(LanguageUtils.get("empleado.input.salario"));
 		Departamento departmento = ValidationUtils.readDepartmento(LanguageUtils.get("empleado.input.departamento"));
 		String usuario = ValidationUtils.readString(LanguageUtils.get("empleado.input.usuario"));
-		String clave = ValidationUtils.readClaveWithConfirm(
-				LanguageUtils.get("empleado.input.clave"),
+		String clave = ValidationUtils.readClaveWithConfirm(LanguageUtils.get("empleado.input.clave"),
 				LanguageUtils.get("empleado.input.clave.confirm"));
 		Empleado empledo = new Empleado(nombre, apellido, dated, sexo, calle, ciudad, pais, email, telefono, salario,
 				departmento, usuario, clave);
@@ -56,13 +58,10 @@ public class EmployeeCRUDController {
 			for (Empleado empleado : list) {
 				String dept = empleado.getDepartamento() != null ? empleado.getDepartamento().name() : "";
 				String salary = String.format("%.2f", empleado.getSalario());
-				tp.row(
-						empleado.getEmpleadoId() != null ? empleado.getEmpleadoId().toString() : "",
+				tp.row(empleado.getEmpleadoId() != null ? empleado.getEmpleadoId().toString() : "",
 						empleado.getNombre() != null ? empleado.getNombre() : "",
-						empleado.getApellido() != null ? empleado.getApellido() : "",
-						dept,
-						empleado.getUsuario() != null ? empleado.getUsuario() : "",
-						salary);
+						empleado.getApellido() != null ? empleado.getApellido() : "", dept,
+						empleado.getUsuario() != null ? empleado.getUsuario() : "", salary);
 			}
 			tp.print();
 		} catch (Exception e) {
@@ -132,13 +131,10 @@ public class EmployeeCRUDController {
 				for (Empleado empleado : list) {
 					String dept = empleado.getDepartamento() != null ? empleado.getDepartamento().name() : "";
 					String salary = String.format("%.2f", empleado.getSalario());
-					tp.row(
-							empleado.getEmpleadoId() != null ? empleado.getEmpleadoId().toString() : "",
+					tp.row(empleado.getEmpleadoId() != null ? empleado.getEmpleadoId().toString() : "",
 							empleado.getNombre() != null ? empleado.getNombre() : "",
-							empleado.getApellido() != null ? empleado.getApellido() : "",
-							dept,
-							empleado.getUsuario() != null ? empleado.getUsuario() : "",
-							salary);
+							empleado.getApellido() != null ? empleado.getApellido() : "", dept,
+							empleado.getUsuario() != null ? empleado.getUsuario() : "", salary);
 				}
 				tp.print();
 			} catch (Exception e) {
