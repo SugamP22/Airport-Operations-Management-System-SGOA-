@@ -292,7 +292,7 @@ public class VueloDAO {
 				dayCondition = "v.domingo = true";
 				break;
 			default:
-				throw new IllegalArgumentException(LanguageUtils.get("error.invalid.day"));
+				throw new IllegalArgumentException(LanguageUtils.get("error.invalid.day.data"));
 			}
 			String hql = "From Vuelo v where " + dayCondition + " and "
 					+ "(lower(v.destino.nombre) = :destination or lower(v.destino.iata) = :destination "

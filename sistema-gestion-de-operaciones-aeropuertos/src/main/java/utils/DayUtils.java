@@ -23,7 +23,7 @@ public class DayUtils {
 			case 'X':
 				vuelo.setMiercoles(true);
 				break;
-			case 'R':
+			case 'R'://Por no repetir t dos veces
 			case 'J':
 				vuelo.setJueves(true);
 				break;

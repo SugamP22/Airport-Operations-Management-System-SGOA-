@@ -67,6 +67,8 @@ public class SignatureUtil {
 		}
 	}
 
+	// Resumen: reservaId|pasajeroId|numeroDeVuelo+idVuelo(si
+	// tiene)|precio|fechaSalida
 	private static String buildPayloadString(Reserva r) {
 		String passenger = r.getPasajero() != null ? String.valueOf(r.getPasajero().getPasajeroId()) : "";
 		String flight = r.getHorarioVuelo() != null ? r.getHorarioVuelo().getNumeroVuelo() + "|" + r.getVueloId()
